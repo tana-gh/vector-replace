@@ -2,7 +2,7 @@ import * as assert  from 'assert'
 import * as types   from '../../core/types'
 import * as replace from '../../core/replace'
 
-suite('search', () => {
+suite('replace', () => {
     const input          = '-abc-defgh-ijk-'
     const replaceStrings = [ '12', '3', '456' ]
     const matches        = [
