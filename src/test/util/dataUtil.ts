@@ -2,7 +2,7 @@ import * as types from "../../core/types"
 
 export const createVectorReplace = () => <types.VectorReplace>({
     params        : createParams(),
-    input         : '',
+    text          : '',
     searchStrings : [],
     replaceStrings: [],
     searchFuncs   : [],

@@ -1,12 +1,11 @@
 import * as assert   from 'assert'
 import * as dataUtil from '../util/dataUtil'
-import * as types    from '../../core/types'
 import * as logic    from '../../core/logic'
 
 suite('setInput', () => {
     const vr = dataUtil.createVectorReplace()
     logic.setInput(vr, 'abc')
-    assert.equal(vr.input, 'abc')
+    assert.equal(vr.text, 'abc')
 })
 
 suite('setSearchStrings', () => {
@@ -50,5 +49,5 @@ suite('runReplace', () => {
     logic.runSearch (vr)
     logic.runReplace(vr)
 
-    assert.equal(vr.input, '-123-456-789-')
+    assert.equal(vr.text, '-123-456-789-')
 })

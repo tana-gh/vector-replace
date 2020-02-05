@@ -4,7 +4,7 @@ export const search = (input: string, searchFuncs: types.SearchFunc[]) => {
     const matches = []
 
     const gen = generateSearchFunc(searchFuncs)
-    let prev = types.createMatchResult([], 0, '')
+    let prev  = types.createMatchResult([], 0, '')
 
     while (true) {
         const func = gen.next().value

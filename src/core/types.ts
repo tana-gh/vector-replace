@@ -13,7 +13,7 @@ export type SearchFunc = (input: string, prev: MatchResult) => MatchResult | nul
 
 export interface VectorReplace {
     params        : Params
-    input         : string
+    text          : string
     searchStrings : string[]
     replaceStrings: string[]
     searchFuncs   : SearchFunc[]

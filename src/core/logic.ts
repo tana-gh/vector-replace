@@ -3,7 +3,7 @@ import * as search  from './search'
 import * as replace from './replace'
 
 export const setInput = (vr: types.VectorReplace, input: string) => {
-    vr.input = input
+    vr.text = input
 }
 
 export const setSearchStrings = (vr: types.VectorReplace, searchStr: string) => {
@@ -20,9 +20,9 @@ export const setReplaceStrings = (vr: types.VectorReplace, replaceStr: string) =
 }
 
 export const runSearch = (vr: types.VectorReplace) => {
-    vr.matches = search.search(vr.input, vr.searchFuncs)
+    vr.matches = search.search(vr.text, vr.searchFuncs)
 }
 
 export const runReplace = (vr: types.VectorReplace) => {
-    vr.input = replace.replace(vr.input, vr.replaceStrings, vr.matches)
+    vr.text = replace.replace(vr.text, vr.replaceStrings, vr.matches)
 }
