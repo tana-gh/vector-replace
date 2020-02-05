@@ -1,21 +1,27 @@
-import * as assert   from 'assert'
-import * as dataUtil from '../util/dataUtil'
-import * as search   from '../../core/search'
+import * as assert from 'assert'
+import * as types  from '../../core/types'
+import * as search from '../../core/search'
 
 suite('search', () => {
-    const vr = dataUtil.createVectorReplace()
-    vr.input = 'abc-defgh-ijk'
-    vr.searchStrings = [ 'abc', 'defgh', 'ijk' ]
-    search.initSearchFuncs(vr)
-    search.search(vr)
+    const input         = 'abc-defgh-ijk'
+    const searchStrings = [ 'abc', 'defgh', 'ijk' ]
+    
+    const searchFuncs = search.createSearchFuncs(searchStrings)
+    const matches     = search.search(input, searchFuncs)
 
-    assert.equal(vr.matches[0][0], 'abc')
-    assert.equal(vr.matches[0].index, 0)
-    assert.equal(vr.matches[0].input, vr.input)
-    assert.equal(vr.matches[1][0], 'defgh')
-    assert.equal(vr.matches[1].index, 4)
-    assert.equal(vr.matches[1].input, vr.input)
-    assert.equal(vr.matches[2][0], 'ijk')
-    assert.equal(vr.matches[2].index, 10)
-    assert.equal(vr.matches[2].input, vr.input)
+    const assertMatches = (
+        matches: types.MatchResult[],
+        i      : number,
+        match  : string,
+        index  : number,
+        input  : string
+    ) => {
+        assert.equal(matches[i][0]   , match)
+        assert.equal(matches[i].index, index)
+        assert.equal(matches[i].input, input)
+    }
+
+    assertMatches(matches, 0, 'abc'  ,  0, input)
+    assertMatches(matches, 1, 'defgh',  4, input)
+    assertMatches(matches, 2, 'ijk'  , 10, input)
 })

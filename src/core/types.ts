@@ -9,12 +9,14 @@ export const createMatchResult =
     (matches: string[], index: number, input: string) =>
         <MatchResult>Object.assign(matches, { index, input })
 
+export type SearchFunc = (input: string, prev: MatchResult) => MatchResult | null
+
 export interface VectorReplace {
     params        : Params
     input         : string
     searchStrings : string[]
     replaceStrings: string[]
-    searchFuncs   : ((input: string, prev: MatchResult) => MatchResult | null)[]
+    searchFuncs   : SearchFunc[]
     matches       : MatchResult[]
 }
 
