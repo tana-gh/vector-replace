@@ -3,7 +3,7 @@ import * as types  from '../../core/types'
 import * as search from '../../core/search'
 
 suite('search', () => {
-    const input         = 'abc-defgh-ijk'
+    const input         = '-abc-defgh-ijk-'
     const searchStrings = [ 'abc', 'defgh', 'ijk' ]
     
     const searchFuncs = search.createSearchFuncs(searchStrings)
@@ -21,7 +21,7 @@ suite('search', () => {
         assert.equal(matches[i].input, input)
     }
 
-    assertMatches(matches, 0, 'abc'  ,  0, input)
-    assertMatches(matches, 1, 'defgh',  4, input)
-    assertMatches(matches, 2, 'ijk'  , 10, input)
+    assertMatches(matches, 0, 'abc'  ,  1, input)
+    assertMatches(matches, 1, 'defgh',  5, input)
+    assertMatches(matches, 2, 'ijk'  , 11, input)
 })
