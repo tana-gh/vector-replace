@@ -21,8 +21,8 @@ export const search = (input: string, searchFuncs: types.SearchFunc[]) => {
 
 const generateSearchFunc = function* (searchFuncs: types.SearchFunc[]) {
     while (true) {
-        for (let funcs of searchFuncs) {
-            yield funcs
+        for (let func of searchFuncs) {
+            yield func
         }
     }
 }
