@@ -1,5 +1,7 @@
 # vector-replace README
 
+![main](https://github.com/tana-gh/vector-replace/workflows/main/badge.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 This is the README for your extension "vector-replace". After writing up a brief description, we recommend including the following sections.
 
 ## Features
