@@ -2,6 +2,20 @@ import * as assert  from 'assert'
 import * as types   from '../../core/types'
 import * as replace from '../../core/replace'
 
+suite('replace with empty replaceStrings', () => {
+    const input          = '-abc-defgh-ijk-'
+    const replaceStrings = <string[]>[]
+    const matches        = [
+        types.createMatchResult([ 'abc'   ],  1, input),
+        types.createMatchResult([ 'defgh' ],  5, input),
+        types.createMatchResult([ 'ijk'   ], 11, input),
+    ]
+
+    const output = replace.replace(input, replaceStrings, matches)
+
+    assert.equal(output, '-abc-defgh-ijk-')
+})
+
 suite('replace', () => {
     const input          = '-abc-defgh-ijk-'
     const replaceStrings = [ '12', '3', '456' ]

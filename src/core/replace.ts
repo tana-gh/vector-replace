@@ -1,6 +1,8 @@
 import * as types from './types'
 
 export const replace = (input: string, replaceStrings: string[], matches: types.MatchResult[]) => {
+    if (replaceStrings.length === 0) return input
+
     const output = []
 
     const gen = generateReplaceStrings(replaceStrings)
