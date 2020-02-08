@@ -24,7 +24,6 @@ export interface Params {
     useRegExp         : boolean
     ignoreCaseSearch  : boolean
     skipBangSearch    : boolean
-    ignoreEmptySearch : boolean
     ignoreEmptyReplace: boolean
     loopSearch        : boolean
     loopReplace       : boolean

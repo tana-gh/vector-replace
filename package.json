@@ -10,12 +10,30 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*"
+		"onCommand:vectorreplace.showView"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [{
-		}]
+		"commands": [
+			{
+				"command": "vectorreplace.showView",
+				"title": "Show View",
+				"category": "Vector Replace",
+				"icon": {
+					"light": "./media/icons/vector-replace-light.svg",
+					"dark": "./media/icons/vector-replace-dark.svg"
+				}
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"command": "vectorreplace.showView",
+					"group": "navigation",
+					"when": "editorTextFocus"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
