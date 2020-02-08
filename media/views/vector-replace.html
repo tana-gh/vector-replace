@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vector Replace</title>
     <style>
-        button {
+        .button {
+            display: inline-block;
+
+            color           : #BBB;
             background-color: #444;
+
+            padding: 4px 20px 4px 20px
         }
         .input-area {
+            color           : #BBB;
             background-color: #111;
         }
     </style>
@@ -16,14 +22,28 @@
 <body>
     <div class="container">
         <div class="pref-area">
-            <button>Replace</button>
+            <span class="button" onclick="runReplace()">Replace</span>
         </div>
-        <div id="search"  class="input-area" contenteditable="true"></div>
-        <div id="replace" class="input-area" contenteditable="true"></div>
+        <div class="search-area">
+            <textarea id="search"  class="input-area"></textarea>
+        </div>
+        <div class="replace-area">
+            <textarea id="replace" class="input-area"></textarea>
+        </div>
     </div>
 
     <script>
         const vscode = acquireVsCodeApi()
+
+        const searchElement  = document.getElementById('search')
+        const replaceElement = document.getElementById('replace')
+
+        const runReplace = () =>
+            vscode.postMessage({
+                command   : 'runReplace',
+                searchStr : searchElement .value,
+                replaceStr: replaceElement.value
+            })
     </script>
 </body>
 </html>

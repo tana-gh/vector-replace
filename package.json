@@ -29,7 +29,8 @@
 			"editor/title": [
 				{
 					"command": "vectorreplace.showView",
-					"group": "navigation"
+					"group": "navigation",
+					"when": "editorTextFocus"
 				}
 			]
 		}
