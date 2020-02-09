@@ -22,7 +22,6 @@ const runReplace = (message: messageTypes.RunReplaceCommand) => {
     logic.runSearch (vr)
     logic.runReplace(vr)
     setOutput(editor, vr.text)
-    vscode.window.showInformationMessage(vr.text)
 }
 
 const getInput = (editor: vscode.TextEditor) => {
