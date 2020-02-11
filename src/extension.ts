@@ -3,7 +3,11 @@ import * as fs      from 'fs'
 import * as path    from 'path'
 import * as message from './messages/behaviour'
 
+let disposables: vscode.Disposable[]
+
 export const activate = (context: vscode.ExtensionContext) => {
+    disposables = message.init()
+
     const showView = vscode.commands.registerCommand('vectorreplace.showView', () => {
         const htmlPath = path.join(context.extensionPath, 'media', 'views', 'vector-replace.html')
 
@@ -16,9 +20,8 @@ export const activate = (context: vscode.ExtensionContext) => {
         panel.webview.onDidReceiveMessage(mes => message.execute(mes))
     })
     context.subscriptions.push(showView)
-
-
 }
 
 export const deactivate = () => {
+    disposables.forEach(d => d.dispose())
 }

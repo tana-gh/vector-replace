@@ -79,7 +79,7 @@
 <body>
     <div class="container">
         <div class="pref-area">
-            <a class="button" href="javascript:void(0)" onclick="runReplace()">Replace</a>
+            <a id="replaceButton" class="button" href="javascript:void(0)">Replace</a>
         </div>
         <div class="search-area">
             <textarea id="search"  class="input-area"></textarea>
@@ -92,8 +92,9 @@
     <script>
         const vscode = acquireVsCodeApi()
 
-        const searchElement  = document.getElementById('search')
-        const replaceElement = document.getElementById('replace')
+        const replaceButtonElement = document.getElementById('replaceButton')
+        const searchElement        = document.getElementById('search')
+        const replaceElement       = document.getElementById('replace')
 
         const runReplace = () =>
             vscode.postMessage({
@@ -101,6 +102,25 @@
                 searchStr : searchElement .value,
                 replaceStr: replaceElement.value
             })
+
+        replaceButtonElement.onclick = runReplace
+
+        const runSearch = () =>
+            vscode.postMessage({
+                command  : 'runSearch',
+                searchStr: searchElement.value
+            })
+        
+        let searchTimeout = undefined
+        const delayToRunSearch = () => {
+            if (searchTimeout) {
+                clearTimeout(searchTimeout)
+                searchTimeout = undefined
+            }
+            searchTimeout = setTimeout(runSearch, 500)
+        }
+
+        searchElement.oninput = delayToRunSearch
     </script>
 </body>
 </html>
