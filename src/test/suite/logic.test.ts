@@ -1,15 +1,15 @@
-import * as assert   from 'assert'
-import * as dataUtil from '../util/dataUtil'
-import * as logic    from '../../core/logic'
+import * as assert    from 'assert'
+import * as coreTypes from '../../core/types'
+import * as logic     from '../../core/logic'
 
 suite('setInput', () => {
-    const vr = dataUtil.createVectorReplace()
+    const vr = coreTypes.createVectorReplace()
     logic.setInput(vr, 'abc')
     assert.equal(vr.text, 'abc')
 })
 
 suite('setSearchStrings', () => {
-    const vr = dataUtil.createVectorReplace()
+    const vr = coreTypes.createVectorReplace()
     logic.setSearchStrings(vr, 'abc\ndef\nghi')
 
     assert.equal(vr.searchStrings.length, 3)
@@ -20,7 +20,7 @@ suite('setSearchStrings', () => {
 })
 
 suite('setReplaceStrings', () => {
-    const vr = dataUtil.createVectorReplace()
+    const vr = coreTypes.createVectorReplace()
     logic.setReplaceStrings(vr, 'abc\ndef\nghi')
     
     assert.equal(vr.replaceStrings.length, 3)
@@ -30,7 +30,7 @@ suite('setReplaceStrings', () => {
 })
 
 suite('runSearch', () => {
-    const vr = dataUtil.createVectorReplace()
+    const vr = coreTypes.createVectorReplace()
     logic.setInput(vr, '-abc-def-ghi-')
     logic.setSearchStrings(vr, 'abc\ndef\nghi')
     logic.runSearch(vr)
@@ -42,7 +42,7 @@ suite('runSearch', () => {
 })
 
 suite('runReplace', () => {
-    const vr = dataUtil.createVectorReplace()
+    const vr = coreTypes.createVectorReplace()
     logic.setInput(vr, '-abc-def-ghi-')
     logic.setSearchStrings (vr, 'abc\ndef\nghi')
     logic.setReplaceStrings(vr, '123\n456\n789')

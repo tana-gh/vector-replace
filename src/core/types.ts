@@ -29,3 +29,23 @@ export interface Params {
     loopReplace       : boolean
     smartReplace      : boolean
 }
+
+export const createVectorReplace = () => <VectorReplace>({
+    params        : createParams(),
+    text          : '',
+    searchStrings : [],
+    replaceStrings: [],
+    searchFuncs   : [],
+    matches       : []
+})
+
+export const createParams = () => <Params>({
+    useRegExp         : false,
+    ignoreCaseSearch  : false,
+    skipBangSearch    : false,
+    ignoreEmptySearch : false,
+    ignoreEmptyReplace: false,
+    loopSearch        : false,
+    loopReplace       : false,
+    smartReplace      : false
+})
