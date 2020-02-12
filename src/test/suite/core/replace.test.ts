@@ -1,6 +1,6 @@
 import * as assert  from 'assert'
-import * as types   from '../../core/types'
-import * as replace from '../../core/replace'
+import * as types   from '../../../core/types'
+import * as replace from '../../../core/replace'
 
 suite('replace with empty replaceStrings', () => {
     const input          = '-abc-defgh-ijk-'

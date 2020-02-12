@@ -3,6 +3,7 @@ import * as logic        from '../core/logic'
 import * as coreTypes    from '../core/types'
 import * as messageTypes from './types'
 import * as states       from '../state/states'
+import * as rangeUtil    from '../util/range'
 
 export const execute = (message: messageTypes.MessageTypes) => {
     switch (message.command) {
@@ -47,12 +48,8 @@ const getInput = (editor: vscode.TextEditor) => {
 }
 
 const decorate = (editor: vscode.TextEditor, matches: coreTypes.MatchResult[]) => {
-    const ranges = createDecorationRanges(matches)
+    const ranges = rangeUtil.createRanges(matches)
     editor.setDecorations(states.decoration, ranges)
-}
-
-const createDecorationRanges = (matches: coreTypes.MatchResult[]) => {
-    return matches.map(match => new vscode.Range(0, match.index, 0, match.index + match[0].length))
 }
 
 const setOutput = (editor: vscode.TextEditor, text: string) => {

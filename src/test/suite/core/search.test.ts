@@ -1,6 +1,6 @@
 import * as assert from 'assert'
-import * as types  from '../../core/types'
-import * as search from '../../core/search'
+import * as types  from '../../../core/types'
+import * as search from '../../../core/search'
 
 const assertMatches = (
     matches: types.MatchResult[],

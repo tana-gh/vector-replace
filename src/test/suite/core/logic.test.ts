@@ -1,6 +1,6 @@
 import * as assert    from 'assert'
-import * as coreTypes from '../../core/types'
-import * as logic     from '../../core/logic'
+import * as coreTypes from '../../../core/types'
+import * as logic     from '../../../core/logic'
 
 suite('setInput', () => {
     const vr = coreTypes.createVectorReplace()
