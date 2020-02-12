@@ -26,7 +26,7 @@ export interface Params {
     skipBangSearch    : boolean
     ignoreEmptyReplace: boolean
     loopSearch        : boolean
-    loopReplace       : boolean
+    justSearch        : boolean
     smartReplace      : boolean
 }
 
@@ -46,6 +46,6 @@ export const createParams = () => <Params>({
     ignoreEmptySearch : false,
     ignoreEmptyReplace: false,
     loopSearch        : false,
-    loopReplace       : false,
+    justSearch        : false,
     smartReplace      : false
 })
