@@ -1,7 +1,12 @@
 
 export type MessageTypes =
+    Refresh |
     RunSearchCommand |
     RunReplaceCommand
+
+export interface Refresh {
+    command: 'refresh'
+}
 
 export interface RunSearchCommand {
     command  : 'runSearch'
