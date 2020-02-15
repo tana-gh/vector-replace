@@ -1,41 +1,41 @@
-import * as vscode       from 'vscode'
-import * as logic        from '../core/logic'
-import * as coreTypes    from '../core/types'
-import * as messageTypes from './types'
-import * as states       from '../state/states'
-import * as rangeUtil    from '../util/range'
+import * as vscode          from 'vscode'
+import * as logic           from '../core/logic'
+import * as coreTypes       from '../core/types'
+import * as messageTypes    from './types'
+import * as state           from '../states/state'
+import * as rangeUtil       from '../util/range'
 
-export const execute = (message: messageTypes.MessageTypes) => {
+export const execute = (message: messageTypes.MessageTypes, st: state.State) => {
     switch (message.command) {
         case 'runSearch':
-            runSearch(message)
+            runSearch(message, st)
             return
         case 'runReplace':
-            runReplace(message)
+            runReplace(message, st)
             return
     }
 }
 
-const runSearch = (message: messageTypes.RunSearchCommand) => {
+const runSearch = (message: messageTypes.RunSearchCommand, st: state.State) => {
     const editor = getEditor()
     if (!editor) return
     
-    logic.setInput(states.vr, getInput(editor))
-    logic.setSearchStrings(states.vr, message.searchStr)
-    logic.runSearch(states.vr)
-    decorate(editor, states.vr.matches)
+    logic.setInput(st.vr, getInput(editor))
+    logic.setSearchStrings(st.vr, message.searchStr)
+    logic.runSearch(st.vr)
+    decorate(editor, st.decoration, st.vr.matches)
 }
 
-const runReplace = (message: messageTypes.RunReplaceCommand) => {
+const runReplace = (message: messageTypes.RunReplaceCommand, st: state.State) => {
     const editor = getEditor()
     if (!editor) return
 
-    logic.setInput(states.vr, getInput(editor))
-    logic.setSearchStrings (states.vr, message.searchStr)
-    logic.setReplaceStrings(states.vr, message.replaceStr)
-    logic.runSearch (states.vr)
-    logic.runReplace(states.vr)
-    setOutput(editor, states.vr.text)
+    logic.setInput(st.vr, getInput(editor))
+    logic.setSearchStrings (st.vr, message.searchStr)
+    logic.setReplaceStrings(st.vr, message.replaceStr)
+    logic.runSearch (st.vr)
+    logic.runReplace(st.vr)
+    setOutput(editor, st.vr.text)
 }
 
 const getEditor = () => {
@@ -47,9 +47,13 @@ const getInput = (editor: vscode.TextEditor) => {
     return editor.document.getText()
 }
 
-const decorate = (editor: vscode.TextEditor, matches: coreTypes.MatchResult[]) => {
+const decorate = (
+    editor: vscode.TextEditor,
+    decoration: vscode.TextEditorDecorationType,
+    matches: coreTypes.MatchResult[]
+) => {
     const ranges = rangeUtil.createRanges(matches)
-    editor.setDecorations(states.decoration, ranges)
+    editor.setDecorations(decoration, ranges)
 }
 
 const setOutput = (editor: vscode.TextEditor, text: string) => {
