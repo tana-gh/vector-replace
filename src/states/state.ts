@@ -18,7 +18,7 @@ const createVectorReplace = () =>
 
 const createDecoration = () =>
     vscode.window.createTextEditorDecorationType({
-        backgroundColor: new vscode.ThemeColor('editor.findMatchHighlightBackground')
+        backgroundColor: new vscode.ThemeColor('merge.currentHeaderBackground')
     })
 
 export const dispose = (st: State) => {
