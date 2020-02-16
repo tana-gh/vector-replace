@@ -16,6 +16,9 @@ export const execute = (message: messageTypes.MessageTypes, st: state.State) => 
         case 'runReplace':
             runReplace(message, st)
             return
+        case 'setUseRegExp':
+            setUseRegExp(message, st)
+            return
     }
 }
 
@@ -28,23 +31,35 @@ export const refresh = (st: state.State) => {
 }
 
 const runSearch = (message: messageTypes.RunSearchCommand, st: state.State) => {
+    logic.setSearchStrings(st.vr, message.searchStr)
+    
     if (!st.editor) return
     
     logic.setInput(st.vr, getInput(st.editor))
-    logic.setSearchStrings(st.vr, message.searchStr)
     logic.runSearch(st.vr)
     decorate(st.editor, st.decoration, st.vr.matches)
 }
 
 const runReplace = (message: messageTypes.RunReplaceCommand, st: state.State) => {
+    logic.setSearchStrings (st.vr, message.searchStr)
+    logic.setReplaceStrings(st.vr, message.replaceStr)
+
     if (!st.editor) return
 
     logic.setInput(st.vr, getInput(st.editor))
-    logic.setSearchStrings (st.vr, message.searchStr)
-    logic.setReplaceStrings(st.vr, message.replaceStr)
     logic.runSearch (st.vr)
     logic.runReplace(st.vr)
     setOutput(st.editor, st.vr.text)
+}
+
+const setUseRegExp = (message: messageTypes.SetUseRegExp, st: state.State) => {
+    logic.setUseRegExp  (st.vr, message.value)
+    logic.setSearchFuncs(st.vr)
+    logic.runSearch     (st.vr)
+
+    if (!st.editor) return
+
+    decorate(st.editor, st.decoration, st.vr.matches)
 }
 
 const getInput = (editor: vscode.TextEditor) => {

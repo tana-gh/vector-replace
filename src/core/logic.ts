@@ -11,12 +11,17 @@ export const setSearchStrings = (vr: types.VectorReplace, searchStr: string) => 
     setSearchFuncs(vr)
 }
 
-const setSearchFuncs = (vr: types.VectorReplace) => {
-    vr.searchFuncs = search.createSearchFuncs(vr.searchStrings)
+export const setSearchFuncs = (vr: types.VectorReplace) => {
+    vr.searchFuncs = search.createSearchFuncs(vr.searchStrings, vr.params.useRegExp)
 }
 
 export const setReplaceStrings = (vr: types.VectorReplace, replaceStr: string) => {
     vr.replaceStrings = replaceStr.split('\n')
+    setReplaceFuncs(vr)
+}
+
+export const setReplaceFuncs = (vr: types.VectorReplace) => {
+    vr.replaceFuncs = replace.createReplaceFuncs(vr.replaceStrings)
 }
 
 export const runSearch = (vr: types.VectorReplace) => {
@@ -24,5 +29,9 @@ export const runSearch = (vr: types.VectorReplace) => {
 }
 
 export const runReplace = (vr: types.VectorReplace) => {
-    vr.text = replace.replace(vr.text, vr.replaceStrings, vr.matches)
+    vr.text = replace.replace(vr.text, vr.replaceFuncs, vr.matches)
+}
+
+export const setUseRegExp = (vr: types.VectorReplace, value: boolean) => {
+    vr.params.useRegExp = value
 }

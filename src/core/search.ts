@@ -5,11 +5,11 @@ export const search = (input: string, searchFuncs: types.SearchFunc[]) => {
     
     const matches = []
 
-    const gen = generateSearchFunc(searchFuncs)
-    let prev  = types.createMatchResult([''], 0, '')
+    const gen = generateSearchFuncs(searchFuncs)
+    let prev  = types.createMatchResult([''], 0, '', '')
 
     while (true) {
-        const func = gen.next().value
+        const func  = gen.next().value
         const match = func(input, prev)
         
         if (match === null) break
@@ -21,7 +21,7 @@ export const search = (input: string, searchFuncs: types.SearchFunc[]) => {
     return matches
 }
 
-const generateSearchFunc = function* (searchFuncs: types.SearchFunc[]) {
+const generateSearchFuncs = function* (searchFuncs: types.SearchFunc[]) {
     while (true) {
         for (let func of searchFuncs) {
             yield func
@@ -29,10 +29,24 @@ const generateSearchFunc = function* (searchFuncs: types.SearchFunc[]) {
     }
 }
 
-export const createSearchFuncs = (searchStrings: string[]) =>
-    searchStrings
-        .filter(s => s !== '')
-        .map(s => (input: string, prev: types.MatchResult) => {
-            const index = input.indexOf(s, prev.index + prev[0].length)
-            return index === -1 ? null : types.createMatchResult([ s ], index, input)
-        })
+export const createSearchFuncs = (searchStrings: string[], useRegExp: boolean) => {
+    const filtered = searchStrings.filter(s => s !== '')
+    
+    return useRegExp ?
+        filtered.map(createRegExpSearchFunc) :
+        filtered.map(createNormalSearchFunc)
+}
+
+const createNormalSearchFunc = (searchString: string) =>
+    (input: string, prev: types.MatchResult) => {
+        const index = input.indexOf(searchString, prev.index + prev[0].length)
+        return index === -1 ? null : types.createMatchResult([ searchString ], index, input, searchString)
+    }
+
+const createRegExpSearchFunc = (searchString: string) =>
+    (input: string, prev: types.MatchResult) => {
+        const regExp = new RegExp(searchString, 'gu')
+        regExp.lastIndex = prev.index + prev[0].length
+        const result = regExp.exec(input)
+        return result === null ? null : <types.MatchResult>Object.assign(result, { pattern: regExp })
+    }

@@ -80,6 +80,8 @@
     <div class="container">
         <div class="pref-area">
             <a id="replaceButton" class="button" href="javascript:void(0)">Replace</a>
+            <input type="checkbox" id="useRegExp" class="checkbox">
+            <label for="useRegExp">Use regular expression</label>
         </div>
         <div class="search-area">
             <textarea id="search"  class="input-area"></textarea>
@@ -92,9 +94,10 @@
     <script>
         const vscode = acquireVsCodeApi()
 
-        const replaceButtonElement = document.getElementById('replaceButton')
-        const searchElement        = document.getElementById('search')
-        const replaceElement       = document.getElementById('replace')
+        const replaceButtonElement     = document.getElementById('replaceButton')
+        const useRegExpCheckboxElement = document.getElementById('useRegExp')
+        const searchElement            = document.getElementById('search')
+        const replaceElement           = document.getElementById('replace')
 
         const runReplace = () =>
             vscode.postMessage({
@@ -103,7 +106,15 @@
                 replaceStr: replaceElement.value
             })
 
-        replaceButtonElement.onclick = runReplace
+        replaceButtonElement.addEventListener('click', runReplace)
+
+        const setUseRegExp = () =>
+            vscode.postMessage({
+                command: 'setUseRegExp',
+                value  : useRegExpCheckboxElement.checked
+            })
+        
+        useRegExpCheckboxElement.addEventListener('click', setUseRegExp)
 
         const runSearch = () =>
             vscode.postMessage({
@@ -117,7 +128,7 @@
             searchTimeout = setTimeout(runSearch, 500)
         }
 
-        searchElement.oninput = delayToRunSearch
+        searchElement.addEventListener('input', delayToRunSearch)
     </script>
 </body>
 </html>

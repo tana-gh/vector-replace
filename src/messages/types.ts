@@ -1,8 +1,9 @@
 
 export type MessageTypes =
-    Refresh |
-    RunSearchCommand |
-    RunReplaceCommand
+    Refresh           |
+    RunSearchCommand  |
+    RunReplaceCommand |
+    SetUseRegExp
 
 export interface Refresh {
     command: 'refresh'
@@ -17,4 +18,9 @@ export interface RunReplaceCommand {
     command   : 'runReplace'
     searchStr : string
     replaceStr: string
+}
+
+export interface SetUseRegExp {
+    command: 'setUseRegExp'
+    value  : boolean
 }

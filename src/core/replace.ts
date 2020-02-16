@@ -1,16 +1,19 @@
 import * as types from './types'
 
-export const replace = (input: string, replaceStrings: string[], matches: types.MatchResult[]) => {
-    if (replaceStrings.length === 0) return input
+export const replace = (input: string, replaceFuncs: types.ReplaceFunc[], matches: types.MatchResult[]) => {
+    if (replaceFuncs.length === 0) return input
 
     const output = []
 
-    const gen = generateReplaceStrings(replaceStrings)
+    const gen = generateReplaceFuncs(replaceFuncs)
     let prev  = 0
     
     for (let match of matches) {
-        const prevStr = input.substring(prev, match.index)
-        output.push(prevStr, gen.next().value)
+        const prevStr  = input.substring(prev, match.index)
+        const func     = gen.next().value
+        const replaced = func(match)
+
+        output.push(prevStr, replaced)
 
         prev = match.index + match[0].length
     }
@@ -21,10 +24,20 @@ export const replace = (input: string, replaceStrings: string[], matches: types.
     return output.join('')
 }
 
-const generateReplaceStrings = function* (replaceStrings: string[]) {
+const generateReplaceFuncs = function* (replaceFuncs: types.ReplaceFunc[]) {
     while (true) {
-        for (let str of replaceStrings) {
-            yield str
+        for (let func of replaceFuncs) {
+            yield func
         }
     }
 }
+
+export const createReplaceFuncs = (replaceStrings: string[]) =>
+    replaceStrings.map(s => (match: types.MatchResult) => {
+        if (match.pattern instanceof RegExp) {
+            return match[0].replace(match.pattern, s)
+        }
+        else {
+            return s
+        }
+    })
