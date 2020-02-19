@@ -21,13 +21,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      - name: Cache VSCode
-        uses: actions/cache@v1
-        with:
-          path: .vscode-test
-          key: ${{ runner.os }}-vscode-${{ hashFiles('**/.vscode-test/**/*') }}
-          restore-keys: |
-            ${{ runner.os }}-vscode-
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
