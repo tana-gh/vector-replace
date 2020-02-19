@@ -35,6 +35,6 @@ jobs:
         uses: actions/cache@v1
         with:
           path: .vscode-test
-          key: ${{ runner.os }}-vscode
+          key: ${{ runner.os }}-vscode-${{ hashFiles('.vscode-test') }}
           restore-keys: |
-            ${{ runner.os }}-vscode
+            ${{ runner.os }}-vscode-
