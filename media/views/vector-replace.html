@@ -80,8 +80,12 @@
     <div class="container">
         <div class="pref-area">
             <a id="replaceButton" class="button" href="javascript:void(0)">Replace</a>
+            
             <input type="checkbox" id="useRegExp" class="checkbox">
             <label for="useRegExp">Use regular expression</label>
+            
+            <input type="checkbox" id="ignoreCaseSearch" class="checkbox">
+            <label for="useRegExp">Ignore case search</label>
         </div>
         <div class="search-area">
             <textarea id="search"  class="input-area"></textarea>
@@ -94,32 +98,38 @@
     <script>
         const vscode = acquireVsCodeApi()
 
-        const replaceButtonElement     = document.getElementById('replaceButton')
-        const useRegExpCheckboxElement = document.getElementById('useRegExp')
-        const searchElement            = document.getElementById('search')
-        const replaceElement           = document.getElementById('replace')
+        const replaceButton            = document.getElementById('replaceButton')
+        const useRegExpCheckbox        = document.getElementById('useRegExp')
+        const ignoreCaseSearchCheckbox = document.getElementById('ignoreCaseSearch')
+        const searchTextArea           = document.getElementById('search')
+        const replaceTextArea          = document.getElementById('replace')
 
         const runReplace = () =>
             vscode.postMessage({
                 command   : 'runReplace',
-                searchStr : searchElement .value,
-                replaceStr: replaceElement.value
+                searchStr : searchTextArea .value,
+                replaceStr: replaceTextArea.value
             })
-
-        replaceButtonElement.addEventListener('click', runReplace)
+        replaceButton.addEventListener('click', runReplace)
 
         const setUseRegExp = () =>
             vscode.postMessage({
                 command: 'setUseRegExp',
-                value  : useRegExpCheckboxElement.checked
+                value  : useRegExpCheckbox.checked
             })
-        
-        useRegExpCheckboxElement.addEventListener('click', setUseRegExp)
+        useRegExpCheckbox.addEventListener('click', setUseRegExp)
+
+        const setIgnoreCaseSearch = () =>
+            vscode.postMessage({
+                command: 'setIgnoreCaseSearch',
+                value  : ignoreCaseSearchCheckbox.checked
+            })
+        ignoreCaseSearchCheckbox.addEventListener('click', setIgnoreCaseSearch)
 
         const runSearch = () =>
             vscode.postMessage({
                 command  : 'runSearch',
-                searchStr: searchElement.value
+                searchStr: searchTextArea.value
             })
         
         let searchTimeout = undefined
@@ -127,8 +137,7 @@
             if (searchTimeout) clearTimeout(searchTimeout)
             searchTimeout = setTimeout(runSearch, 500)
         }
-
-        searchElement.addEventListener('input', delayToRunSearch)
+        searchTextArea.addEventListener('input', delayToRunSearch)
     </script>
 </body>
 </html>

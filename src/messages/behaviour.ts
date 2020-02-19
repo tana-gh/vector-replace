@@ -19,6 +19,9 @@ export const execute = (message: messageTypes.MessageTypes, st: state.State) => 
         case 'setUseRegExp':
             setUseRegExp(message, st)
             return
+        case 'setIgnoreCaseSearch':
+            setIgnoreCaseSearch(message, st)
+            return
     }
 }
 
@@ -56,6 +59,16 @@ const setUseRegExp = (message: messageTypes.SetUseRegExp, st: state.State) => {
     logic.setUseRegExp  (st.vr, message.value)
     logic.setSearchFuncs(st.vr)
     logic.runSearch     (st.vr)
+
+    if (!st.editor) return
+
+    decorate(st.editor, st.decoration, st.vr.matches)
+}
+
+const setIgnoreCaseSearch = (message: messageTypes.SetIgnoreCaseSearch, st: state.State) => {
+    logic.setIgnoreCaseSearch(st.vr, message.value)
+    logic.setSearchFuncs     (st.vr)
+    logic.runSearch          (st.vr)
 
     if (!st.editor) return
 

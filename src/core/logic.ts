@@ -3,7 +3,8 @@ import * as search  from './search'
 import * as replace from './replace'
 
 export const setInput = (vr: types.VectorReplace, input: string) => {
-    vr.text = input
+    vr.text      = input
+    vr.textLower = input.toLowerCase()
 }
 
 export const setSearchStrings = (vr: types.VectorReplace, searchStr: string) => {
@@ -12,7 +13,7 @@ export const setSearchStrings = (vr: types.VectorReplace, searchStr: string) => 
 }
 
 export const setSearchFuncs = (vr: types.VectorReplace) => {
-    vr.searchFuncs = search.createSearchFuncs(vr.searchStrings, vr.params.useRegExp)
+    vr.searchFuncs = search.createSearchFuncs(vr.searchStrings, vr.params)
 }
 
 export const setReplaceStrings = (vr: types.VectorReplace, replaceStr: string) => {
@@ -25,7 +26,7 @@ export const setReplaceFuncs = (vr: types.VectorReplace) => {
 }
 
 export const runSearch = (vr: types.VectorReplace) => {
-    vr.matches = search.search(vr.text, vr.searchFuncs)
+    vr.matches = search.search(vr.text, vr.textLower, vr.searchFuncs)
 }
 
 export const runReplace = (vr: types.VectorReplace) => {
@@ -34,4 +35,8 @@ export const runReplace = (vr: types.VectorReplace) => {
 
 export const setUseRegExp = (vr: types.VectorReplace, value: boolean) => {
     vr.params.useRegExp = value
+}
+
+export const setIgnoreCaseSearch = (vr: types.VectorReplace, value: boolean) => {
+    vr.params.ignoreCaseSearch = value
 }

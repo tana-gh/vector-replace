@@ -10,12 +10,13 @@ export const createMatchResult =
     (matches: string[], index: number, input: string, pattern: string | RegExp) =>
         <MatchResult>Object.assign(matches, { index, input, pattern })
 
-export type SearchFunc  = (input: string, prev: MatchResult) => MatchResult | null
+export type SearchFunc  = (input: string, inputLower: string, prev: MatchResult) => MatchResult | null
 export type ReplaceFunc = (match: MatchResult) => string
 
 export interface VectorReplace {
     params        : Params
     text          : string
+    textLower     : string
     searchStrings : string[]
     replaceStrings: string[]
     searchFuncs   : SearchFunc[]
@@ -26,6 +27,7 @@ export interface VectorReplace {
 export const createVectorReplace = () => <VectorReplace>({
     params        : createParams(),
     text          : '',
+    textLower     : '',
     searchStrings : [],
     replaceStrings: [],
     searchFuncs   : [],

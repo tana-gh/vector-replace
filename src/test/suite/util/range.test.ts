@@ -1,5 +1,6 @@
 import * as assert    from 'assert'
 import * as vscode    from 'vscode'
+import * as types     from '../../../core/types'
 import * as search    from '../../../core/search'
 import * as rangeUtil from '../../../util/range'
 
@@ -20,8 +21,12 @@ suite('range util', () => {
     test('createRanges', () => {
         const input         = '-abc\n-def\ngh-ijk'
         const searchStrings = [ 'abc', 'def\ngh', 'ijk' ]
-        const searchFuncs   = search.createSearchFuncs(searchStrings, false)
-        const matches       = search.search(input, searchFuncs)
+        
+        const params = types.createParams()
+        params.useRegExp = false
+
+        const searchFuncs   = search.createSearchFuncs(searchStrings, params)
+        const matches       = search.search(input, input, searchFuncs)
 
         const ranges = rangeUtil.createRanges(matches)
 

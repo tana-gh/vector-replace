@@ -1,6 +1,6 @@
 import * as types from './types'
 
-export const search = (input: string, searchFuncs: types.SearchFunc[]) => {
+export const search = (input: string, inputLower: string, searchFuncs: types.SearchFunc[]) => {
     if (searchFuncs.length === 0) return []
     
     const matches = []
@@ -10,7 +10,7 @@ export const search = (input: string, searchFuncs: types.SearchFunc[]) => {
 
     while (true) {
         const func  = gen.next().value
-        const match = func(input, prev)
+        const match = func(input, inputLower, prev)
         
         if (match === null) break
 
@@ -29,23 +29,29 @@ const generateSearchFuncs = function* (searchFuncs: types.SearchFunc[]) {
     }
 }
 
-export const createSearchFuncs = (searchStrings: string[], useRegExp: boolean) => {
+export const createSearchFuncs = (searchStrings: string[], params: types.Params) => {
     const filtered = searchStrings.filter(s => s !== '')
     
-    return useRegExp ?
-        filtered.map(createRegExpSearchFunc) :
-        filtered.map(createNormalSearchFunc)
+    return params.useRegExp ?
+        filtered.map(createRegExpSearchFunc(params)) :
+        filtered.map(createNormalSearchFunc(params))
 }
 
-const createNormalSearchFunc = (searchString: string) =>
-    (input: string, prev: types.MatchResult) => {
-        const index = input.indexOf(searchString, prev.index + prev[0].length)
-        return index === -1 ? null : types.createMatchResult([ searchString ], index, input, searchString)
+const createNormalSearchFunc = (params: types.Params) => (searchString: string) =>
+    (input: string, inputLower: string, prev: types.MatchResult) => {
+        const target = params.ignoreCaseSearch ? inputLower : input
+        const search = params.ignoreCaseSearch ? searchString.toLowerCase() : searchString
+        const index  = target.indexOf(search, prev.index + prev[0].length)
+        
+        if (index === -1) return null
+
+        const match  = input.substring(index, index + searchString.length)
+        return types.createMatchResult([ match ], index, input, searchString)
     }
 
-const createRegExpSearchFunc = (searchString: string) =>
-    (input: string, prev: types.MatchResult) => {
-        const regExp = new RegExp(searchString, 'gu')
+const createRegExpSearchFunc = (params: types.Params) => (searchString: string) =>
+    (input: string, inputLower: string, prev: types.MatchResult) => {
+        const regExp = new RegExp(searchString, params.ignoreCaseSearch ? 'giu' : 'gu')
         regExp.lastIndex = prev.index + prev[0].length
         const result = regExp.exec(input)
         return result === null ? null : <types.MatchResult>Object.assign(result, { pattern: regExp })

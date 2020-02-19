@@ -3,7 +3,8 @@ export type MessageTypes =
     Refresh           |
     RunSearchCommand  |
     RunReplaceCommand |
-    SetUseRegExp
+    SetUseRegExp      |
+    SetIgnoreCaseSearch
 
 export interface Refresh {
     command: 'refresh'
@@ -22,5 +23,10 @@ export interface RunReplaceCommand {
 
 export interface SetUseRegExp {
     command: 'setUseRegExp'
+    value  : boolean
+}
+
+export interface SetIgnoreCaseSearch {
+    command: 'setIgnoreCaseSearch'
     value  : boolean
 }
