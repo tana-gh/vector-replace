@@ -14,16 +14,6 @@ jobs:
       - name: Get Yarn Cache Dir
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: Install Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 10.x
-      - name: Yarn Install
-        run: yarn install 
-      - name: Run Tests
-        uses: GabrielBB/xvfb-action@v1.0
-        with:
-          run: yarn test
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
@@ -38,3 +28,13 @@ jobs:
           key: ${{ runner.os }}-vscode-${{ hashFiles('**/.vscode-test/**/*') }}
           restore-keys: |
             ${{ runner.os }}-vscode-
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - name: Yarn Install
+        run: yarn install 
+      - name: Run Tests
+        uses: GabrielBB/xvfb-action@v1.0
+        with:
+          run: yarn test
