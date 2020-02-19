@@ -5,7 +5,7 @@ import * as messageTypes from './types'
 import * as state        from '../states/state'
 import * as rangeUtil    from '../util/range'
 
-export const execute = (message: messageTypes.MessageTypes, st: state.State) => {
+export const execute = async (message: messageTypes.MessageTypes, st: state.State) => {
     switch (message.command) {
         case 'refresh':
             refresh(st)
@@ -14,7 +14,7 @@ export const execute = (message: messageTypes.MessageTypes, st: state.State) => 
             runSearch(message, st)
             return
         case 'runReplace':
-            runReplace(message, st)
+            await runReplace(message, st)
             return
         case 'setUseRegExp':
             setUseRegExp(message, st)
@@ -43,7 +43,7 @@ const runSearch = (message: messageTypes.RunSearchCommand, st: state.State) => {
     decorate(st.editor, st.decoration, st.vr.matches)
 }
 
-const runReplace = (message: messageTypes.RunReplaceCommand, st: state.State) => {
+const runReplace = async (message: messageTypes.RunReplaceCommand, st: state.State) => {
     logic.setSearchStrings (st.vr, message.searchStr)
     logic.setReplaceStrings(st.vr, message.replaceStr)
 
@@ -52,7 +52,7 @@ const runReplace = (message: messageTypes.RunReplaceCommand, st: state.State) =>
     logic.setInput(st.vr, getInput(st.editor))
     logic.runSearch (st.vr)
     logic.runReplace(st.vr)
-    setOutput(st.editor, st.vr.text)
+    await setOutput(st.editor, st.vr.text)
 }
 
 const setUseRegExp = (message: messageTypes.SetUseRegExp, st: state.State) => {
@@ -88,8 +88,8 @@ const decorate = (
     editor.setDecorations(decoration, ranges)
 }
 
-const setOutput = (editor: vscode.TextEditor, text: string) => {
-    editor.edit(edit => {
+const setOutput = async (editor: vscode.TextEditor, text: string) => {
+    await editor.edit(edit => {
         const range = new vscode.Range(0, 0, editor.document.lineCount, 0)
         edit.replace(range, text)
     })

@@ -38,11 +38,10 @@ const readAndSetHtmlToWebview = (webview: vscode.Webview, htmlPath: string) => {
 }
 
 const listenEvents = (panel: vscode.WebviewPanel, st: state.State) => {
-    panel.webview.onDidReceiveMessage(mes => behaviour.execute(mes, st))
-
     let refreshTimeout: NodeJS.Timeout | undefined = undefined
 
     const events = [
+        panel.webview.onDidReceiveMessage(async mes => await behaviour.execute(mes, st)),
         vscode.window.onDidChangeActiveTextEditor(editor => state.setEditor(st, editor)),
         vscode.workspace.onDidChangeTextDocument(() => {
             if (refreshTimeout) clearTimeout(refreshTimeout)
