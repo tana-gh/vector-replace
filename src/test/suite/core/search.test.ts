@@ -107,6 +107,37 @@ suite('search', () => {
         assertMatches(matches, 2, 'ABC', 9, input)
     })
 
+    test('normal search ignore bang', () => {
+        const input         = '-!abc-!defgh-!ijk-!!lmn-'
+        const searchStrings = [ '!abc', '!!defgh', '!!!ijk', '!!!!lmn' ]
+
+        const params            = types.createParams()
+        params.ignoreBangSearch = true
+
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs)
+
+        assert.equal(matches.length, 2)
+        assertMatches(matches, 0, '!defgh',  6, input)
+        assertMatches(matches, 1, '!!lmn' , 18, input)
+    })
+
+    test('normal search not ignore bang', () => {
+        const input         = '-abc!-defgh!!-ijk!!!-'
+        const searchStrings = [ 'abc!', 'defgh!!', 'ijk!!!' ]
+
+        const params            = types.createParams()
+        params.ignoreBangSearch = true
+
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs)
+
+        assert.equal(matches.length, 3)
+        assertMatches(matches, 0, 'abc!'   ,  1, input)
+        assertMatches(matches, 1, 'defgh!!',  6, input)
+        assertMatches(matches, 2, 'ijk!!!' , 14, input)
+    })
+
     test('regexp search with empty searchStrings', () => {
         const input         = '-abc-defgh-ijk-'
         const searchStrings = <string[]>[]
@@ -196,5 +227,38 @@ suite('search', () => {
         assertMatches(matches, 0, 'abc', 1, input)
         assertMatches(matches, 1, 'Abc', 5, input)
         assertMatches(matches, 2, 'ABC', 9, input)
+    })
+
+    test('regexp search ignore bang', () => {
+        const input         = '-!abc-!defgh-!ijk-!!lmn-'
+        const searchStrings = [ '!\\w{3}', '!!\\w{5}', '!!!\\w{3}', '!!!!\\w{3}' ]
+
+        const params            = types.createParams()
+        params.useRegExp        = true
+        params.ignoreBangSearch = true
+
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs)
+
+        assert.equal(matches.length, 2)
+        assertMatches(matches, 0, '!defgh',  6, input)
+        assertMatches(matches, 1, '!!lmn' , 18, input)
+    })
+
+    test('regexp search not ignore bang', () => {
+        const input         = '-abc!-defgh!!-ijk!!!-'
+        const searchStrings = [ '\\w{3}!', '\\w{5}!!', '\\w{3}!!!' ]
+
+        const params            = types.createParams()
+        params.useRegExp        = true
+        params.ignoreBangSearch = true
+
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs)
+
+        assert.equal(matches.length, 3)
+        assertMatches(matches, 0, 'abc!'   ,  1, input)
+        assertMatches(matches, 1, 'defgh!!',  6, input)
+        assertMatches(matches, 2, 'ijk!!!' , 14, input)
     })
 })

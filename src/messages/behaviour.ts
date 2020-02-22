@@ -22,6 +22,9 @@ export const execute = async (message: messageTypes.MessageTypes, st: state.Stat
         case 'setIgnoreCaseSearch':
             setIgnoreCaseSearch(message, st)
             return
+        case 'setIgnoreBangSearch':
+            setIgnoreBangSearch(message, st)
+            return
     }
 }
 
@@ -67,6 +70,16 @@ const setUseRegExp = (message: messageTypes.SetUseRegExp, st: state.State) => {
 
 const setIgnoreCaseSearch = (message: messageTypes.SetIgnoreCaseSearch, st: state.State) => {
     logic.setIgnoreCaseSearch(st.vr, message.value)
+    logic.setSearchFuncs     (st.vr)
+    logic.runSearch          (st.vr)
+
+    if (!st.editor) return
+
+    decorate(st.editor, st.decoration, st.vr.matches)
+}
+
+const setIgnoreBangSearch = (message: messageTypes.SetIgnoreBangSearch, st: state.State) => {
+    logic.setIgnoreBangSearch(st.vr, message.value)
     logic.setSearchFuncs     (st.vr)
     logic.runSearch          (st.vr)
 

@@ -38,9 +38,10 @@ export const createVectorReplace = () => <VectorReplace>({
 export interface Params {
     useRegExp         : boolean
     ignoreCaseSearch  : boolean
-    skipBangSearch    : boolean
+    ignoreBangSearch  : boolean
     ignoreEmptyReplace: boolean
     loopSearch        : boolean
+    loopReplace       : boolean
     justSearch        : boolean
     smartReplace      : boolean
 }
@@ -48,10 +49,10 @@ export interface Params {
 export const createParams = () => <Params>({
     useRegExp         : false,
     ignoreCaseSearch  : false,
-    skipBangSearch    : false,
-    ignoreEmptySearch : false,
+    ignoreBangSearch  : false,
     ignoreEmptyReplace: false,
     loopSearch        : false,
+    loopReplace       : false,
     justSearch        : false,
     smartReplace      : false
 })

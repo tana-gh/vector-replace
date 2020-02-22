@@ -30,12 +30,29 @@ const generateSearchFuncs = function* (searchFuncs: types.SearchFunc[]) {
 }
 
 export const createSearchFuncs = (searchStrings: string[], params: types.Params) => {
-    const filtered = searchStrings.filter(s => s !== '')
+    let filtered = searchStrings.filter(s => s !== '')
+
+    if (params.ignoreBangSearch) {
+        filtered = preprocessIgnoreBang(filtered)
+    }
     
     return params.useRegExp ?
         filtered.map(createRegExpSearchFunc(params)) :
         filtered.map(createNormalSearchFunc(params))
 }
+
+const preprocessIgnoreBang = (searchString: string[]) =>
+    searchString
+        .filter(s => !(/^!(?:!!)*(?!!)/.test(s)))
+        .map   (s => {
+            const match = s.match(/^(?:!!)+/)
+            if (match !== null) {
+                return s.replace(/^(?:!!)+/, match[0].substring(0, match[0].length / 2))
+            }
+            else {
+                return s
+            }
+        })
 
 const createNormalSearchFunc = (params: types.Params) => (searchString: string) =>
     (input: string, inputLower: string, prev: types.MatchResult) => {

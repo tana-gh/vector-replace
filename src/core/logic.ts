@@ -40,3 +40,7 @@ export const setUseRegExp = (vr: types.VectorReplace, value: boolean) => {
 export const setIgnoreCaseSearch = (vr: types.VectorReplace, value: boolean) => {
     vr.params.ignoreCaseSearch = value
 }
+
+export const setIgnoreBangSearch = (vr: types.VectorReplace, value: boolean) => {
+    vr.params.ignoreBangSearch = value
+}

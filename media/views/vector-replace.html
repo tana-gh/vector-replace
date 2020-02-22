@@ -85,7 +85,10 @@
             <label for="useRegExp">Use regular expression</label>
             
             <input type="checkbox" id="ignoreCaseSearch" class="checkbox">
-            <label for="useRegExp">Ignore case search</label>
+            <label for="ignoreCaseSearch">Ignore case search</label>
+
+            <input type="checkbox" id="ignoreBangSearch" class="checkbox">
+            <label for="ignoreBangSearch">Ignore bang search</label>
         </div>
         <div class="search-area">
             <textarea id="search"  class="input-area"></textarea>
@@ -101,6 +104,7 @@
         const replaceButton            = document.getElementById('replaceButton')
         const useRegExpCheckbox        = document.getElementById('useRegExp')
         const ignoreCaseSearchCheckbox = document.getElementById('ignoreCaseSearch')
+        const ignoreBangSearchCheckbox = document.getElementById('ignoreBangSearch')
         const searchTextArea           = document.getElementById('search')
         const replaceTextArea          = document.getElementById('replace')
 
@@ -125,6 +129,13 @@
                 value  : ignoreCaseSearchCheckbox.checked
             })
         ignoreCaseSearchCheckbox.addEventListener('click', setIgnoreCaseSearch)
+
+        const setIgnoreBangSearch = () =>
+            vscode.postMessage({
+                command: 'setIgnoreBangSearch',
+                value  : ignoreBangSearchCheckbox.checked
+            })
+        ignoreBangSearchCheckbox.addEventListener('click', setIgnoreBangSearch)
 
         const runSearch = () =>
             vscode.postMessage({
