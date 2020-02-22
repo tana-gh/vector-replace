@@ -89,6 +89,9 @@
 
             <input type="checkbox" id="ignoreBangSearch" class="checkbox">
             <label for="ignoreBangSearch">Ignore bang search</label>
+
+            <input type="checkbox" id="ignoreBangReplace" class="checkbox">
+            <label for="ignoreBangReplace">Ignore bang replace</label>
         </div>
         <div class="search-area">
             <textarea id="search"  class="input-area"></textarea>
@@ -101,12 +104,13 @@
     <script>
         const vscode = acquireVsCodeApi()
 
-        const replaceButton            = document.getElementById('replaceButton')
-        const useRegExpCheckbox        = document.getElementById('useRegExp')
-        const ignoreCaseSearchCheckbox = document.getElementById('ignoreCaseSearch')
-        const ignoreBangSearchCheckbox = document.getElementById('ignoreBangSearch')
-        const searchTextArea           = document.getElementById('search')
-        const replaceTextArea          = document.getElementById('replace')
+        const replaceButton             = document.getElementById('replaceButton')
+        const useRegExpCheckbox         = document.getElementById('useRegExp')
+        const ignoreCaseSearchCheckbox  = document.getElementById('ignoreCaseSearch')
+        const ignoreBangSearchCheckbox  = document.getElementById('ignoreBangSearch')
+        const ignoreBangReplaceCheckbox = document.getElementById('ignoreBangReplace')
+        const searchTextArea            = document.getElementById('search')
+        const replaceTextArea           = document.getElementById('replace')
 
         const runReplace = () =>
             vscode.postMessage({
@@ -136,6 +140,13 @@
                 value  : ignoreBangSearchCheckbox.checked
             })
         ignoreBangSearchCheckbox.addEventListener('click', setIgnoreBangSearch)
+
+        const setIgnoreBangReplace = () =>
+            vscode.postMessage({
+                command: 'setIgnoreBangReplace',
+                value  : ignoreBangReplaceCheckbox.checked
+            })
+        ignoreBangReplaceCheckbox.addEventListener('click', setIgnoreBangReplace)
 
         const runSearch = () =>
             vscode.postMessage({

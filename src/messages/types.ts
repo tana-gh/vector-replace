@@ -5,7 +5,8 @@ export type MessageTypes =
     RunReplaceCommand   |
     SetUseRegExp        |
     SetIgnoreCaseSearch |
-    SetIgnoreBangSearch
+    SetIgnoreBangSearch |
+    SetIgnoreBangReplace
 
 export interface Refresh {
     command: 'refresh'
@@ -34,5 +35,10 @@ export interface SetIgnoreCaseSearch {
 
 export interface SetIgnoreBangSearch {
     command: 'setIgnoreBangSearch'
+    value  : boolean
+}
+
+export interface SetIgnoreBangReplace {
+    command: 'setIgnoreBangReplace'
     value  : boolean
 }

@@ -39,6 +39,7 @@ export interface Params {
     useRegExp         : boolean
     ignoreCaseSearch  : boolean
     ignoreBangSearch  : boolean
+    ignoreBangReplace : boolean
     ignoreEmptyReplace: boolean
     loopSearch        : boolean
     loopReplace       : boolean
@@ -50,6 +51,7 @@ export const createParams = () => <Params>({
     useRegExp         : false,
     ignoreCaseSearch  : false,
     ignoreBangSearch  : false,
+    ignoreBangReplace : false,
     ignoreEmptyReplace: false,
     loopSearch        : false,
     loopReplace       : false,

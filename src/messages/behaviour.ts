@@ -25,6 +25,9 @@ export const execute = async (message: messageTypes.MessageTypes, st: state.Stat
         case 'setIgnoreBangSearch':
             setIgnoreBangSearch(message, st)
             return
+        case 'setIgnoreBangReplace':
+            setIgnoreBangReplace(message, st)
+            return
     }
 }
 
@@ -86,6 +89,11 @@ const setIgnoreBangSearch = (message: messageTypes.SetIgnoreBangSearch, st: stat
     if (!st.editor) return
 
     decorate(st.editor, st.decoration, st.vr.matches)
+}
+
+const setIgnoreBangReplace = (message: messageTypes.SetIgnoreBangReplace, st: state.State) => {
+    logic.setIgnoreBangReplace(st.vr, message.value)
+    logic.setReplaceFuncs     (st.vr)
 }
 
 const getInput = (editor: vscode.TextEditor) => {

@@ -1,4 +1,5 @@
-import * as types from './types'
+import * as types      from './types'
+import * as ignoreBang from './ignoreBang'
 
 export const replace = (input: string, replaceFuncs: types.ReplaceFunc[], matches: types.MatchResult[]) => {
     if (replaceFuncs.length === 0) return input
@@ -32,8 +33,14 @@ const generateReplaceFuncs = function* (replaceFuncs: types.ReplaceFunc[]) {
     }
 }
 
-export const createReplaceFuncs = (replaceStrings: string[]) =>
-    replaceStrings.map(s => (match: types.MatchResult) => {
+export const createReplaceFuncs = (replaceStrings: string[], params: types.Params) => {
+    let filtered = replaceStrings
+
+    if (params.ignoreBangReplace) {
+        filtered = ignoreBang.process(filtered)
+    }
+
+    return filtered.map(s => (match: types.MatchResult) => {
         if (match.pattern instanceof RegExp) {
             return match[0].replace(match.pattern, s)
         }
@@ -41,3 +48,4 @@ export const createReplaceFuncs = (replaceStrings: string[]) =>
             return s
         }
     })
+}

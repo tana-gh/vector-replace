@@ -22,7 +22,7 @@ export const setReplaceStrings = (vr: types.VectorReplace, replaceStr: string) =
 }
 
 export const setReplaceFuncs = (vr: types.VectorReplace) => {
-    vr.replaceFuncs = replace.createReplaceFuncs(vr.replaceStrings)
+    vr.replaceFuncs = replace.createReplaceFuncs(vr.replaceStrings, vr.params)
 }
 
 export const runSearch = (vr: types.VectorReplace) => {
@@ -43,4 +43,8 @@ export const setIgnoreCaseSearch = (vr: types.VectorReplace, value: boolean) => 
 
 export const setIgnoreBangSearch = (vr: types.VectorReplace, value: boolean) => {
     vr.params.ignoreBangSearch = value
+}
+
+export const setIgnoreBangReplace = (vr: types.VectorReplace, value: boolean) => {
+    vr.params.ignoreBangReplace = value
 }
