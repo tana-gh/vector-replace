@@ -9,14 +9,14 @@ suite('replace', () => {
 
         const params = types.createParams()
 
-        const replaceFuncs   = replace.createReplaceFuncs(replaceStrings, params)
-        const matches        = [
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
             types.createMatchResult([ 'abc'   ],  1, input, 'abc'  ),
             types.createMatchResult([ 'defgh' ],  5, input, 'defgh'),
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  ),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches)
+        const output = replace.replace(input, replaceFuncs, matches, params)
 
         assert.equal(output, '-abc-defgh-ijk-')
     })
@@ -27,14 +27,14 @@ suite('replace', () => {
 
         const params = types.createParams()
 
-        const replaceFuncs   = replace.createReplaceFuncs(replaceStrings, params)
-        const matches        = [
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
             types.createMatchResult([ 'abc'   ],  1, input, 'abc'  ),
             types.createMatchResult([ 'defgh' ],  5, input, 'defgh'),
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  ),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches)
+        const output = replace.replace(input, replaceFuncs, matches, params)
 
         assert.equal(output, '-12-3-456-')
     })
@@ -46,14 +46,14 @@ suite('replace', () => {
         const params = types.createParams()
         params.ignoreBangReplace = true
 
-        const replaceFuncs   = replace.createReplaceFuncs(replaceStrings, params)
-        const matches        = [
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
             types.createMatchResult([ 'abc'   ],  1, input, 'abc'  ),
             types.createMatchResult([ 'defgh' ],  5, input, 'defgh'),
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  ),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches)
+        const output = replace.replace(input, replaceFuncs, matches, params)
 
         assert.equal(output, '-12-!4-56-')
     })
@@ -65,14 +65,14 @@ suite('replace', () => {
         const params = types.createParams()
         params.ignoreBangReplace = true
 
-        const replaceFuncs   = replace.createReplaceFuncs(replaceStrings, params)
-        const matches        = [
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
             types.createMatchResult([ 'abc'   ],  1, input, 'abc'  ),
             types.createMatchResult([ 'defgh' ],  5, input, 'defgh'),
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  ),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches)
+        const output = replace.replace(input, replaceFuncs, matches, params)
 
         assert.equal(output, '-12-3!-456-')
     })
@@ -82,16 +82,15 @@ suite('replace', () => {
         const replaceStrings = [ '12', '', '456' ]
 
         const params = types.createParams()
-        params.ignoreEmptyReplace = false
 
-        const replaceFuncs   = replace.createReplaceFuncs(replaceStrings, params)
-        const matches        = [
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
             types.createMatchResult([ 'abc'   ],  1, input, 'abc'  ),
             types.createMatchResult([ 'defgh' ],  5, input, 'defgh'),
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  ),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches)
+        const output = replace.replace(input, replaceFuncs, matches, params)
 
         assert.equal(output, '-12--456-')
     })
@@ -103,16 +102,53 @@ suite('replace', () => {
         const params = types.createParams()
         params.ignoreEmptyReplace = true
 
-        const replaceFuncs   = replace.createReplaceFuncs(replaceStrings, params)
-        const matches        = [
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
             types.createMatchResult([ 'abc'   ],  1, input, 'abc'  ),
             types.createMatchResult([ 'defgh' ],  5, input, 'defgh'),
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  ),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches)
+        const output = replace.replace(input, replaceFuncs, matches, params)
 
         assert.equal(output, '-12-3-456-')
+    })
+
+    test('normal replace not loop', () => {
+        const input          = '-abc-defgh-ijk-'
+        const replaceStrings = [ '12', '3' ]
+
+        const params = types.createParams()
+
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
+            types.createMatchResult([ 'abc'   ],  1, input, 'abc'  ),
+            types.createMatchResult([ 'defgh' ],  5, input, 'defgh'),
+            types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  ),
+        ]
+
+        const output = replace.replace(input, replaceFuncs, matches, params)
+
+        assert.equal(output, '-12-3-ijk-')
+    })
+
+    test('normal replace loop', () => {
+        const input          = '-abc-defgh-ijk-'
+        const replaceStrings = [ '12', '3' ]
+
+        const params       = types.createParams()
+        params.loopReplace = true
+
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
+            types.createMatchResult([ 'abc'   ],  1, input, 'abc'  ),
+            types.createMatchResult([ 'defgh' ],  5, input, 'defgh'),
+            types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  ),
+        ]
+
+        const output = replace.replace(input, replaceFuncs, matches, params)
+
+        assert.equal(output, '-12-3-12-')
     })
 
     test('regexp replace with empty replaceStrings', () => {
@@ -121,14 +157,14 @@ suite('replace', () => {
 
         const params = types.createParams()
 
-        const replaceFuncs   = replace.createReplaceFuncs(replaceStrings, params)
-        const matches        = [
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
             types.createMatchResult([ 'abc'   ],  1, input, /\w{3}/g),
             types.createMatchResult([ 'defgh' ],  5, input, /\w{5}/g),
             types.createMatchResult([ 'ijk'   ], 11, input, /\w{3}/g),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches)
+        const output = replace.replace(input, replaceFuncs, matches, params)
 
         assert.equal(output, '-abc-defgh-ijk-')
     })
@@ -139,14 +175,14 @@ suite('replace', () => {
 
         const params = types.createParams()
 
-        const replaceFuncs   = replace.createReplaceFuncs(replaceStrings, params)
-        const matches        = [
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
             types.createMatchResult([ 'abc'   ],  1, input, /a(b)c/g  ),
             types.createMatchResult([ 'defgh' ],  5, input, /(\w{5})/g),
             types.createMatchResult([ 'ijk'   ], 11, input, /(i)j(k)/g),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches)
+        const output = replace.replace(input, replaceFuncs, matches, params)
 
         assert.equal(output, '-12b-3defgh-456ik-')
     })

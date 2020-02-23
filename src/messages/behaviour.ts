@@ -31,6 +31,12 @@ export const execute = async (message: messageTypes.MessageTypes, st: state.Stat
         case 'setIgnoreEmptyReplace':
             setIgnoreEmptyReplace(message, st)
             return
+        case 'setLoopSearch':
+            setLoopSearch(message, st)
+            return
+        case 'setLoopReplace':
+            setLoopReplace(message, st)
+            return
     }
 }
 
@@ -102,6 +108,21 @@ const setIgnoreBangReplace = (message: messageTypes.SetIgnoreBangReplace, st: st
 const setIgnoreEmptyReplace = (message: messageTypes.SetIgnoreEmptyReplace, st: state.State) => {
     logic.setIgnoreEmptyReplace(st.vr, message.value)
     logic.setReplaceFuncs      (st.vr)
+}
+
+const setLoopSearch = (message: messageTypes.SetLoopSearch, st: state.State) => {
+    logic.setLoopSearch (st.vr, message.value)
+    logic.setSearchFuncs(st.vr)
+    logic.runSearch     (st.vr)
+
+    if (!st.editor) return
+
+    decorate(st.editor, st.decoration, st.vr.matches)
+}
+
+const setLoopReplace = (message: messageTypes.SetLoopReplace, st: state.State) => {
+    logic.setLoopReplace (st.vr, message.value)
+    logic.setReplaceFuncs(st.vr)
 }
 
 const getInput = (editor: vscode.TextEditor) => {

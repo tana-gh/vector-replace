@@ -1,17 +1,25 @@
 import * as types      from './types'
 import * as ignoreBang from './ignoreBang'
 
-export const search = (input: string, inputLower: string, searchFuncs: types.SearchFunc[]) => {
+export const search = (
+    input      : string,
+    inputLower : string,
+    searchFuncs: types.SearchFunc[],
+    params     : types.Params
+) => {
     if (searchFuncs.length === 0) return []
     
     const matches = []
 
-    const gen = generateSearchFuncs(searchFuncs)
+    const gen = generateSearchFuncs(searchFuncs, params)
     let prev  = types.createMatchResult([''], 0, '', '')
 
     while (true) {
-        const func  = gen.next().value
-        const match = func(input, inputLower, prev)
+        const func = gen.next()
+
+        if (func.done) break
+
+        const match = func.value(input, inputLower, prev)
         
         if (match === null) break
 
@@ -22,11 +30,20 @@ export const search = (input: string, inputLower: string, searchFuncs: types.Sea
     return matches
 }
 
-const generateSearchFuncs = function* (searchFuncs: types.SearchFunc[]) {
-    while (true) {
-        for (let func of searchFuncs) {
-            yield func
+const generateSearchFuncs = function* (searchFuncs: types.SearchFunc[], params: types.Params) {
+    if (params.loopSearch) {
+        while (true) {
+            yield* generateOneLoopSearchFuncs(searchFuncs)
         }
+    }
+    else {
+        yield* generateOneLoopSearchFuncs(searchFuncs)
+    }
+}
+
+const generateOneLoopSearchFuncs = function* (searchFuncs: types.SearchFunc[]) {
+    for (let func of searchFuncs) {
+        yield func
     }
 }
 

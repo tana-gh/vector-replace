@@ -26,7 +26,7 @@ suite('range util', () => {
         params.useRegExp = false
 
         const searchFuncs   = search.createSearchFuncs(searchStrings, params)
-        const matches       = search.search(input, input, searchFuncs)
+        const matches       = search.search(input, input, searchFuncs, params)
 
         const ranges = rangeUtil.createRanges(matches)
 

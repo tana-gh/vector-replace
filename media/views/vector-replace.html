@@ -98,6 +98,12 @@
 
             <input type="checkbox" id="ignoreEmptyReplace" class="checkbox">
             <label for="ignoreEmptyReplace">Ignore empty replace</label>
+
+            <input type="checkbox" id="loopSearch" class="checkbox">
+            <label for="loopSearch">Loop search</label>
+
+            <input type="checkbox" id="loopReplace" class="checkbox">
+            <label for="loopReplace">Loop replace</label>
         </div>
         <div class="search-area">
             <textarea id="search"  class="input-area"></textarea>
@@ -116,6 +122,8 @@
         const ignoreBangSearchCheckbox   = document.getElementById('ignoreBangSearch')
         const ignoreBangReplaceCheckbox  = document.getElementById('ignoreBangReplace')
         const ignoreEmptyReplaceCheckbox = document.getElementById('ignoreEmptyReplace')
+        const loopSearchCheckbox         = document.getElementById('loopSearch')
+        const loopReplaceCheckbox        = document.getElementById('loopReplace')
         const searchTextArea             = document.getElementById('search')
         const replaceTextArea            = document.getElementById('replace')
 
@@ -161,6 +169,20 @@
                 value  : ignoreEmptyReplaceCheckbox.checked
             })
         ignoreEmptyReplaceCheckbox.addEventListener('click', setIgnoreEmptyReplace)
+
+        const setLoopSearch = () =>
+            vscode.postMessage({
+                command: 'setLoopSearch',
+                value  : loopSearchCheckbox.checked
+            })
+        loopSearchCheckbox.addEventListener('click', setLoopSearch)
+
+        const setLoopReplace = () =>
+            vscode.postMessage({
+                command: 'setLoopReplace',
+                value  : loopReplaceCheckbox.checked
+            })
+        loopReplaceCheckbox.addEventListener('click', setLoopReplace)
 
         const runSearch = () =>
             vscode.postMessage({

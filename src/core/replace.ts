@@ -1,18 +1,26 @@
 import * as types      from './types'
 import * as ignoreBang from './ignoreBang'
 
-export const replace = (input: string, replaceFuncs: types.ReplaceFunc[], matches: types.MatchResult[]) => {
+export const replace = (
+    input       : string,
+    replaceFuncs: types.ReplaceFunc[],
+    matches     : types.MatchResult[],
+    params      : types.Params
+) => {
     if (replaceFuncs.length === 0) return input
 
     const output = []
 
-    const gen = generateReplaceFuncs(replaceFuncs)
+    const gen = generateReplaceFuncs(replaceFuncs, params)
     let prev  = 0
     
     for (let match of matches) {
+        const func = gen.next()
+
+        if (func.done) break
+
+        const replaced = func.value(match)
         const prevStr  = input.substring(prev, match.index)
-        const func     = gen.next().value
-        const replaced = func(match)
 
         output.push(prevStr, replaced)
 
@@ -25,11 +33,20 @@ export const replace = (input: string, replaceFuncs: types.ReplaceFunc[], matche
     return output.join('')
 }
 
-const generateReplaceFuncs = function* (replaceFuncs: types.ReplaceFunc[]) {
-    while (true) {
-        for (let func of replaceFuncs) {
-            yield func
+const generateReplaceFuncs = function* (replaceFuncs: types.ReplaceFunc[], params: types.Params) {
+    if (params.loopReplace) {
+        while (true) {
+            yield* generateOneLoopReplaceFuncs(replaceFuncs)
         }
+    }
+    else {
+        yield* generateOneLoopReplaceFuncs(replaceFuncs)
+    }
+}
+
+const generateOneLoopReplaceFuncs = function* (replaceFuncs: types.ReplaceFunc[]) {
+    for (let func of replaceFuncs) {
+        yield func
     }
 }
 
