@@ -8,7 +8,7 @@ export interface MatchResult {
 
 export const createMatchResult =
     (matches: string[], index: number, input: string, pattern: string | RegExp) =>
-        <MatchResult>Object.assign(matches, { index, input, pattern })
+        <MatchResult>{ ...matches, index, input, pattern }
 
 export type SearchFunc  = (input: string, inputLower: string, prev: MatchResult) => MatchResult | null
 export type ReplaceFunc = (match: MatchResult) => string

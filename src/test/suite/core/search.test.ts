@@ -176,6 +176,52 @@ suite('search', () => {
         assertMatches(matches, 2, 'abc'  , 11, input)
     })
 
+    test('normal search not just', () => {
+        const input         = '-abc-defgh-abc-'
+        const searchStrings = [ 'abc', 'defgh' ]
+
+        const params = types.createParams()
+        params.loopSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs, params)
+
+        assert.equal(matches.length, 3)
+        assertMatches(matches, 0, 'abc'  ,  1, input)
+        assertMatches(matches, 1, 'defgh',  5, input)
+        assertMatches(matches, 2, 'abc'  , 11, input)
+    })
+
+    test('normal search just', () => {
+        const input         = '-abc-defgh-abc-'
+        const searchStrings = [ 'abc', 'defgh' ]
+
+        const params = types.createParams()
+        params.loopSearch = true
+        params.justSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs, params)
+
+        assert.equal(matches.length, 2)
+        assertMatches(matches, 0, 'abc'  , 1, input)
+        assertMatches(matches, 1, 'defgh', 5, input)
+    })
+
+    test('regexp creating error', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ '\\w{3}', '\\', '\\w{5}' ]
+        
+        const params     = types.createParams()
+        params.useRegExp = true
+
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs, params)
+
+        assert.equal(matches.length, 1)
+        assertMatches(matches, 0, 'abc', 1, input)
+    })
+
     test('regexp search with empty searchStrings', () => {
         const input         = '-abc-defgh-ijk-'
         const searchStrings = <string[]>[]

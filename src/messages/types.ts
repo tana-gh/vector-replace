@@ -9,7 +9,8 @@ export type MessageTypes =
     SetIgnoreBangReplace  |
     SetIgnoreEmptyReplace |
     SetLoopSearch         |
-    SetLoopReplace
+    SetLoopReplace        |
+    SetJustSearch
 
 export interface Refresh {
     command: 'refresh'
@@ -58,5 +59,10 @@ export interface SetLoopSearch {
 
 export interface SetLoopReplace {
     command: 'setLoopReplace'
+    value  : boolean
+}
+
+export interface SetJustSearch {
+    command: 'setJustSearch'
     value  : boolean
 }

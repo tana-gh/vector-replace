@@ -60,3 +60,7 @@ export const setLoopSearch = (vr: types.VectorReplace, value: boolean) => {
 export const setLoopReplace = (vr: types.VectorReplace, value: boolean) => {
     vr.params.loopReplace = value
 }
+
+export const setJustSearch = (vr: types.VectorReplace, value: boolean) => {
+    vr.params.justSearch = value
+}

@@ -37,6 +37,9 @@ export const execute = async (message: messageTypes.MessageTypes, st: state.Stat
         case 'setLoopReplace':
             setLoopReplace(message, st)
             return
+        case 'setJustSearch':
+            setJustSearch(message, st)
+            return
     }
 }
 
@@ -71,47 +74,46 @@ const runReplace = async (message: messageTypes.RunReplaceCommand, st: state.Sta
 }
 
 const setUseRegExp = (message: messageTypes.SetUseRegExp, st: state.State) => {
-    logic.setUseRegExp  (st.vr, message.value)
-    logic.setSearchFuncs(st.vr)
-    logic.runSearch     (st.vr)
-
-    if (!st.editor) return
-
-    decorate(st.editor, st.decoration, st.vr.matches)
+    logic.setUseRegExp(st.vr, message.value)
+    updateSearchParam(st)
 }
 
 const setIgnoreCaseSearch = (message: messageTypes.SetIgnoreCaseSearch, st: state.State) => {
     logic.setIgnoreCaseSearch(st.vr, message.value)
-    logic.setSearchFuncs     (st.vr)
-    logic.runSearch          (st.vr)
-
-    if (!st.editor) return
-
-    decorate(st.editor, st.decoration, st.vr.matches)
+    updateSearchParam(st)
 }
 
 const setIgnoreBangSearch = (message: messageTypes.SetIgnoreBangSearch, st: state.State) => {
     logic.setIgnoreBangSearch(st.vr, message.value)
-    logic.setSearchFuncs     (st.vr)
-    logic.runSearch          (st.vr)
-
-    if (!st.editor) return
-
-    decorate(st.editor, st.decoration, st.vr.matches)
+    updateSearchParam(st)
 }
 
 const setIgnoreBangReplace = (message: messageTypes.SetIgnoreBangReplace, st: state.State) => {
     logic.setIgnoreBangReplace(st.vr, message.value)
-    logic.setReplaceFuncs     (st.vr)
+    updateReplaceParam(st)
 }
 
 const setIgnoreEmptyReplace = (message: messageTypes.SetIgnoreEmptyReplace, st: state.State) => {
     logic.setIgnoreEmptyReplace(st.vr, message.value)
-    logic.setReplaceFuncs      (st.vr)
+    updateReplaceParam(st)
 }
 
 const setLoopSearch = (message: messageTypes.SetLoopSearch, st: state.State) => {
-    logic.setLoopSearch (st.vr, message.value)
+    logic.setLoopSearch(st.vr, message.value)
+    updateSearchParam(st)
+}
+
+const setLoopReplace = (message: messageTypes.SetLoopReplace, st: state.State) => {
+    logic.setLoopReplace(st.vr, message.value)
+    updateReplaceParam(st)
+}
+
+const setJustSearch = (message: messageTypes.SetJustSearch, st: state.State) => {
+    logic.setJustSearch(st.vr, message.value)
+    updateSearchParam(st)
+}
+
+const updateSearchParam = (st: state.State) => {
     logic.setSearchFuncs(st.vr)
     logic.runSearch     (st.vr)
 
@@ -120,8 +122,7 @@ const setLoopSearch = (message: messageTypes.SetLoopSearch, st: state.State) => 
     decorate(st.editor, st.decoration, st.vr.matches)
 }
 
-const setLoopReplace = (message: messageTypes.SetLoopReplace, st: state.State) => {
-    logic.setLoopReplace (st.vr, message.value)
+const updateReplaceParam = (st: state.State) => {
     logic.setReplaceFuncs(st.vr)
 }
 

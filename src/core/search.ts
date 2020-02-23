@@ -9,6 +9,20 @@ export const search = (
 ) => {
     if (searchFuncs.length === 0) return []
     
+    if (params.justSearch) {
+        return justSearch(input, inputLower, searchFuncs, params)
+    }
+    else {
+        return notJustSearch(input, inputLower, searchFuncs, params)
+    }
+}
+
+const notJustSearch = (
+    input      : string,
+    inputLower : string,
+    searchFuncs: types.SearchFunc[],
+    params     : types.Params
+) => {
     const matches = []
 
     const gen = generateSearchFuncs(searchFuncs, params)
@@ -25,6 +39,42 @@ export const search = (
 
         matches.push(match)
         prev = match
+    }
+
+    return matches
+}
+
+const justSearch = (
+    input      : string,
+    inputLower : string,
+    searchFuncs: types.SearchFunc[],
+    params     : types.Params
+) => {
+    const dummyParams = { ...params, loopSearch: false }
+
+    let matches = <types.MatchResult[]>[]
+
+    let prev = types.createMatchResult([''], 0, '', '')
+
+    outer:
+    while (true) {
+        const subMatches = []
+        const gen = generateSearchFuncs(searchFuncs, dummyParams)
+
+        while (true) {
+            const func = gen.next()
+
+            if (func.done) break
+
+            const match = func.value(input, inputLower, prev)
+            
+            if (match === null) break outer
+
+            subMatches.push(match)
+            prev = match
+        }
+
+        matches = matches.concat(subMatches)
     }
 
     return matches
@@ -73,8 +123,14 @@ const createNormalSearchFunc = (params: types.Params) => (searchString: string) 
 
 const createRegExpSearchFunc = (params: types.Params) => (searchString: string) =>
     (input: string, inputLower: string, prev: types.MatchResult) => {
-        const regExp = new RegExp(searchString, params.ignoreCaseSearch ? 'giu' : 'gu')
+        let regExp: RegExp
+        try {
+            regExp = new RegExp(searchString, params.ignoreCaseSearch ? 'giu' : 'gu')
+        }
+        catch {
+            return null
+        }
         regExp.lastIndex = prev.index + prev[0].length
         const result = regExp.exec(input)
-        return result === null ? null : <types.MatchResult>Object.assign(result, { pattern: regExp })
+        return result === null ? null : <types.MatchResult>{ ...result, pattern: regExp }
     }

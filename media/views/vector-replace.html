@@ -104,6 +104,9 @@
 
             <input type="checkbox" id="loopReplace" class="checkbox">
             <label for="loopReplace">Loop replace</label>
+
+            <input type="checkbox" id="justSearch" class="checkbox">
+            <label for="justSearch">Just search</label>
         </div>
         <div class="search-area">
             <textarea id="search"  class="input-area"></textarea>
@@ -124,6 +127,7 @@
         const ignoreEmptyReplaceCheckbox = document.getElementById('ignoreEmptyReplace')
         const loopSearchCheckbox         = document.getElementById('loopSearch')
         const loopReplaceCheckbox        = document.getElementById('loopReplace')
+        const justSearchCheckbox         = document.getElementById('justSearch')
         const searchTextArea             = document.getElementById('search')
         const replaceTextArea            = document.getElementById('replace')
 
@@ -183,6 +187,13 @@
                 value  : loopReplaceCheckbox.checked
             })
         loopReplaceCheckbox.addEventListener('click', setLoopReplace)
+
+        const setJustSearch = () =>
+            vscode.postMessage({
+                command: 'setJustSearch',
+                value  : justSearchCheckbox.checked
+            })
+        justSearchCheckbox.addEventListener('click', setJustSearch)
 
         const runSearch = () =>
             vscode.postMessage({
