@@ -44,7 +44,6 @@ export interface Params {
     loopSearch        : boolean
     loopReplace       : boolean
     justSearch        : boolean
-    smartReplace      : boolean
 }
 
 export const createParams = () => <Params>({
@@ -55,6 +54,5 @@ export const createParams = () => <Params>({
     ignoreEmptyReplace: false,
     loopSearch        : false,
     loopReplace       : false,
-    justSearch        : false,
-    smartReplace      : false
+    justSearch        : false
 })
