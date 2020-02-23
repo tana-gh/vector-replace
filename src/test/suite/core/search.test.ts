@@ -74,6 +74,22 @@ suite('search', () => {
         assertMatches(matches, 1, 'defgh',  9, input)
     })
 
+    test('normal search ignore empty', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ 'abc', '', 'defgh', 'ijk' ]
+
+        const params     = types.createParams()
+        params.useRegExp = false
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs)
+
+        assert.equal(matches.length, 3)
+        assertMatches(matches, 0, 'abc'  ,  1, input)
+        assertMatches(matches, 1, 'defgh',  5, input)
+        assertMatches(matches, 2, 'ijk'  , 11, input)
+    })
+
     test('normal search not ignore case', () => {
         const input         = '-abc-Abc-ABC-'
         const searchStrings = [ 'Abc' ]

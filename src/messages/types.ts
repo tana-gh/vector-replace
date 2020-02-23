@@ -1,12 +1,13 @@
 
 export type MessageTypes =
-    Refresh             |
-    RunSearchCommand    |
-    RunReplaceCommand   |
-    SetUseRegExp        |
-    SetIgnoreCaseSearch |
-    SetIgnoreBangSearch |
-    SetIgnoreBangReplace
+    Refresh              |
+    RunSearchCommand     |
+    RunReplaceCommand    |
+    SetUseRegExp         |
+    SetIgnoreCaseSearch  |
+    SetIgnoreBangSearch  |
+    SetIgnoreBangReplace |
+    SetIgnoreEmptyReplace
 
 export interface Refresh {
     command: 'refresh'
@@ -40,5 +41,10 @@ export interface SetIgnoreBangSearch {
 
 export interface SetIgnoreBangReplace {
     command: 'setIgnoreBangReplace'
+    value  : boolean
+}
+
+export interface SetIgnoreEmptyReplace {
+    command: 'setIgnoreEmptyReplace'
     value  : boolean
 }

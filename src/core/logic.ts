@@ -48,3 +48,7 @@ export const setIgnoreBangSearch = (vr: types.VectorReplace, value: boolean) => 
 export const setIgnoreBangReplace = (vr: types.VectorReplace, value: boolean) => {
     vr.params.ignoreBangReplace = value
 }
+
+export const setIgnoreEmptyReplace = (vr: types.VectorReplace, value: boolean) => {
+    vr.params.ignoreEmptyReplace = value
+}

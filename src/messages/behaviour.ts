@@ -28,6 +28,9 @@ export const execute = async (message: messageTypes.MessageTypes, st: state.Stat
         case 'setIgnoreBangReplace':
             setIgnoreBangReplace(message, st)
             return
+        case 'setIgnoreEmptyReplace':
+            setIgnoreEmptyReplace(message, st)
+            return
     }
 }
 
@@ -94,6 +97,11 @@ const setIgnoreBangSearch = (message: messageTypes.SetIgnoreBangSearch, st: stat
 const setIgnoreBangReplace = (message: messageTypes.SetIgnoreBangReplace, st: state.State) => {
     logic.setIgnoreBangReplace(st.vr, message.value)
     logic.setReplaceFuncs     (st.vr)
+}
+
+const setIgnoreEmptyReplace = (message: messageTypes.SetIgnoreEmptyReplace, st: state.State) => {
+    logic.setIgnoreEmptyReplace(st.vr, message.value)
+    logic.setReplaceFuncs      (st.vr)
 }
 
 const getInput = (editor: vscode.TextEditor) => {

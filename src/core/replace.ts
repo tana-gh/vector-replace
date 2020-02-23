@@ -36,6 +36,10 @@ const generateReplaceFuncs = function* (replaceFuncs: types.ReplaceFunc[]) {
 export const createReplaceFuncs = (replaceStrings: string[], params: types.Params) => {
     let filtered = replaceStrings
 
+    if (params.ignoreEmptyReplace) {
+        filtered = filtered.filter(s => s !== '')
+    }
+
     if (params.ignoreBangReplace) {
         filtered = ignoreBang.process(filtered)
     }

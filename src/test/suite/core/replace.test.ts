@@ -77,6 +77,44 @@ suite('replace', () => {
         assert.equal(output, '-12-3!-456-')
     })
 
+    test('normal replace not ignore empty', () => {
+        const input          = '-abc-defgh-ijk-'
+        const replaceStrings = [ '12', '', '456' ]
+
+        const params = types.createParams()
+        params.ignoreEmptyReplace = false
+
+        const replaceFuncs   = replace.createReplaceFuncs(replaceStrings, params)
+        const matches        = [
+            types.createMatchResult([ 'abc'   ],  1, input, 'abc'  ),
+            types.createMatchResult([ 'defgh' ],  5, input, 'defgh'),
+            types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  ),
+        ]
+
+        const output = replace.replace(input, replaceFuncs, matches)
+
+        assert.equal(output, '-12--456-')
+    })
+
+    test('normal replace ignore empty', () => {
+        const input          = '-abc-defgh-ijk-'
+        const replaceStrings = [ '12', '', '3', '456' ]
+
+        const params = types.createParams()
+        params.ignoreEmptyReplace = true
+
+        const replaceFuncs   = replace.createReplaceFuncs(replaceStrings, params)
+        const matches        = [
+            types.createMatchResult([ 'abc'   ],  1, input, 'abc'  ),
+            types.createMatchResult([ 'defgh' ],  5, input, 'defgh'),
+            types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  ),
+        ]
+
+        const output = replace.replace(input, replaceFuncs, matches)
+
+        assert.equal(output, '-12-3-456-')
+    })
+
     test('regexp replace with empty replaceStrings', () => {
         const input          = '-abc-defgh-ijk-'
         const replaceStrings = <string[]>[]

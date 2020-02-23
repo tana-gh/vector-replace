@@ -92,6 +92,12 @@
 
             <input type="checkbox" id="ignoreBangReplace" class="checkbox">
             <label for="ignoreBangReplace">Ignore bang replace</label>
+
+            <input type="checkbox" id="ignoreEmptySearch" class="checkbox" checked disabled>
+            <label for="ignoreEmptySearch">Ignore empty search</label>
+
+            <input type="checkbox" id="ignoreEmptyReplace" class="checkbox">
+            <label for="ignoreEmptyReplace">Ignore empty replace</label>
         </div>
         <div class="search-area">
             <textarea id="search"  class="input-area"></textarea>
@@ -104,13 +110,14 @@
     <script>
         const vscode = acquireVsCodeApi()
 
-        const replaceButton             = document.getElementById('replaceButton')
-        const useRegExpCheckbox         = document.getElementById('useRegExp')
-        const ignoreCaseSearchCheckbox  = document.getElementById('ignoreCaseSearch')
-        const ignoreBangSearchCheckbox  = document.getElementById('ignoreBangSearch')
-        const ignoreBangReplaceCheckbox = document.getElementById('ignoreBangReplace')
-        const searchTextArea            = document.getElementById('search')
-        const replaceTextArea           = document.getElementById('replace')
+        const replaceButton              = document.getElementById('replaceButton')
+        const useRegExpCheckbox          = document.getElementById('useRegExp')
+        const ignoreCaseSearchCheckbox   = document.getElementById('ignoreCaseSearch')
+        const ignoreBangSearchCheckbox   = document.getElementById('ignoreBangSearch')
+        const ignoreBangReplaceCheckbox  = document.getElementById('ignoreBangReplace')
+        const ignoreEmptyReplaceCheckbox = document.getElementById('ignoreEmptyReplace')
+        const searchTextArea             = document.getElementById('search')
+        const replaceTextArea            = document.getElementById('replace')
 
         const runReplace = () =>
             vscode.postMessage({
@@ -147,6 +154,13 @@
                 value  : ignoreBangReplaceCheckbox.checked
             })
         ignoreBangReplaceCheckbox.addEventListener('click', setIgnoreBangReplace)
+
+        const setIgnoreEmptyReplace = () =>
+            vscode.postMessage({
+                command: 'setIgnoreEmptyReplace',
+                value  : ignoreEmptyReplaceCheckbox.checked
+            })
+        ignoreEmptyReplaceCheckbox.addEventListener('click', setIgnoreEmptyReplace)
 
         const runSearch = () =>
             vscode.postMessage({
