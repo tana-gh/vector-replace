@@ -1,67 +1,71 @@
-# vector-replace README
+# Vector Replace (Extension of Visual Studio Code)
 
-![main](https://github.com/tana-gh/vector-replace/workflows/main/badge.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![main](https://github.com/tana-gh/vector-replace/workflows/main/badge.svg)
 
-This is the README for your extension "vector-replace". After writing up a brief description, we recommend including the following sections.
+Vector Replace is extension of Visual Studio Code for replacing multiple words.
+
+![window-searched](https://tana-gh.github.io/vector-replace-media/window-searched.png)
+
+![window-replaced](https://tana-gh.github.io/vector-replace-media/window-replaced.png)
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Open the text editor, you will see the navigation menu of Vector Replace on top left. Click this menu icon to open a view of the search and replace settings.
 
-For example if there is an image subfolder under your extension project workspace:
+![window-navigation](https://tana-gh.github.io/vector-replace-media/window-navigation.png)
 
-\!\[feature X\]\(images/feature-x.png\)
+Enter search and replace text and click the "Replace" button, then text will be replaced on the active text editor.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+![window-view](https://tana-gh.github.io/vector-replace-media/window-view.png)
 
-## Requirements
+In this extension, search text and replace text are specified multiple per line. See the following image:
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+![window-abc](https://tana-gh.github.io/vector-replace-media/window-abc.png)
 
-## Extension Settings
+If you specify like this in the search pane, 'a' is searched at first, 'b' is searched next, and 'c' is searched at last. Further, if you specify as above in the replace pane, 'a' will be replaced by 'd', 'b' will be replaced by 'e', and 'c' will be replaced by 'f'.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## Settings
 
-For example:
+### Use regular expression
 
-This extension contributes the following settings:
+If checking this, can use regular expression in the search pane. Also, can use the capturing replace by using '$'.
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+### Ignore case search
 
-## Known Issues
+If checking this, can be ignored upper/lower case when searching.
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+### Ignore bang search
+
+If checking this, can be ignored rows that start with '!' in the search pane. If you want to search for '!' itself, start with '!!'.
+
+### Ignore bang replace
+
+If checking this, can be ignored rows that start with '!' in the replace pane. If you want to replace for '!' itself, start with '!!'.
+
+### Ignore empty search
+
+This check cannot be changed. In the search pane, empty rows are ignored.
+
+### Ignore empty replace
+
+If checking this, can be ignored empty rows in the replace pane.
+
+### Loop search
+
+If checking this, search strings are looped. When a search string reaches to the end, and returns to the beginning of search strings.
+
+### Loop replace
+
+If checking this, replace strings are looped. When a replace string reaches to the end, and returns to the beginning of replace strings.
+
+### Just search
+
+If checking this, the search will not be match when only matches until a part of all search strings. For example, loop search is enabled and search strings are 'a', 'b', 'c', then 'abcab' is matched by only 'abc'.
+
+---
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
 ### 1.0.0
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release.
