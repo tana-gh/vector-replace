@@ -1,9 +1,17 @@
 # Change Log
 
-All notable changes to the "vector-replace" extension will be documented in this file.
+## 1.0.0
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+Initial release
 
-## [Unreleased]
+### Changes
 
-- Initial release
+- Basic functionality
+- Use regular expression
+- Ignore case search
+- Ignore bang search
+- Ignore bang replace
+- Ignore empty replace
+- Loop search
+- Loop replace
+- Just search
