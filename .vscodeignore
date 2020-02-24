@@ -4,9 +4,10 @@
 out/**
 src/**
 vector-replace-media/**
-.gitignore
-.gitmodules
+**/.gitignore
+**/.gitmodules
 **/tsconfig.json
 **/tslint.json
+**/webpack.config.js
 **/*.map
 **/*.ts
