@@ -71,7 +71,7 @@
 		"test-compile": "tsc -p ./",
 		"test": "yarn test-compile && node ./out/test/runTest.js"
 	},
-	"icon": "https://tana-gh.github.io/vector-replace-media/vector-replace.png",
+	"icon": "extension/vector-replace.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/tana-gh/vector-replace.git"

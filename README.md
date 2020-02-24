@@ -1,6 +1,6 @@
 # Vector Replace (Extension of Visual Studio Code)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![main](https://github.com/tana-gh/vector-replace/workflows/main/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![GitHub Actions: main](https://img.shields.io/github/workflow/status/tana-gh/vector-replace/main.svg?logo=github)](https://github.com/tana-gh/vector-replace/actions)
 
 Vector Replace is extension of Visual Studio Code for replacing multiple words.
 
