@@ -69,7 +69,7 @@
 		"webpack": "webpack --env.dev",
 		"webpack-dev": "webpack --env.dev --watch",
 		"test-compile": "tsc -p ./",
-		"test": "node ./out/test/runTest.js"
+		"test": "yarn test-compile && node ./out/test/runTest.js"
 	},
 	"icon": "https://tana-gh.github.io/vector-replace-media/vector-replace.png",
 	"repository": {
