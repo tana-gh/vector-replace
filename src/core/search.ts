@@ -75,6 +75,8 @@ const justSearch = (
         }
 
         matches = matches.concat(subMatches)
+
+        if (!params.loopSearch) break
     }
 
     return matches
