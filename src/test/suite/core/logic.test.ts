@@ -9,7 +9,7 @@ suite('logic', () => {
         assert.equal(vr.text, 'abc')
     })
 
-    test('setSearchStrings', () => {
+    test('setSearchStrings LF', () => {
         const vr = coreTypes.createVectorReplace()
         logic.setSearchStrings(vr, 'abc\ndef\nghi')
 
@@ -20,9 +20,30 @@ suite('logic', () => {
         assert.equal(vr.searchFuncs.length, 3)
     })
 
-    test('setReplaceStrings', () => {
+    test('setSearchStrings CRLF', () => {
+        const vr = coreTypes.createVectorReplace()
+        logic.setSearchStrings(vr, 'abc\r\ndef\r\nghi')
+
+        assert.equal(vr.searchStrings.length, 3)
+        assert.equal(vr.searchStrings[0], 'abc')
+        assert.equal(vr.searchStrings[1], 'def')
+        assert.equal(vr.searchStrings[2], 'ghi')
+        assert.equal(vr.searchFuncs.length, 3)
+    })
+
+    test('setReplaceStrings LF', () => {
         const vr = coreTypes.createVectorReplace()
         logic.setReplaceStrings(vr, 'abc\ndef\nghi')
+        
+        assert.equal(vr.replaceStrings.length, 3)
+        assert.equal(vr.replaceStrings[0], 'abc')
+        assert.equal(vr.replaceStrings[1], 'def')
+        assert.equal(vr.replaceStrings[2], 'ghi')
+    })
+
+    test('setReplaceStrings CRLF', () => {
+        const vr = coreTypes.createVectorReplace()
+        logic.setReplaceStrings(vr, 'abc\r\ndef\r\nghi')
         
         assert.equal(vr.replaceStrings.length, 3)
         assert.equal(vr.replaceStrings[0], 'abc')

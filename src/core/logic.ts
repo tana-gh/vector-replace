@@ -8,7 +8,7 @@ export const setInput = (vr: types.VectorReplace, input: string) => {
 }
 
 export const setSearchStrings = (vr: types.VectorReplace, searchStr: string) => {
-    vr.searchStrings = searchStr.split('\n')
+    vr.searchStrings = searchStr.split(/\n|\r\n/)
     setSearchFuncs(vr)
 }
 
@@ -17,7 +17,7 @@ export const setSearchFuncs = (vr: types.VectorReplace) => {
 }
 
 export const setReplaceStrings = (vr: types.VectorReplace, replaceStr: string) => {
-    vr.replaceStrings = replaceStr.split('\n')
+    vr.replaceStrings = replaceStr.split(/\n|\r\n/)
     setReplaceFuncs(vr)
 }
 
