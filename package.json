@@ -1,17 +1,19 @@
 {
 	"name": "vector-replace",
-	"displayName": "Vector Replace",
-	"description": "Replace multiple words",
-	"version": "0.0.1",
+	"version": "0.1.0",
+	"publisher": "tana-gh",
 	"engines": {
 		"vscode": "^1.41.0"
 	},
+	"license": "MIT",
+	"displayName": "Vector Replace",
+	"description": "Replace multiple words",
 	"categories": [
 		"Other"
 	],
-	"activationEvents": [
-		"onCommand:vectorreplace.showView"
-	],
+	"keywords": ["search", "replace", "vectorreplace"],
+	"galleryBanner": {},
+	"preview": false,
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
@@ -35,13 +37,13 @@
 			]
 		}
 	},
-	"scripts": {
-		"vscode:prepublish": "yarn run compile",
-		"compile": "rm -rf ./out && tsc -p ./",
-		"watch": "rm -rf ./out && tsc -watch -p ./",
-		"pretest": "yarn run compile",
-		"test": "node ./out/test/runTest.js"
-	},
+	"activationEvents": [
+		"onCommand:vectorreplace.showView"
+	],
+	"badges": [],
+	"markdown": "github",
+	"qna": "marketplace",
+	"dependencies": {},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.7",
@@ -52,5 +54,22 @@
 		"typescript": "^3.6.4",
 		"tslint": "^5.20.0",
 		"vscode-test": "^1.2.2"
+	},
+	"extensionPack": [],
+	"extensionDependencies": [],
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "rm -rf ./out && tsc -p ./",
+		"watch": "rm -rf ./out && tsc -watch -p ./",
+		"pretest": "yarn run compile",
+		"test": "node ./out/test/runTest.js"
+	},
+	"icon": "https://tana-gh.github.io/vector-replace-media/vector-replace.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tana-gh/vector-replace.git"
+	},
+	"bugs": {
+		"url": "https://github.com/tana-gh/vector-replace/issues"
 	}
 }
