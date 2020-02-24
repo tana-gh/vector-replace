@@ -127,11 +127,11 @@
                 <label for="ignoreEmptyReplace">Ignore empty replace</label>
             </span>
             <span class="setting">
-                <input type="checkbox" id="loopSearch" class="checkbox">
+                <input type="checkbox" id="loopSearch" class="checkbox" checked>
                 <label for="loopSearch">Loop search</label>
             </span>
             <span class="setting">
-                <input type="checkbox" id="loopReplace" class="checkbox">
+                <input type="checkbox" id="loopReplace" class="checkbox" checked>
                 <label for="loopReplace">Loop replace</label>
             </span>
             <span class="setting">
@@ -182,6 +182,7 @@
                 value  : useRegExpCheckbox.checked
             })
         useRegExpCheckbox.addEventListener('click', setUseRegExp)
+        setUseRegExp()
 
         const setIgnoreCaseSearch = () =>
             vscode.postMessage({
@@ -189,6 +190,7 @@
                 value  : ignoreCaseSearchCheckbox.checked
             })
         ignoreCaseSearchCheckbox.addEventListener('click', setIgnoreCaseSearch)
+        setIgnoreCaseSearch()
 
         const setIgnoreBangSearch = () =>
             vscode.postMessage({
@@ -196,6 +198,7 @@
                 value  : ignoreBangSearchCheckbox.checked
             })
         ignoreBangSearchCheckbox.addEventListener('click', setIgnoreBangSearch)
+        setIgnoreBangSearch()
 
         const setIgnoreBangReplace = () =>
             vscode.postMessage({
@@ -203,6 +206,7 @@
                 value  : ignoreBangReplaceCheckbox.checked
             })
         ignoreBangReplaceCheckbox.addEventListener('click', setIgnoreBangReplace)
+        setIgnoreBangReplace()
 
         const setIgnoreEmptyReplace = () =>
             vscode.postMessage({
@@ -210,6 +214,7 @@
                 value  : ignoreEmptyReplaceCheckbox.checked
             })
         ignoreEmptyReplaceCheckbox.addEventListener('click', setIgnoreEmptyReplace)
+        setIgnoreEmptyReplace()
 
         const setLoopSearch = () =>
             vscode.postMessage({
@@ -217,6 +222,7 @@
                 value  : loopSearchCheckbox.checked
             })
         loopSearchCheckbox.addEventListener('click', setLoopSearch)
+        setLoopSearch()
 
         const setLoopReplace = () =>
             vscode.postMessage({
@@ -224,6 +230,7 @@
                 value  : loopReplaceCheckbox.checked
             })
         loopReplaceCheckbox.addEventListener('click', setLoopReplace)
+        setLoopReplace()
 
         const setJustSearch = () =>
             vscode.postMessage({
@@ -231,6 +238,7 @@
                 value  : justSearchCheckbox.checked
             })
         justSearchCheckbox.addEventListener('click', setJustSearch)
+        setJustSearch()
 
         const runSearch = () =>
             vscode.postMessage({
