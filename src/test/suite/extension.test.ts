@@ -1,15 +1,43 @@
-import * as assert from 'assert';
+import * as assert    from 'assert'
+import * as vscode    from 'vscode'
+import * as state     from '../../states/state'
+import * as behaviour from '../../messages/behaviour'
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
-import * as vscode from 'vscode';
-// import * as myExtension from '../extension';
+let st         : state.State         | undefined
+let document   : vscode.TextDocument | undefined
+let editor     : vscode.TextEditor   | undefined
+let disposables: vscode.Disposable[] | undefined
 
-suite('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
+const init = async () => {
+	document = await vscode.workspace.openTextDocument()
+	editor   = await vscode.window.showTextDocument(document)
 
-	test('Sample test', () => {
-		assert.equal(-1, [1, 2, 3].indexOf(5));
-		assert.equal(-1, [1, 2, 3].indexOf(0));
-	});
-});
+	st = state.create(editor)
+
+    disposables = <vscode.Disposable[]>[
+        vscode.window.onDidChangeActiveTextEditor(editor => state.setEditor(st!, editor)),
+        vscode.workspace.onDidChangeTextDocument(() => behaviour.refresh(st!))
+    ]
+}
+
+const dispose = () => {
+	disposables?.forEach(d => d.dispose())
+	st          = undefined
+	document    = undefined
+	editor      = undefined
+	disposables = undefined
+}
+
+suite('extension', () => {
+	setup(init)
+	teardown(dispose)
+
+	test('replace text in editor', async () => {
+		await editor!.edit(edit => edit.insert(new vscode.Position(0, 0), '-abc-defgh-ijk-'))
+		await behaviour.execute({ command: 'runReplace', searchStr: 'abc\ndefgh\nijk', replaceStr: '12\n3\n456' }, st!)
+		
+		const text = document?.getText()
+
+		assert.equal(text, '-12-3-456-')
+	})
+})

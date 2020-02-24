@@ -1,0 +1,3 @@
+[submodule "vector-replace-media"]
+	path = vector-replace-media
+	url = git@github.com:tana-gh/vector-replace-media.git

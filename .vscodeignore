@@ -1,10 +1,13 @@
+.github/**
 .vscode/**
 .vscode-test/**
-out/test/**
+out/**
 src/**
-.gitignore
-vsc-extension-quickstart.md
+vector-replace-media/**
+**/.gitignore
+**/.gitmodules
 **/tsconfig.json
 **/tslint.json
+**/webpack.config.js
 **/*.map
 **/*.ts

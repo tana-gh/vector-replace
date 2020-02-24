@@ -1,31 +1,53 @@
 {
 	"name": "vector-replace",
-	"displayName": "Vector Replace",
-	"description": "Replace multiple words",
-	"version": "0.0.1",
+	"version": "1.0.0",
+	"publisher": "tana-gh",
 	"engines": {
 		"vscode": "^1.41.0"
 	},
+	"license": "MIT",
+	"displayName": "Vector Replace",
+	"description": "Replace multiple words",
 	"categories": [
 		"Other"
 	],
-	"activationEvents": [
-		"onCommand:extension.helloWorld"
+	"keywords": [
+		"search",
+		"replace",
+		"vectorreplace"
 	],
-	"main": "./out/extension.js",
+	"galleryBanner": {},
+	"preview": false,
+	"main": "./dist/extension.js",
 	"contributes": {
-		"commands": [{
-			"command": "extension.helloWorld",
-			"title": "Hello World"
-		}]
+		"commands": [
+			{
+				"command": "vectorreplace.showView",
+				"title": "Show View",
+				"category": "Vector Replace",
+				"icon": {
+					"light": "./media/icons/vector-replace-light.svg",
+					"dark": "./media/icons/vector-replace-dark.svg"
+				}
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"command": "vectorreplace.showView",
+					"group": "navigation",
+					"when": "editorTextFocus"
+				}
+			]
+		}
 	},
-	"scripts": {
-		"vscode:prepublish": "yarn run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "yarn run compile",
-		"test": "node ./out/test/runTest.js"
-	},
+	"activationEvents": [
+		"onCommand:vectorreplace.showView"
+	],
+	"badges": [],
+	"markdown": "github",
+	"qna": "marketplace",
+	"dependencies": {},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.7",
@@ -33,8 +55,28 @@
 		"@types/vscode": "^1.41.0",
 		"glob": "^7.1.5",
 		"mocha": "^6.2.2",
-		"typescript": "^3.6.4",
+		"ts-loader": "^6.2.1",
 		"tslint": "^5.20.0",
-		"vscode-test": "^1.2.2"
+		"typescript": "^3.6.4",
+		"vscode-test": "^1.2.2",
+		"webpack": "^4.41.6",
+		"webpack-cli": "^3.3.11"
+	},
+	"extensionPack": [],
+	"extensionDependencies": [],
+	"scripts": {
+		"vscode:prepublish": "webpack --env.prod",
+		"webpack": "webpack --env.dev",
+		"webpack-dev": "webpack --env.dev --watch",
+		"test-compile": "tsc -p ./",
+		"test": "yarn test-compile && node ./out/test/runTest.js"
+	},
+	"icon": "extension/vector-replace.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tana-gh/vector-replace.git"
+	},
+	"bugs": {
+		"url": "https://github.com/tana-gh/vector-replace/issues"
 	}
 }
