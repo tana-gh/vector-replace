@@ -15,3 +15,7 @@ Initial release
 - Loop search
 - Loop replace
 - Just search
+
+## 1.0.1
+
+Update packages
