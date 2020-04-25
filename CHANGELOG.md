@@ -19,3 +19,9 @@ Initial release
 ## 1.0.1
 
 Update packages
+
+## 1.0.2
+
+Fix fatal bug
+
+- Cannot responds if returns 0 length string, such as '.*'
