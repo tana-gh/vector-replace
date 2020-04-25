@@ -345,4 +345,34 @@ suite('search', () => {
         assertMatches(matches, 1, 'defgh!!',  6, input)
         assertMatches(matches, 2, 'ijk!!!' , 14, input)
     })
+
+    test('regexp search not loop with empty result', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ '.*', '.*' ]
+        
+        const params     = types.createParams()
+        params.useRegExp = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs, params)
+
+        assert.equal(matches.length, 2)
+        assertMatches(matches, 0, '-abc-defgh-ijk-',  0, input)
+        assertMatches(matches, 1, ''               , 15, input)
+    })
+
+    test('regexp search loop with empty result', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ '.*' ]
+        
+        const params      = types.createParams()
+        params.useRegExp  = true
+        params.loopSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs, params)
+
+        assert.equal(matches.length, 1)
+        assertMatches(matches, 0, '-abc-defgh-ijk-', 0, input)
+    })
 })
