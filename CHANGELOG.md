@@ -25,3 +25,7 @@ Update packages
 Fix fatal bug
 
 - Cannot responds if returns 0 length string, such as '.*'
+
+## 1.0.3
+
+Fix new line searching behaviour
