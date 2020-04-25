@@ -10,6 +10,9 @@ export const createMatchResult =
     (matches: string[], index: number, input: string, pattern: string | RegExp) =>
         <MatchResult>{ ...matches, index, input, pattern }
 
+export const endOfMatchResult = (match: MatchResult) =>
+    match.index + match[0].length
+
 export type SearchFunc  = (input: string, inputLower: string, prev: MatchResult) => MatchResult | null
 export type ReplaceFunc = (match: MatchResult) => string
 

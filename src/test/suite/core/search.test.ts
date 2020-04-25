@@ -375,4 +375,38 @@ suite('search', () => {
         assert.equal(matches.length, 1)
         assertMatches(matches, 0, '-abc-defgh-ijk-', 0, input)
     })
+
+    test('regexp search not loop multiple lines', () => {
+        const input         = '-abc-\n-defgh-\n-ijk-'
+        const searchStrings = [ '.*', '.*', '.*' ]
+        
+        const params      = types.createParams()
+        params.useRegExp  = true
+        params.loopSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs, params)
+
+        assert.equal(matches.length, 3)
+        assertMatches(matches, 0, '-abc-'  ,  0, input)
+        assertMatches(matches, 1, '-defgh-',  6, input)
+        assertMatches(matches, 2, '-ijk-'  , 14, input)
+    })
+
+    test('regexp search loop multiple lines', () => {
+        const input         = '-abc-\n-defgh-\n-ijk-'
+        const searchStrings = [ '.*' ]
+        
+        const params      = types.createParams()
+        params.useRegExp  = true
+        params.loopSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, searchFuncs, params)
+
+        assert.equal(matches.length, 3)
+        assertMatches(matches, 0, '-abc-'  ,  0, input)
+        assertMatches(matches, 1, '-defgh-',  6, input)
+        assertMatches(matches, 2, '-ijk-'  , 14, input)
+    })
 })

@@ -1,23 +1,23 @@
-import * as vscode    from 'vscode'
-import * as coreTypes from '../core/types'
+import * as vscode from 'vscode'
+import * as types  from '../core/types'
 
-export const createRanges = (matches: coreTypes.MatchResult[]) => {
+export const createRanges = (matches: types.MatchResult[]) => {
     if (matches.length === 0) return []
     return createRangesFromInput(matches[0].input, matches)
 }
 
-const createRangesFromInput = (input: string, matches: coreTypes.MatchResult[]) => {
+const createRangesFromInput = (input: string, matches: types.MatchResult[]) => {
     const indices   = toIndicesFromMatches(matches)
     const positions = toPositionsFromIndices(input, indices)
     const ranges    = toRangesFromPositions(positions)
     return ranges
 }
 
-const toIndicesFromMatches = (matches: coreTypes.MatchResult[]) => {
+const toIndicesFromMatches = (matches: types.MatchResult[]) => {
     const result = []
     
     for (let m of matches) {
-        result.push(m.index, m.index + m[0].length)
+        result.push(m.index, types.endOfMatchResult(m))
     }
 
     return result

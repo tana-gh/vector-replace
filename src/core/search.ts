@@ -14,13 +14,12 @@ export const search = (
 
     outer:
     while (true) {
-        const prevIndex  = prev.index + prev[0].length
+        const prevIndex  = types.endOfMatchResult(prev)
         const subMatches = []
-        const gen = generateSearchFuncs(searchFuncs)
+        const gen  = generateSearchFuncs(searchFuncs)
+        let   func = gen.next()
 
         while (true) {
-            const func = gen.next()
-
             if (func.done) break
 
             const match = func.value(input, inputLower, prev)
@@ -30,11 +29,17 @@ export const search = (
                 break outer
             }
 
+            if (match[0] === '' && input[types.endOfMatchResult(prev)] === '\n') {
+                prev = { ...prev, [0]: prev[0] + '\n' }
+                continue
+            }
+
             subMatches.push(match)
             prev = match
+            func = gen.next()
         }
 
-        if (prev.index + prev[0].length === prevIndex) break
+        if (types.endOfMatchResult(prev) === prevIndex) break
 
         matches = matches.concat(subMatches)
 
@@ -66,7 +71,7 @@ const createNormalSearchFunc = (params: types.Params) => (searchString: string) 
     (input: string, inputLower: string, prev: types.MatchResult) => {
         const target = params.ignoreCaseSearch ? inputLower : input
         const search = params.ignoreCaseSearch ? searchString.toLowerCase() : searchString
-        const index  = target.indexOf(search, prev.index + prev[0].length)
+        const index  = target.indexOf(search, types.endOfMatchResult(prev))
         
         if (index === -1) return null
 
@@ -83,7 +88,7 @@ const createRegExpSearchFunc = (params: types.Params) => (searchString: string) 
         catch {
             return null
         }
-        regExp.lastIndex = prev.index + prev[0].length
+        regExp.lastIndex = types.endOfMatchResult(prev)
         const result = regExp.exec(input)
         return result === null ? null : <types.MatchResult>{ ...result, pattern: regExp }
     }

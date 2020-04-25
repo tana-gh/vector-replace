@@ -24,7 +24,7 @@ export const replace = (
 
         output.push(prevStr, replaced)
 
-        prev = match.index + match[0].length
+        prev = types.endOfMatchResult(match)
     }
 
     const prevStr = input.substring(prev, input.length)
