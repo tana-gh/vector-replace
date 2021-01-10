@@ -29,3 +29,7 @@ Fix fatal bug
 ## 1.0.3
 
 Fix new line searching behaviour
+
+## 1.0.4
+
+Update packages

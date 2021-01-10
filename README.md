@@ -81,3 +81,7 @@ Fix fatal bug that cannot responds if returns 0 length string, such as '.*'.
 ### 1.0.3
 
 Fix new line searching behaviour.
+
+### 1.0.4
+
+Update packages.
