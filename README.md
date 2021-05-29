@@ -66,22 +66,26 @@ If checking this, the search will not be match when only matches until a part of
 
 ## Release Notes
 
-### 1.0.0
-
-Initial release.
-
-### 1.0.1
+### 1.0.5
 
 Update packages.
 
-### 1.0.2
+### 1.0.4
 
-Fix fatal bug that cannot responds if returns 0 length string, such as '.*'.
+Update packages.
 
 ### 1.0.3
 
 Fix new line searching behaviour.
 
-### 1.0.4
+### 1.0.2
+
+Fix fatal bug that cannot responds if returns 0 length string, such as '.*'.
+
+### 1.0.1
 
 Update packages.
+
+### 1.0.0
+
+Initial release.

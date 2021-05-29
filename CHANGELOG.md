@@ -1,5 +1,27 @@
 # Change Log
 
+## 1.0.5
+
+Update packages
+
+## 1.0.4
+
+Update packages
+
+## 1.0.3
+
+Fix new line searching behaviour
+
+## 1.0.2
+
+Fix fatal bug
+
+- Cannot responds if returns 0 length string, such as '.*'
+
+## 1.0.1
+
+Update packages
+
 ## 1.0.0
 
 Initial release
@@ -15,21 +37,3 @@ Initial release
 - Loop search
 - Loop replace
 - Just search
-
-## 1.0.1
-
-Update packages
-
-## 1.0.2
-
-Fix fatal bug
-
-- Cannot responds if returns 0 length string, such as '.*'
-
-## 1.0.3
-
-Fix new line searching behaviour
-
-## 1.0.4
-
-Update packages
