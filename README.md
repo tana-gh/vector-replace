@@ -66,6 +66,12 @@ If checking this, the search will not be match when only matches until a part of
 
 ## Release Notes
 
+### 1.0.6
+
+Fix bugs:
+- When replace is done, the display of the search mark collapses for a moment #8
+- Wrong behavior when 0 length string is matched #10
+
 ### 1.0.5
 
 Update packages.
