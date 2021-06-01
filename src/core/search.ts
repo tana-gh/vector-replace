@@ -29,9 +29,16 @@ export const search = (
                 break outer
             }
 
-            if (match[0] === '' && input[types.endOfMatchResult(prev)] === '\n') {
-                prev = { ...prev, [0]: prev[0] + '\n' }
-                continue
+            if (match[0] === '') {
+                const current = types.endOfMatchResult(prev)
+                if (input[current] === '\n') {
+                    prev = { ...prev, [0]: prev[0] + '\n' }
+                    continue
+                }
+                else if (input[current] === '\r' && input[current + 1] === '\n') {
+                    prev = { ...prev, [0]: prev[0] + '\r\n' }
+                    continue
+                }
             }
 
             subMatches.push(match)
