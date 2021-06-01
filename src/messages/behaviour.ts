@@ -67,6 +67,7 @@ const runReplace = async (message: messageTypes.RunReplaceCommand, st: state.Sta
 
     if (!st.editor) return
 
+    decorate(st.editor, st.decoration, [])
     logic.setInput(st.vr, getInput(st.editor))
     logic.runSearch (st.vr)
     logic.runReplace(st.vr)
