@@ -52,7 +52,7 @@ export const search = (
             }
             else {
                 for (; selections[sel] <= match.index; sel++);
-                if (sel % 2 === 1) subMatches.push(match)
+                if (sel % 2 === 1 && match.index + match[0].length <= selections[sel]) subMatches.push(match)
             }
             
             prev = match

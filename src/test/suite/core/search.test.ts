@@ -243,7 +243,7 @@ suite('search', () => {
     test('normal selection search 3', () => {
         const input         = '-abc-defgh-ijk-'
         const searchStrings = [ 'abc', 'defgh' ]
-        const selections    = [ 5, 9 ]
+        const selections    = [ 5, 10 ]
 
         const params = types.createParams()
         params.selectionSearch = true
@@ -258,7 +258,7 @@ suite('search', () => {
     test('normal selection search 4', () => {
         const input         = '-abc-defgh-ijk-'
         const searchStrings = [ 'abc', 'defgh' ]
-        const selections    = [ 4, 10 ]
+        const selections    = [ 4, 11 ]
 
         const params = types.createParams()
         params.selectionSearch = true
@@ -273,7 +273,7 @@ suite('search', () => {
     test('normal selection search 5', () => {
         const input         = '-abc-defgh-ijk-'
         const searchStrings = [ 'abc', 'defgh' ]
-        const selections    = [ 6, 10 ]
+        const selections    = [ 6, 11 ]
 
         const params = types.createParams()
         params.selectionSearch = true
@@ -287,7 +287,7 @@ suite('search', () => {
     test('normal selection search 6', () => {
         const input         = '-abc-defgh-ijk-'
         const searchStrings = [ 'abc', 'defgh' ]
-        const selections    = [ 4, 8 ]
+        const selections    = [ 4, 9 ]
 
         const params = types.createParams()
         params.selectionSearch = true
@@ -301,7 +301,7 @@ suite('search', () => {
     test('normal selection search 7', () => {
         const input         = '-abc-defgh-ijk-'
         const searchStrings = [ 'abc', 'defgh' ]
-        const selections    = [ 1, 4, 5, 9 ]
+        const selections    = [ 1, 4, 5, 10 ]
 
         const params = types.createParams()
         params.selectionSearch = true
