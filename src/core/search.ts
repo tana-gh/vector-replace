@@ -4,6 +4,7 @@ import * as ignoreBang from './ignoreBang'
 export const search = (
     input      : string,
     inputLower : string,
+    selections : number[],
     searchFuncs: types.SearchFunc[],
     params     : types.Params
 ) => {
@@ -18,6 +19,7 @@ export const search = (
         const subMatches = []
         const gen  = generateSearchFuncs(searchFuncs)
         let   func = gen.next()
+        let   sel  = 0
 
         while (true) {
             if (func.done) break
@@ -41,7 +43,18 @@ export const search = (
                 }
             }
 
-            subMatches.push(match)
+            if (
+                !params.selectionSearch ||
+                selections.length === 0 ||
+                selections.length === 2 && selections[0] === selections[1]
+            ) {
+                subMatches.push(match)
+            }
+            else {
+                for (; selections[sel] <= match.index; sel++);
+                if (sel % 2 === 1) subMatches.push(match)
+            }
+            
             prev = match
             func = gen.next()
         }

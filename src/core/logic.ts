@@ -7,6 +7,10 @@ export const setInput = (vr: types.VectorReplace, input: string) => {
     vr.textLower = input.toLowerCase()
 }
 
+export const setSelections = (vr: types.VectorReplace, selections: number[]) => {
+    vr.selections = selections
+}
+
 export const setSearchStrings = (vr: types.VectorReplace, searchStr: string) => {
     vr.searchStrings = searchStr.split(/\n|\r\n/)
     setSearchFuncs(vr)
@@ -26,11 +30,15 @@ export const setReplaceFuncs = (vr: types.VectorReplace) => {
 }
 
 export const runSearch = (vr: types.VectorReplace) => {
-    vr.matches = search.search(vr.text, vr.textLower, vr.searchFuncs, vr.params)
+    vr.matches = search.search(vr.text, vr.textLower, vr.selections, vr.searchFuncs, vr.params)
 }
 
 export const runReplace = (vr: types.VectorReplace) => {
     vr.text = replace.replace(vr.text, vr.replaceFuncs, vr.matches, vr.params)
+}
+
+export const setSelectionSearch = (vr: types.VectorReplace, value: boolean) => {
+    vr.params.selectionSearch = value
 }
 
 export const setUseRegExp = (vr: types.VectorReplace, value: boolean) => {

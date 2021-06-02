@@ -18,7 +18,7 @@ suite('replace', () => {
 
         const output = replace.replace(input, replaceFuncs, matches, params)
 
-        assert.equal(output, '-abc-defgh-ijk-')
+        assert.strictEqual(output, '-abc-defgh-ijk-')
     })
 
     test('normal replace', () => {
@@ -36,7 +36,7 @@ suite('replace', () => {
 
         const output = replace.replace(input, replaceFuncs, matches, params)
 
-        assert.equal(output, '-12-3-456-')
+        assert.strictEqual(output, '-12-3-456-')
     })
 
     test('normal replace ignore bang', () => {
@@ -55,7 +55,7 @@ suite('replace', () => {
 
         const output = replace.replace(input, replaceFuncs, matches, params)
 
-        assert.equal(output, '-12-!4-56-')
+        assert.strictEqual(output, '-12-!4-56-')
     })
 
     test('normal replace not ignore bang', () => {
@@ -74,7 +74,7 @@ suite('replace', () => {
 
         const output = replace.replace(input, replaceFuncs, matches, params)
 
-        assert.equal(output, '-12-3!-456-')
+        assert.strictEqual(output, '-12-3!-456-')
     })
 
     test('normal replace not ignore empty', () => {
@@ -92,7 +92,7 @@ suite('replace', () => {
 
         const output = replace.replace(input, replaceFuncs, matches, params)
 
-        assert.equal(output, '-12--456-')
+        assert.strictEqual(output, '-12--456-')
     })
 
     test('normal replace ignore empty', () => {
@@ -111,7 +111,7 @@ suite('replace', () => {
 
         const output = replace.replace(input, replaceFuncs, matches, params)
 
-        assert.equal(output, '-12-3-456-')
+        assert.strictEqual(output, '-12-3-456-')
     })
 
     test('normal replace not loop', () => {
@@ -129,7 +129,7 @@ suite('replace', () => {
 
         const output = replace.replace(input, replaceFuncs, matches, params)
 
-        assert.equal(output, '-12-3-ijk-')
+        assert.strictEqual(output, '-12-3-ijk-')
     })
 
     test('normal replace loop', () => {
@@ -148,7 +148,7 @@ suite('replace', () => {
 
         const output = replace.replace(input, replaceFuncs, matches, params)
 
-        assert.equal(output, '-12-3-12-')
+        assert.strictEqual(output, '-12-3-12-')
     })
 
     test('regexp replace with empty replaceStrings', () => {
@@ -166,7 +166,7 @@ suite('replace', () => {
 
         const output = replace.replace(input, replaceFuncs, matches, params)
 
-        assert.equal(output, '-abc-defgh-ijk-')
+        assert.strictEqual(output, '-abc-defgh-ijk-')
     })
 
     test('regexp replace', () => {
@@ -184,6 +184,6 @@ suite('replace', () => {
 
         const output = replace.replace(input, replaceFuncs, matches, params)
 
-        assert.equal(output, '-12b-3defgh-456ik-')
+        assert.strictEqual(output, '-12b-3defgh-456ik-')
     })
 })

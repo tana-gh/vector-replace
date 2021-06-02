@@ -9,9 +9,9 @@ const assertMatches = (
     index   : number,
     input   : string
 ) => {
-    assert.equal(matches[i][0]   , match)
-    assert.equal(matches[i].index, index)
-    assert.equal(matches[i].input, input)
+    assert.strictEqual(matches[i][0]   , match)
+    assert.strictEqual(matches[i].index, index)
+    assert.strictEqual(matches[i].input, input)
 }
 
 suite('search', () => {
@@ -22,9 +22,9 @@ suite('search', () => {
         const params = types.createParams()
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 0)
+        assert.strictEqual(matches.length, 0)
     })
 
     test('normal search', () => {
@@ -34,9 +34,9 @@ suite('search', () => {
         const params = types.createParams()
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc'  ,  1, input)
         assertMatches(matches, 1, 'defgh',  5, input)
         assertMatches(matches, 2, 'ijk'  , 11, input)
@@ -49,9 +49,9 @@ suite('search', () => {
         const params = types.createParams()
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal (matches.length, 2)
+        assert.strictEqual (matches.length, 2)
         assertMatches(matches, 0, 'abc'  ,  1, input)
         assertMatches(matches, 1, 'defgh',  5, input)
     })
@@ -63,9 +63,9 @@ suite('search', () => {
         const params = types.createParams()
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 2)
+        assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, 'abc'  ,  1, input)
         assertMatches(matches, 1, 'defgh',  9, input)
     })
@@ -77,9 +77,9 @@ suite('search', () => {
         const params = types.createParams()
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc'  ,  1, input)
         assertMatches(matches, 1, 'defgh',  5, input)
         assertMatches(matches, 2, 'ijk'  , 11, input)
@@ -92,9 +92,9 @@ suite('search', () => {
         const params = types.createParams()
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 1)
+        assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, 'Abc', 5, input)
     })
 
@@ -107,9 +107,9 @@ suite('search', () => {
         params.ignoreCaseSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, inputLower, searchFuncs, params)
+        const matches     = search.search(input, inputLower, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc', 1, input)
         assertMatches(matches, 1, 'Abc', 5, input)
         assertMatches(matches, 2, 'ABC', 9, input)
@@ -123,9 +123,9 @@ suite('search', () => {
         params.ignoreBangSearch = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 2)
+        assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, '!defgh',  6, input)
         assertMatches(matches, 1, '!!lmn' , 18, input)
     })
@@ -138,9 +138,9 @@ suite('search', () => {
         params.ignoreBangSearch = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc!'   ,  1, input)
         assertMatches(matches, 1, 'defgh!!',  6, input)
         assertMatches(matches, 2, 'ijk!!!' , 14, input)
@@ -153,9 +153,9 @@ suite('search', () => {
         const params = types.createParams()
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 2)
+        assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, 'abc'  , 1, input)
         assertMatches(matches, 1, 'defgh', 5, input)
     })
@@ -168,9 +168,9 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc'  ,  1, input)
         assertMatches(matches, 1, 'defgh',  5, input)
         assertMatches(matches, 2, 'abc'  , 11, input)
@@ -184,9 +184,9 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc'  ,  1, input)
         assertMatches(matches, 1, 'defgh',  5, input)
         assertMatches(matches, 2, 'abc'  , 11, input)
@@ -201,9 +201,115 @@ suite('search', () => {
         params.justSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 2)
+        assert.strictEqual(matches.length, 2)
+        assertMatches(matches, 0, 'abc'  , 1, input)
+        assertMatches(matches, 1, 'defgh', 5, input)
+    })
+
+    test('normal selection search 1', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ 'abc', 'defgh' ]
+        const selections    = [ 0, 0 ]
+
+        const params = types.createParams()
+        params.selectionSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, selections, searchFuncs, params)
+
+        assert.strictEqual(matches.length, 2)
+        assertMatches(matches, 0, 'abc'  , 1, input)
+        assertMatches(matches, 1, 'defgh', 5, input)
+    })
+
+    test('normal selection search 2', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ 'abc', 'defgh' ]
+        const selections    = [ 15, 15 ]
+
+        const params = types.createParams()
+        params.selectionSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, selections, searchFuncs, params)
+
+        assert.strictEqual(matches.length, 2)
+        assertMatches(matches, 0, 'abc'  , 1, input)
+        assertMatches(matches, 1, 'defgh', 5, input)
+    })
+
+    test('normal selection search 3', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ 'abc', 'defgh' ]
+        const selections    = [ 5, 9 ]
+
+        const params = types.createParams()
+        params.selectionSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, selections, searchFuncs, params)
+
+        assert.strictEqual(matches.length, 1)
+        assertMatches(matches, 0, 'defgh', 5, input)
+    })
+
+    test('normal selection search 4', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ 'abc', 'defgh' ]
+        const selections    = [ 4, 10 ]
+
+        const params = types.createParams()
+        params.selectionSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, selections, searchFuncs, params)
+
+        assert.strictEqual(matches.length, 1)
+        assertMatches(matches, 0, 'defgh', 5, input)
+    })
+
+    test('normal selection search 5', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ 'abc', 'defgh' ]
+        const selections    = [ 6, 10 ]
+
+        const params = types.createParams()
+        params.selectionSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, selections, searchFuncs, params)
+
+        assert.strictEqual(matches.length, 0)
+    })
+
+    test('normal selection search 6', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ 'abc', 'defgh' ]
+        const selections    = [ 4, 8 ]
+
+        const params = types.createParams()
+        params.selectionSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, selections, searchFuncs, params)
+
+        assert.strictEqual(matches.length, 0)
+    })
+
+    test('normal selection search 7', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ 'abc', 'defgh' ]
+        const selections    = [ 1, 4, 5, 9 ]
+
+        const params = types.createParams()
+        params.selectionSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, selections, searchFuncs, params)
+
+        assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, 'abc'  , 1, input)
         assertMatches(matches, 1, 'defgh', 5, input)
     })
@@ -216,9 +322,9 @@ suite('search', () => {
         params.useRegExp = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 1)
+        assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, 'abc', 1, input)
     })
 
@@ -230,9 +336,9 @@ suite('search', () => {
         params.useRegExp = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 0)
+        assert.strictEqual(matches.length, 0)
     })
 
     test('regexp search', () => {
@@ -243,9 +349,9 @@ suite('search', () => {
         params.useRegExp = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc'  ,  1, input)
         assertMatches(matches, 1, 'defgh',  5, input)
         assertMatches(matches, 2, 'ijk'  , 11, input)
@@ -259,9 +365,9 @@ suite('search', () => {
         params.useRegExp = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal (matches.length, 2)
+        assert.strictEqual (matches.length, 2)
         assertMatches(matches, 0, 'abc'  ,  1, input)
         assertMatches(matches, 1, 'defgh',  5, input)
     })
@@ -274,9 +380,9 @@ suite('search', () => {
         params.useRegExp = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 2)
+        assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, 'abc'  ,  1, input)
         assertMatches(matches, 1, 'defgh',  9, input)
     })
@@ -290,9 +396,9 @@ suite('search', () => {
         params.ignoreCaseSearch = false
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 1)
+        assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, 'Abc', 5, input)
     })
 
@@ -305,9 +411,9 @@ suite('search', () => {
         params.ignoreCaseSearch = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc', 1, input)
         assertMatches(matches, 1, 'Abc', 5, input)
         assertMatches(matches, 2, 'ABC', 9, input)
@@ -322,9 +428,9 @@ suite('search', () => {
         params.ignoreBangSearch = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 2)
+        assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, '!defgh',  6, input)
         assertMatches(matches, 1, '!!lmn' , 18, input)
     })
@@ -338,9 +444,9 @@ suite('search', () => {
         params.ignoreBangSearch = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc!'   ,  1, input)
         assertMatches(matches, 1, 'defgh!!',  6, input)
         assertMatches(matches, 2, 'ijk!!!' , 14, input)
@@ -354,9 +460,9 @@ suite('search', () => {
         params.useRegExp = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 2)
+        assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, '-abc-defgh-ijk-',  0, input)
         assertMatches(matches, 1, ''               , 15, input)
     })
@@ -370,9 +476,9 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 1)
+        assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, '-abc-defgh-ijk-', 0, input)
     })
 
@@ -385,9 +491,9 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, '-abc-'  ,  0, input)
         assertMatches(matches, 1, '-defgh-',  6, input)
         assertMatches(matches, 2, '-ijk-'  , 14, input)
@@ -402,9 +508,9 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, '-abc-'  ,  0, input)
         assertMatches(matches, 1, '-defgh-',  7, input)
         assertMatches(matches, 2, '-ijk-'  , 16, input)
@@ -419,9 +525,9 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, '-abc-'  ,  0, input)
         assertMatches(matches, 1, '-defgh-',  6, input)
         assertMatches(matches, 2, '-ijk-'  , 14, input)
@@ -436,9 +542,9 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, searchFuncs, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.equal(matches.length, 3)
+        assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, '-abc-'  ,  0, input)
         assertMatches(matches, 1, '-defgh-',  7, input)
         assertMatches(matches, 2, '-ijk-'  , 16, input)

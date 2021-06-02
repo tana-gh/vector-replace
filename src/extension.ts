@@ -18,6 +18,14 @@ const showViewCommand = (context: vscode.ExtensionContext) => () => {
     const editor = vscode.window.activeTextEditor
     const panel  = createPanel(context)
     const st     = state.create(editor)
+    st.refreshInterval = setInterval(() => {
+        if (!st.refreshTimeout) {
+            st.refreshTimeout = setTimeout(() => {
+                behaviour.refresh(st)
+                st.refreshTimeout = undefined
+            }, 0)
+        }
+    }, 500)
     listenEvents(panel, st)
 }
 
@@ -38,15 +46,9 @@ const readAndSetHtmlToWebview = (webview: vscode.Webview, htmlPath: string) => {
 }
 
 const listenEvents = (panel: vscode.WebviewPanel, st: state.State) => {
-    let refreshTimeout: NodeJS.Timeout | undefined = undefined
-
     const events = [
         panel.webview.onDidReceiveMessage(async mes => await behaviour.execute(mes, st)),
-        vscode.window.onDidChangeActiveTextEditor(editor => state.setEditor(st, editor)),
-        vscode.workspace.onDidChangeTextDocument(() => {
-            if (refreshTimeout) clearTimeout(refreshTimeout)
-            refreshTimeout = setTimeout(() => behaviour.refresh(st), 500)
-        })
+        vscode.window.onDidChangeActiveTextEditor(editor => state.setEditor(st, editor))
     ]
 
     panel.onDidDispose(() => {

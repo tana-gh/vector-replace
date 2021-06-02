@@ -3,6 +3,7 @@ export type MessageTypes =
     Refresh               |
     RunSearchCommand      |
     RunReplaceCommand     |
+    SetSelectionSearch    |
     SetUseRegExp          |
     SetIgnoreCaseSearch   |
     SetIgnoreBangSearch   |
@@ -25,6 +26,11 @@ export interface RunReplaceCommand {
     command   : 'runReplace'
     searchStr : string
     replaceStr: string
+}
+
+export interface SetSelectionSearch {
+    command: 'setSelectionSearch'
+    value  : boolean
 }
 
 export interface SetUseRegExp {

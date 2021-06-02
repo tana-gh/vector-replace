@@ -20,6 +20,7 @@ export interface VectorReplace {
     params        : Params
     text          : string
     textLower     : string
+    selections    : number[]
     searchStrings : string[]
     replaceStrings: string[]
     searchFuncs   : SearchFunc[]
@@ -31,6 +32,7 @@ export const createVectorReplace = () => <VectorReplace>({
     params        : createParams(),
     text          : '',
     textLower     : '',
+    selections    : [],
     searchStrings : [],
     replaceStrings: [],
     searchFuncs   : [],
@@ -39,6 +41,7 @@ export const createVectorReplace = () => <VectorReplace>({
 })
 
 export interface Params {
+    selectionSearch   : boolean
     useRegExp         : boolean
     ignoreCaseSearch  : boolean
     ignoreBangSearch  : boolean

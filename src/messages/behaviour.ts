@@ -16,6 +16,9 @@ export const execute = async (message: messageTypes.MessageTypes, st: state.Stat
         case 'runReplace':
             await runReplace(message, st)
             return
+        case 'setSelectionSearch':
+            setSelectionSearch(message, st)
+            return
         case 'setUseRegExp':
             setUseRegExp(message, st)
             return
@@ -46,8 +49,9 @@ export const execute = async (message: messageTypes.MessageTypes, st: state.Stat
 export const refresh = (st: state.State) => {
     if (!st.editor) return
 
-    logic.setInput(st.vr, getInput(st.editor))
-    logic.runSearch(st.vr)
+    logic.setInput     (st.vr, getInput(st.editor))
+    logic.setSelections(st.vr, getSelections(st.editor))
+    logic.runSearch    (st.vr)
     decorate(st.editor, st.decoration, st.vr.matches)
 }
 
@@ -56,8 +60,9 @@ const runSearch = (message: messageTypes.RunSearchCommand, st: state.State) => {
     
     if (!st.editor) return
     
-    logic.setInput(st.vr, getInput(st.editor))
-    logic.runSearch(st.vr)
+    logic.setInput     (st.vr, getInput    (st.editor))
+    logic.setSelections(st.vr, getSelections(st.editor))
+    logic.runSearch    (st.vr)
     decorate(st.editor, st.decoration, st.vr.matches)
 }
 
@@ -68,10 +73,16 @@ const runReplace = async (message: messageTypes.RunReplaceCommand, st: state.Sta
     if (!st.editor) return
 
     decorate(st.editor, st.decoration, [])
-    logic.setInput(st.vr, getInput(st.editor))
-    logic.runSearch (st.vr)
-    logic.runReplace(st.vr)
+    logic.setInput     (st.vr, getInput(st.editor))
+    logic.setSelections(st.vr, getSelections(st.editor))
+    logic.runSearch    (st.vr)
+    logic.runReplace   (st.vr)
     await setOutput(st.editor, st.vr.text)
+}
+
+const setSelectionSearch = (message: messageTypes.SetSelectionSearch, st: state.State) => {
+    logic.setSelectionSearch(st.vr, message.value)
+    updateSearchParam(st)
 }
 
 const setUseRegExp = (message: messageTypes.SetUseRegExp, st: state.State) => {
@@ -129,6 +140,14 @@ const updateReplaceParam = (st: state.State) => {
 
 const getInput = (editor: vscode.TextEditor) => {
     return editor.document.getText()
+}
+
+const getSelections = (editor: vscode.TextEditor) => {
+    const positions = editor.selections
+        .map(sel => [sel.start, sel.end])
+        .flat()
+    
+    return rangeUtil.toIndicesFromPositions(editor.document.getText(), positions)
 }
 
 const decorate = (

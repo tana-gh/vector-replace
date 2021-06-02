@@ -103,6 +103,10 @@
         </div>
         <div class="pref-area">
             <span class="setting">
+                <input type="checkbox" id="selectionSearch" class="checkbox">
+                <label for="selectionSearch">Selection search</label>
+            </span>
+            <span class="setting">
                 <input type="checkbox" id="useRegExp" class="checkbox">
                 <label for="useRegExp">Use regular expression</label>
             </span>
@@ -157,6 +161,7 @@
         const vscode = acquireVsCodeApi()
 
         const replaceButton              = document.getElementById('replaceButton')
+        const selectionSearchCheckbox    = document.getElementById('selectionSearch')
         const useRegExpCheckbox          = document.getElementById('useRegExp')
         const ignoreCaseSearchCheckbox   = document.getElementById('ignoreCaseSearch')
         const ignoreBangSearchCheckbox   = document.getElementById('ignoreBangSearch')
@@ -175,6 +180,14 @@
                 replaceStr: replaceTextArea.value
             })
         replaceButton.addEventListener('click', runReplace)
+
+        const setSelectionSearch = () =>
+            vscode.postMessage({
+                command: 'setSelectionSearch',
+                value  : selectionSearchCheckbox.checked
+            })
+        selectionSearchCheckbox.addEventListener('click', setSelectionSearch)
+        setSelectionSearch()
 
         const setUseRegExp = () =>
             vscode.postMessage({

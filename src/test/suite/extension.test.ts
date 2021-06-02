@@ -15,8 +15,7 @@ const init = async () => {
 	st = state.create(editor)
 
     disposables = <vscode.Disposable[]>[
-        vscode.window.onDidChangeActiveTextEditor(editor => state.setEditor(st!, editor)),
-        vscode.workspace.onDidChangeTextDocument(() => behaviour.refresh(st!))
+        vscode.window.onDidChangeActiveTextEditor(editor => state.setEditor(st!, editor))
     ]
 }
 
@@ -38,6 +37,6 @@ suite('extension', () => {
 		
 		const text = document?.getText()
 
-		assert.equal(text, '-12-3-456-')
+		assert.strictEqual(text, '-12-3-456-')
 	})
 })
