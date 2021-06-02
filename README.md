@@ -26,9 +26,17 @@ If you specify like this in the search pane, 'a' is searched at first, 'b' is se
 
 ## Settings
 
+### Selection search
+
+If checking this, search and replace target are limited into selection ranges.
+
 ### Use regular expression
 
 If checking this, can use regular expression in the search pane. Also, can use the capturing replace by using '$'.
+
+### Capture whole
+
+This setting can be enabled when 'Use regular expression' is enabled. If checking this, each search strings are interpreted that those are enclosed in parentheses, so always can use '$1' as whole search string on replace.
 
 ### Ignore case search
 
@@ -65,6 +73,11 @@ If checking this, the search will not be match when only matches until a part of
 ---
 
 ## Release Notes
+
+### 1.1.0
+Features:
+- Capture whole each search strings when regular expression is enabled #7
+- Selection search #9
 
 ### 1.0.6
 

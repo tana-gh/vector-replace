@@ -1,6 +1,6 @@
 {
 	"name": "vector-replace",
-	"version": "1.0.6",
+	"version": "1.1.0",
 	"publisher": "tana-gh",
 	"engines": {
 		"vscode": "^1.52.0"
