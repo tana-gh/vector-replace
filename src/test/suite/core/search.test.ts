@@ -389,7 +389,7 @@ suite('search', () => {
 
     test('regexp search capture whole', () => {
         const input         = '-abc-defgh-ijk-'
-        const searchStrings = [ '\\w{3}', '\\w{5}', '\\w{3}' ]
+        const searchStrings = [ 'abc', 'defgh', 'ijk' ]
 
         const params     = types.createParams()
         params.useRegExp    = true
@@ -403,9 +403,9 @@ suite('search', () => {
         assertMatches(matches, 1, 'defgh',  5, input)
         assertMatches(matches, 2, 'ijk'  , 11, input)
 
-        assert.strictEqual(matches[0].pattern, '(abc)'  )
-        assert.strictEqual(matches[1].pattern, '(defgh)')
-        assert.strictEqual(matches[2].pattern, '(ijk)'  )
+        assert.notStrictEqual(matches[0].pattern, /(abc)/  )
+        assert.notStrictEqual(matches[1].pattern, /(defgh)/)
+        assert.notStrictEqual(matches[2].pattern, /(ijk)/  )
     })
 
     test('regexp search not ignore case', () => {
