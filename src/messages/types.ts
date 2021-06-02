@@ -5,6 +5,7 @@ export type MessageTypes =
     RunReplaceCommand     |
     SetSelectionSearch    |
     SetUseRegExp          |
+    SetCaptureWhole       |
     SetIgnoreCaseSearch   |
     SetIgnoreBangSearch   |
     SetIgnoreBangReplace  |
@@ -35,6 +36,11 @@ export interface SetSelectionSearch {
 
 export interface SetUseRegExp {
     command: 'setUseRegExp'
+    value  : boolean
+}
+
+export interface SetCaptureWhole {
+    command: 'setCaptureWhole'
     value  : boolean
 }
 

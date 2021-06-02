@@ -103,7 +103,7 @@ const createRegExpSearchFunc = (params: types.Params) => (searchString: string) 
     (input: string, inputLower: string, prev: types.MatchResult) => {
         let regExp: RegExp
         try {
-            regExp = new RegExp(searchString, params.ignoreCaseSearch ? 'giu' : 'gu')
+            regExp = new RegExp(params.captureWhole ? `(${searchString})` : searchString, params.ignoreCaseSearch ? 'giu' : 'gu')
         }
         catch {
             return null

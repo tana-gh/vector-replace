@@ -45,6 +45,10 @@ export const setUseRegExp = (vr: types.VectorReplace, value: boolean) => {
     vr.params.useRegExp = value
 }
 
+export const setCaptureWhole = (vr: types.VectorReplace, value: boolean) => {
+    vr.params.captureWhole = value
+}
+
 export const setIgnoreCaseSearch = (vr: types.VectorReplace, value: boolean) => {
     vr.params.ignoreCaseSearch = value
 }

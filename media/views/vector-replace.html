@@ -111,6 +111,10 @@
                 <label for="useRegExp">Use regular expression</label>
             </span>
             <span class="setting">
+                <input type="checkbox" id="captureWhole" class="checkbox" disabled>
+                <label for="captureWhole">Capture whole</label>
+            </span>
+            <span class="setting">
                 <input type="checkbox" id="ignoreCaseSearch" class="checkbox">
                 <label for="ignoreCaseSearch">Ignore case search</label>
             </span>
@@ -163,6 +167,7 @@
         const replaceButton              = document.getElementById('replaceButton')
         const selectionSearchCheckbox    = document.getElementById('selectionSearch')
         const useRegExpCheckbox          = document.getElementById('useRegExp')
+        const captureWholeCheckbox       = document.getElementById('captureWhole')
         const ignoreCaseSearchCheckbox   = document.getElementById('ignoreCaseSearch')
         const ignoreBangSearchCheckbox   = document.getElementById('ignoreBangSearch')
         const ignoreBangReplaceCheckbox  = document.getElementById('ignoreBangReplace')
@@ -195,7 +200,16 @@
                 value  : useRegExpCheckbox.checked
             })
         useRegExpCheckbox.addEventListener('click', setUseRegExp)
+        useRegExpCheckbox.addEventListener('click', () => captureWholeCheckbox.disabled = !useRegExpCheckbox.checked)
         setUseRegExp()
+
+        const setCaptureWhole = () =>
+            vscode.postMessage({
+                command: 'setCaptureWhole',
+                value  : captureWholeCheckbox.checked
+            })
+        captureWholeCheckbox.addEventListener('click', setCaptureWhole)
+        setCaptureWhole()
 
         const setIgnoreCaseSearch = () =>
             vscode.postMessage({

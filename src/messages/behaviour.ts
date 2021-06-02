@@ -22,6 +22,9 @@ export const execute = async (message: messageTypes.MessageTypes, st: state.Stat
         case 'setUseRegExp':
             setUseRegExp(message, st)
             return
+        case 'setCaptureWhole':
+            setCaptureWhole(message, st)
+            return
         case 'setIgnoreCaseSearch':
             setIgnoreCaseSearch(message, st)
             return
@@ -87,6 +90,11 @@ const setSelectionSearch = (message: messageTypes.SetSelectionSearch, st: state.
 
 const setUseRegExp = (message: messageTypes.SetUseRegExp, st: state.State) => {
     logic.setUseRegExp(st.vr, message.value)
+    updateSearchParam(st)
+}
+
+const setCaptureWhole = (message: messageTypes.SetCaptureWhole, st: state.State) => {
+    logic.setCaptureWhole(st.vr, message.value)
     updateSearchParam(st)
 }
 
