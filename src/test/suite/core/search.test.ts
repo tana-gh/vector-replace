@@ -634,7 +634,7 @@ suite('search', () => {
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
         const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.strictEqual(matches.length, 3)
+        assert.strictEqual(matches.length, 4)
         assertMatches(matches, 0, '-abc-'  ,  0, input)
         assertMatches(matches, 1, '-defgh-',  7, input)
         assertMatches(matches, 2, '-ijk-'  , 16, input)
