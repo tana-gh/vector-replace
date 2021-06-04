@@ -156,6 +156,7 @@ suite('replace', () => {
         const replaceStrings = <string[]>[]
 
         const params = types.createParams()
+        params.useRegExp = true
 
         const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
         const matches      = [
@@ -174,6 +175,7 @@ suite('replace', () => {
         const replaceStrings = [ '12$1', '3$1', '456$1$2' ]
 
         const params = types.createParams()
+        params.useRegExp = true
 
         const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
         const matches      = [

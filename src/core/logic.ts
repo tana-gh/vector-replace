@@ -22,7 +22,16 @@ export const setSearchFuncs = (vr: types.VectorReplace) => {
 
 export const setReplaceStrings = (vr: types.VectorReplace, replaceStr: string) => {
     vr.replaceStrings = replaceStr.split(/\n|\r\n/)
+    if (vr.params.useRegExp) vr.replaceStrings = vr.replaceStrings.map(str => escapeBackslash(str))
     setReplaceFuncs(vr)
+}
+
+const escapeBackslash = (str: string) => {
+    return str
+        .replace('\\\\', '\\')
+        .replace('\\t' , '\t')
+        .replace('\\r' , '\r')
+        .replace('\\n' , '\n')
 }
 
 export const setReplaceFuncs = (vr: types.VectorReplace) => {
