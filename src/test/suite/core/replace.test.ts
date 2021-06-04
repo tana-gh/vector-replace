@@ -225,9 +225,9 @@ suite('replace', () => {
 
         const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
         const matches      = [
-            types.createMatchResult([ 'abc'   ],  1, input, /\w{3}/g, 0),
-            types.createMatchResult([ 'defgh' ],  5, input, /\w{5}/g, 1),
-            types.createMatchResult([ 'ijk'   ], 11, input, /\w{3}/g, 2),
+            types.createMatchResult([ 'abc'   ],  1, input, /\w{3}/u, 0),
+            types.createMatchResult([ 'defgh' ],  5, input, /\w{5}/u, 1),
+            types.createMatchResult([ 'ijk'   ], 11, input, /\w{3}/u, 2),
         ]
 
         const output = replace.replace(input, replaceFuncs, matches, params)
@@ -244,9 +244,9 @@ suite('replace', () => {
 
         const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
         const matches      = [
-            types.createMatchResult([ 'abc'   ],  1, input, /a(b)c/g  , 0),
-            types.createMatchResult([ 'defgh' ],  5, input, /(\w{5})/g, 1),
-            types.createMatchResult([ 'ijk'   ], 11, input, /(i)j(k)/g, 2),
+            types.createMatchResult([ 'abc'   ],  1, input, /a(b)c/u  , 0),
+            types.createMatchResult([ 'defgh' ],  5, input, /(\w{5})/u, 1),
+            types.createMatchResult([ 'ijk'   ], 11, input, /(i)j(k)/u, 2),
         ]
 
         const output = replace.replace(input, replaceFuncs, matches, params)
@@ -276,18 +276,18 @@ suite('replace', () => {
 
         const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
         const matches      = [
-            types.createMatchResult([ 'b' ],  0, input, /b/g,  0),
-            types.createMatchResult([ 'b' ],  1, input, /b/g,  1),
-            types.createMatchResult([ 'b' ],  2, input, /b/g,  2),
-            types.createMatchResult([ 't' ],  3, input, /t/g,  3),
-            types.createMatchResult([ 't' ],  4, input, /t/g,  4),
-            types.createMatchResult([ 't' ],  5, input, /t/g,  5),
-            types.createMatchResult([ 'r' ],  6, input, /r/g,  6),
-            types.createMatchResult([ 'r' ],  7, input, /r/g,  7),
-            types.createMatchResult([ 'r' ],  8, input, /r/g,  8),
-            types.createMatchResult([ 'n' ],  9, input, /n/g,  9),
-            types.createMatchResult([ 'n' ], 10, input, /n/g, 10),
-            types.createMatchResult([ 'n' ], 11, input, /n/g, 11)
+            types.createMatchResult([ 'b' ],  0, input, /b/u,  0),
+            types.createMatchResult([ 'b' ],  1, input, /b/u,  1),
+            types.createMatchResult([ 'b' ],  2, input, /b/u,  2),
+            types.createMatchResult([ 't' ],  3, input, /t/u,  3),
+            types.createMatchResult([ 't' ],  4, input, /t/u,  4),
+            types.createMatchResult([ 't' ],  5, input, /t/u,  5),
+            types.createMatchResult([ 'r' ],  6, input, /r/u,  6),
+            types.createMatchResult([ 'r' ],  7, input, /r/u,  7),
+            types.createMatchResult([ 'r' ],  8, input, /r/u,  8),
+            types.createMatchResult([ 'n' ],  9, input, /n/u,  9),
+            types.createMatchResult([ 'n' ], 10, input, /n/u, 10),
+            types.createMatchResult([ 'n' ], 11, input, /n/u, 11)
         ]
 
         const output = replace.replace(input, replaceFuncs, matches, params)

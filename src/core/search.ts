@@ -90,38 +90,50 @@ const searchCore = (
         let sel = 0
 
         for (let func of searchFuncs) {
-            const match = func(input, inputLower, prev)
-
-            if (match === null) {
-                if (!params.justSearch) matches = matches.concat(subMatches)
-                break outer
-            }
-
-            if (match[0] === '') {
+            while (true) {
                 const current = types.endOfMatchResult(prev)
-                if (input[current] === '\n') {
-                    prev = { ...prev, [0]: prev[0] + '\n' }
-                    continue
-                }
-                else if (input[current] === '\r' && input[current + 1] === '\n') {
-                    prev = { ...prev, [0]: prev[0] + '\r\n' }
-                    continue
-                }
-            }
 
-            if (
-                !params.selectionSearch ||
-                selections.length === 0 ||
-                selections.length === 2 && selections[0] === selections[1]
-            ) {
-                subMatches.push(match)
+                if (current >= input.length) {
+                    if (!params.justSearch) matches = matches.concat(subMatches)
+                    break outer
+                }
+
+                const match = func(input, inputLower, prev)
+
+                if (match === null) {
+                    if (!params.justSearch) matches = matches.concat(subMatches)
+                    break outer
+                }
+
+                if (match[0] === '') {
+                    if (input[current] === '\n') {
+                        prev = { ...prev, [0]: prev[0] + '\n' }
+                        continue
+                    }
+                    else if (input[current] === '\r' && input[current + 1] === '\n') {
+                        prev = { ...prev, [0]: prev[0] + '\r\n' }
+                        continue
+                    }
+                    else {
+                        break
+                    }
+                }
+
+                if (
+                    !params.selectionSearch ||
+                    selections.length === 0 ||
+                    selections.length === 2 && selections[0] === selections[1]
+                ) {
+                    subMatches.push(match)
+                }
+                else {
+                    for (; selections[sel] <= match.index; sel++);
+                    if (sel % 2 === 1 && match.index + match[0].length <= selections[sel]) subMatches.push(match)
+                }
+                
+                prev = match
+                break
             }
-            else {
-                for (; selections[sel] <= match.index; sel++);
-                if (sel % 2 === 1 && match.index + match[0].length <= selections[sel]) subMatches.push(match)
-            }
-            
-            prev = match
         }
 
         if (types.endOfMatchResult(prev) === prevIndex) break
@@ -169,5 +181,5 @@ const createRegExpSearchFunc = (searchString: string, order: number, params: typ
         }
         regExp.lastIndex = types.endOfMatchResult(prev)
         const result = regExp.exec(input)
-        return result === null ? null : <types.MatchResult>{ ...result, pattern: regExp, order }
+        return result === null ? null : <types.MatchResult>{ ...result, pattern: new RegExp(regExp, params.ignoreCaseSearch ? 'iu' : 'u'), order }
     }

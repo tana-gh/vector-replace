@@ -315,14 +315,14 @@ suite('search', () => {
     })
 
     test('normal matrix search', () => {
-        const input         = '-abc-defgh-ijk-abc-defgh-ijk-'
+        const input         = '-abc-defgh-abc-defgh-'
         const searchStrings = [ 'abc', 'defgh', 'a', 'c', '-abc', 'abc-', '-' ]
 
         const params = types.createParams()
         params.matrixSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = search.matrixSearch(input, input, [], searchFuncs, params)
 
         assert.strictEqual(matches.length, 9)
         assertMatches(matches, 0, '-'    ,  0, input)
@@ -505,14 +505,28 @@ suite('search', () => {
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
         const matches     = search.search(input, input, [], searchFuncs, params)
 
-        assert.strictEqual(matches.length, 2)
-        assertMatches(matches, 0, '-abc-defgh-ijk-',  0, input)
-        assertMatches(matches, 1, ''               , 15, input)
+        assert.strictEqual(matches.length, 1)
+        assertMatches(matches, 0, '-abc-defgh-ijk-', 0, input)
     })
 
     test('regexp search loop with empty result', () => {
         const input         = '-abc-defgh-ijk-'
         const searchStrings = [ '.*' ]
+        
+        const params      = types.createParams()
+        params.useRegExp  = true
+        params.loopSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
+
+        assert.strictEqual(matches.length, 1)
+        assertMatches(matches, 0, '-abc-defgh-ijk-', 0, input)
+    })
+
+    test('regexp search loop with empty result 2', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ '.*', '.*' ]
         
         const params      = types.createParams()
         params.useRegExp  = true
@@ -531,7 +545,6 @@ suite('search', () => {
         
         const params      = types.createParams()
         params.useRegExp  = true
-        params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
         const matches     = search.search(input, input, [], searchFuncs, params)
@@ -548,7 +561,6 @@ suite('search', () => {
         
         const params      = types.createParams()
         params.useRegExp  = true
-        params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
         const matches     = search.search(input, input, [], searchFuncs, params)
@@ -591,5 +603,41 @@ suite('search', () => {
         assertMatches(matches, 0, '-abc-'  ,  0, input)
         assertMatches(matches, 1, '-defgh-',  7, input)
         assertMatches(matches, 2, '-ijk-'  , 16, input)
+    })
+
+    test('regexp search loop multiple lines LF 2', () => {
+        const input         = '-abc-\n-defgh-\n-ijk-\n-lmn-'
+        const searchStrings = [ '.*', '.*', '.*' ]
+        
+        const params      = types.createParams()
+        params.useRegExp  = true
+        params.loopSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
+
+        assert.strictEqual(matches.length, 4)
+        assertMatches(matches, 0, '-abc-'  ,  0, input)
+        assertMatches(matches, 1, '-defgh-',  6, input)
+        assertMatches(matches, 2, '-ijk-'  , 14, input)
+        assertMatches(matches, 3, '-lmn-'  , 20, input)
+    })
+
+    test('regexp search loop multiple lines CRLF 2', () => {
+        const input         = '-abc-\r\n-defgh-\r\n-ijk-\r\n-lmn-'
+        const searchStrings = [ '.*', '.*', '.*' ]
+        
+        const params      = types.createParams()
+        params.useRegExp  = true
+        params.loopSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
+
+        assert.strictEqual(matches.length, 3)
+        assertMatches(matches, 0, '-abc-'  ,  0, input)
+        assertMatches(matches, 1, '-defgh-',  7, input)
+        assertMatches(matches, 2, '-ijk-'  , 16, input)
+        assertMatches(matches, 3, '-lmn-'  , 23, input)
     })
 })
