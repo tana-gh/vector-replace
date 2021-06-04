@@ -169,7 +169,6 @@ suite('replace', () => {
         ]
 
         const params = types.createParams()
-        params.useRegExp = true
 
         const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
         const matches      = [
