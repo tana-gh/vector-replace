@@ -11,16 +11,13 @@ export const replace = (
     if (replaceFuncs.length === 0) return input
 
     const output = <string[]>[]
-
-    const gen = generateReplaceFuncs(replaceFuncs, params)
-    let prev  = 0
+    let prev = 0
     
     for (let match of matches) {
-        const func = gen.next()
+        const func = getReplaceFunc(replaceFuncs, match.order, params)
+        if (!func) continue
 
-        if (func.done) break
-
-        const replaced = func.value(match)
+        const replaced = func(match)
         const prevStr  = input.substring(prev, match.index)
 
         output.push(prevStr, replaced)
@@ -34,20 +31,15 @@ export const replace = (
     return output.join('')
 }
 
-const generateReplaceFuncs = function* (replaceFuncs: types.ReplaceFunc[], params: types.Params) {
+const getReplaceFunc = (replaceFuncs: types.ReplaceFunc[], order: number, params: types.Params) => {
     if (params.loopReplace) {
-        while (true) {
-            yield* generateOneLoopReplaceFuncs(replaceFuncs)
-        }
+        return replaceFuncs[order % replaceFuncs.length]
+    }
+    else if (order < replaceFuncs.length) {
+        return replaceFuncs[order]
     }
     else {
-        yield* generateOneLoopReplaceFuncs(replaceFuncs)
-    }
-}
-
-const generateOneLoopReplaceFuncs = function* (replaceFuncs: types.ReplaceFunc[]) {
-    for (let func of replaceFuncs) {
-        yield func
+        return undefined
     }
 }
 

@@ -314,6 +314,28 @@ suite('search', () => {
         assertMatches(matches, 1, 'defgh', 5, input)
     })
 
+    test('normal matrix search', () => {
+        const input         = '-abc-defgh-ijk-abc-defgh-ijk-'
+        const searchStrings = [ 'abc', 'defgh', 'a', 'c', '-abc', 'abc-', '-' ]
+
+        const params = types.createParams()
+        params.matrixSearch = true
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const matches     = search.search(input, input, [], searchFuncs, params)
+
+        assert.strictEqual(matches.length, 9)
+        assertMatches(matches, 0, '-'    ,  0, input)
+        assertMatches(matches, 1, 'abc'  ,  1, input)
+        assertMatches(matches, 2, '-'    ,  4, input)
+        assertMatches(matches, 3, 'defgh',  5, input)
+        assertMatches(matches, 4, '-'    , 10, input)
+        assertMatches(matches, 5, 'abc'  , 11, input)
+        assertMatches(matches, 6, '-'    , 14, input)
+        assertMatches(matches, 7, 'defgh', 15, input)
+        assertMatches(matches, 8, '-'    , 20, input)
+    })
+
     test('regexp creating error', () => {
         const input         = '-abc-defgh-ijk-'
         const searchStrings = [ '\\w{3}', '\\', '\\w{5}' ]

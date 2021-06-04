@@ -146,6 +146,10 @@
                 <input type="checkbox" id="justSearch" class="checkbox">
                 <label for="justSearch">Just search</label>
             </span>
+            <span class="setting">
+                <input type="checkbox" id="matrixSearch" class="checkbox">
+                <label for="matrixSearch">Matrix search</label>
+            </span>
         </div>
         <div class="search-label-area">
             <span>Search pane</span>
@@ -175,6 +179,7 @@
         const loopSearchCheckbox         = document.getElementById('loopSearch')
         const loopReplaceCheckbox        = document.getElementById('loopReplace')
         const justSearchCheckbox         = document.getElementById('justSearch')
+        const matrixSearchCheckbox       = document.getElementById('matrixSearch')
         const searchTextArea             = document.getElementById('search')
         const replaceTextArea            = document.getElementById('replace')
 
@@ -266,6 +271,14 @@
             })
         justSearchCheckbox.addEventListener('click', setJustSearch)
         setJustSearch()
+
+        const setMatrixSearch = () =>
+            vscode.postMessage({
+                command: 'setMatrixSearch',
+                value  : matrixSearchCheckbox.checked
+            })
+        matrixSearchCheckbox.addEventListener('click', setMatrixSearch)
+        setMatrixSearch()
 
         const runSearch = () =>
             vscode.postMessage({

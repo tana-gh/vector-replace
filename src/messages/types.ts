@@ -12,7 +12,8 @@ export type MessageTypes =
     SetIgnoreEmptyReplace |
     SetLoopSearch         |
     SetLoopReplace        |
-    SetJustSearch
+    SetJustSearch         |
+    SetMatrixSearch
 
 export interface Refresh {
     command: 'refresh'
@@ -76,5 +77,10 @@ export interface SetLoopReplace {
 
 export interface SetJustSearch {
     command: 'setJustSearch'
+    value  : boolean
+}
+
+export interface SetMatrixSearch {
+    command: 'setMatrixSearch'
     value  : boolean
 }

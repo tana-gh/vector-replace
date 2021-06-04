@@ -30,7 +30,12 @@ export const setReplaceFuncs = (vr: types.VectorReplace) => {
 }
 
 export const runSearch = (vr: types.VectorReplace) => {
-    vr.matches = search.search(vr.text, vr.textLower, vr.selections, vr.searchFuncs, vr.params)
+    if (vr.params.matrixSearch) {
+        vr.matches = search.matrixSearch(vr.text, vr.textLower, vr.selections, vr.searchFuncs, vr.params)
+    }
+    else {
+        vr.matches = search.search(vr.text, vr.textLower, vr.selections, vr.searchFuncs, vr.params)
+    }
 }
 
 export const runReplace = (vr: types.VectorReplace) => {
@@ -75,4 +80,8 @@ export const setLoopReplace = (vr: types.VectorReplace, value: boolean) => {
 
 export const setJustSearch = (vr: types.VectorReplace, value: boolean) => {
     vr.params.justSearch = value
+}
+
+export const setMatrixSearch = (vr: types.VectorReplace, value: boolean) => {
+    vr.params.matrixSearch = value
 }

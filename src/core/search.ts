@@ -8,23 +8,89 @@ export const search = (
     searchFuncs: types.SearchFunc[],
     params     : types.Params
 ) => {
+    return searchCore(input, inputLower, selections, searchFuncs, params, params.loopSearch)
+}
+
+export const matrixSearch = (
+    input      : string,
+    inputLower : string,
+    selections : number[],
+    searchFuncs: types.SearchFunc[],
+    params     : types.Params
+) => {
+    if (searchFuncs.length === 0) return []
+
+    const matchMatrix = <types.MatchResult[][]>[]
+
+    for (let func of searchFuncs) {
+        matchMatrix.push(searchCore(input, inputLower, selections, [ func ], params, true))
+    }
+
+    let matches = <types.MatchResult[]>[]
+
+    for (let ms of matchMatrix) {
+        const tmp = <types.MatchResult[]>[]
+        let i = 0
+
+        for (let m of ms) {
+            if (i < matches.length) {
+                const end = types.endOfMatchResult(m)
+                
+                while (true) {
+                    if (end <= matches[i].index) {
+                        tmp.push(m)
+                        break
+                    }
+                    else {
+                        tmp.push(matches[i])
+                        i++
+                        
+                        if (m.index < types.endOfMatchResult(matches[i - 1])) {
+                            break
+                        }
+                        else if (i >= matches.length) {
+                            tmp.push(m)
+                            break
+                        }
+                    }
+                }
+            }
+            else {
+                tmp.push(m)
+            }
+        }
+
+        for (; i < matches.length; i++) {
+            tmp.push(matches[i])
+        }
+
+        matches = tmp
+    }
+
+    return matches
+}
+
+const searchCore = (
+    input      : string,
+    inputLower : string,
+    selections : number[],
+    searchFuncs: types.SearchFunc[],
+    params     : types.Params,
+    loop       : boolean
+) => {
     if (searchFuncs.length === 0) return []
 
     let matches = <types.MatchResult[]>[]
-    let prev    = types.createMatchResult([''], 0, '', '')
+    let prev    = types.createMatchResult([''], 0, '', '', -1)
 
     outer:
     while (true) {
         const prevIndex  = types.endOfMatchResult(prev)
         const subMatches = []
-        const gen  = generateSearchFuncs(searchFuncs)
-        let   func = gen.next()
-        let   sel  = 0
+        let sel = 0
 
-        while (true) {
-            if (func.done) break
-
-            const match = func.value(input, inputLower, prev)
+        for (let func of searchFuncs) {
+            const match = func(input, inputLower, prev)
 
             if (match === null) {
                 if (!params.justSearch) matches = matches.concat(subMatches)
@@ -56,23 +122,16 @@ export const search = (
             }
             
             prev = match
-            func = gen.next()
         }
 
         if (types.endOfMatchResult(prev) === prevIndex) break
 
         matches = matches.concat(subMatches)
 
-        if (!params.loopSearch) break
+        if (!loop) break
     }
 
     return matches
-}
-
-const generateSearchFuncs = function* (searchFuncs: types.SearchFunc[]) {
-    for (let func of searchFuncs) {
-        yield func
-    }
 }
 
 export const createSearchFuncs = (searchStrings: string[], params: types.Params) => {
@@ -83,11 +142,11 @@ export const createSearchFuncs = (searchStrings: string[], params: types.Params)
     }
     
     return params.useRegExp ?
-        filtered.map(createRegExpSearchFunc(params)) :
-        filtered.map(createNormalSearchFunc(params))
+        filtered.map((str, i) => createRegExpSearchFunc(str, i, params)) :
+        filtered.map((str, i) => createNormalSearchFunc(str, i, params))
 }
 
-const createNormalSearchFunc = (params: types.Params) => (searchString: string) =>
+const createNormalSearchFunc = (searchString: string, order: number, params: types.Params) =>
     (input: string, inputLower: string, prev: types.MatchResult) => {
         const target = params.ignoreCaseSearch ? inputLower : input
         const search = params.ignoreCaseSearch ? searchString.toLowerCase() : searchString
@@ -96,10 +155,10 @@ const createNormalSearchFunc = (params: types.Params) => (searchString: string) 
         if (index === -1) return null
 
         const match  = input.substring(index, index + searchString.length)
-        return types.createMatchResult([ match ], index, input, searchString)
+        return types.createMatchResult([ match ], index, input, searchString, order)
     }
 
-const createRegExpSearchFunc = (params: types.Params) => (searchString: string) =>
+const createRegExpSearchFunc = (searchString: string, order: number, params: types.Params) =>
     (input: string, inputLower: string, prev: types.MatchResult) => {
         let regExp: RegExp
         try {
@@ -110,5 +169,5 @@ const createRegExpSearchFunc = (params: types.Params) => (searchString: string) 
         }
         regExp.lastIndex = types.endOfMatchResult(prev)
         const result = regExp.exec(input)
-        return result === null ? null : <types.MatchResult>{ ...result, pattern: regExp }
+        return result === null ? null : <types.MatchResult>{ ...result, pattern: regExp, order }
     }

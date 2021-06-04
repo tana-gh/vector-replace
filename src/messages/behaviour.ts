@@ -46,6 +46,9 @@ export const execute = async (message: messageTypes.MessageTypes, st: state.Stat
         case 'setJustSearch':
             setJustSearch(message, st)
             return
+        case 'setMatrixSearch':
+            setMatrixSearch(message, st)
+            return
     }
 }
 
@@ -130,6 +133,11 @@ const setLoopReplace = (message: messageTypes.SetLoopReplace, st: state.State) =
 
 const setJustSearch = (message: messageTypes.SetJustSearch, st: state.State) => {
     logic.setJustSearch(st.vr, message.value)
+    updateSearchParam(st)
+}
+
+const setMatrixSearch = (message: messageTypes.SetMatrixSearch, st: state.State) => {
+    logic.setMatrixSearch(st.vr, message.value)
     updateSearchParam(st)
 }
 

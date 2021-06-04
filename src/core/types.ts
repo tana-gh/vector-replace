@@ -4,11 +4,12 @@ export interface MatchResult {
     index  : number
     input  : string
     pattern: string | RegExp
+    order  : number
 }
 
 export const createMatchResult =
-    (matches: string[], index: number, input: string, pattern: string | RegExp) =>
-        <MatchResult>{ ...matches, index, input, pattern }
+    (matches: string[], index: number, input: string, pattern: string | RegExp, order: number) =>
+        <MatchResult>{ ...matches, index, input, pattern, order }
 
 export const endOfMatchResult = (match: MatchResult) =>
     match.index + match[0].length
@@ -51,6 +52,7 @@ export interface Params {
     loopSearch        : boolean
     loopReplace       : boolean
     justSearch        : boolean
+    matrixSearch      : boolean
 }
 
 export const createParams = () => <Params>({
@@ -63,5 +65,6 @@ export const createParams = () => <Params>({
     ignoreEmptyReplace: false,
     loopSearch        : false,
     loopReplace       : false,
-    justSearch        : false
+    justSearch        : false,
+    matrixSearch      : false
 })
