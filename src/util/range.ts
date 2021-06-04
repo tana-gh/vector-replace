@@ -57,19 +57,19 @@ const toRangesFromPositions = (positions: vscode.Position[]) => {
 export const toIndicesFromPositions = (input: string, positions: vscode.Position[]) => {
     const result = []
 
-    const sorted = [...positions].sort((pos1, pos2) => pos1.line !== pos2.line ? pos1.line - pos2.line : pos1.character - pos2.character)
+    const sorted = [ ...positions ].sort((pos1, pos2) => pos1.line !== pos2.line ? pos1.line - pos2.line : pos1.character - pos2.character)
 
     const lines = input.split('\n')
     let prev = 0
     let i    = 0
 
     for (let l = 0; i < sorted.length && l < lines.length; l++) {
-        if (sorted[i].line != l) {
+        if (sorted[i].line !== l) {
             prev += lines[l].length + 1
             continue
         }
 
-        while (i < sorted.length && sorted[i].line == l) {
+        while (i < sorted.length && sorted[i].line === l) {
             result.push(prev + sorted[i].character)
             i++
         }
