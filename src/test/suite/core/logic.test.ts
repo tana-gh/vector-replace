@@ -51,23 +51,6 @@ suite('logic', () => {
         assert.strictEqual(vr.replaceStrings[2], 'ghi')
     })
 
-    test('setReplaceStrings backslashes with normal search', () => {
-        const vr = coreTypes.createVectorReplace()
-        logic.setReplaceStrings(vr, '\\b\\\\b\\\\\\b\\t\\\\t\\\\\\t\\r\\\\r\\\\\\r\\n\\\\n\\\\\\n')
-        
-        assert.strictEqual(vr.replaceStrings.length, 1)
-        assert.strictEqual(vr.replaceStrings[0], '\\b\\\\b\\\\\\b\\t\\\\t\\\\\\t\\r\\\\r\\\\\\r\\n\\\\n\\\\\\n')
-    })
-
-    test('setReplaceStrings backslashes with regexp search', () => {
-        const vr = coreTypes.createVectorReplace()
-        vr.params.useRegExp = true
-        logic.setReplaceStrings(vr, '\\b\\\\b\\\\\\b\\t\\\\t\\\\\\t\\r\\\\r\\\\\\r\\n\\\\n\\\\\\n')
-        
-        assert.strictEqual(vr.replaceStrings.length, 1)
-        assert.strictEqual(vr.replaceStrings[0], '\\b\\b\\\\b\t\\t\\\t\r\\r\\\r\n\\n\\\n')
-    })
-
     test('runSearch normal', () => {
         const vr = coreTypes.createVectorReplace()
         logic.setUseRegExp(vr, false)

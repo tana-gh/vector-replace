@@ -1,5 +1,6 @@
-import * as types      from './types'
-import * as ignoreBang from './ignoreBang'
+import * as types           from './types'
+import * as ignoreBang      from './ignoreBang'
+import * as escapeBackslash from './escapeBackslash'
 
 export const replace = (
     input       : string,
@@ -9,7 +10,7 @@ export const replace = (
 ) => {
     if (replaceFuncs.length === 0) return input
 
-    const output = []
+    const output = <string[]>[]
 
     const gen = generateReplaceFuncs(replaceFuncs, params)
     let prev  = 0
@@ -51,17 +52,21 @@ const generateOneLoopReplaceFuncs = function* (replaceFuncs: types.ReplaceFunc[]
 }
 
 export const createReplaceFuncs = (replaceStrings: string[], params: types.Params) => {
-    let filtered = replaceStrings
+    let processed = replaceStrings
 
     if (params.ignoreEmptyReplace) {
-        filtered = filtered.filter(s => s !== '')
+        processed = processed.filter(s => s !== '')
     }
 
     if (params.ignoreBangReplace) {
-        filtered = ignoreBang.process(filtered)
+        processed = ignoreBang.process(processed)
     }
 
-    return filtered.map(s => (match: types.MatchResult) => {
+    if (params.useRegExp) {
+        processed = escapeBackslash.process(processed)
+    }
+
+    return processed.map(s => (match: types.MatchResult) => {
         if (match.pattern instanceof RegExp) {
             return match[0].replace(match.pattern, s)
         }

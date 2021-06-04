@@ -151,6 +151,47 @@ suite('replace', () => {
         assert.strictEqual(output, '-12-3-12-')
     })
 
+    test('normal replace with backslashes', () => {
+        const input          = 'bbbtttrrrnnn'
+        const replaceStrings = [
+            '\\b',
+            '\\\\b',
+            '\\\\\\b',
+            '\\t',
+            '\\\\t',
+            '\\\\\\t',
+            '\\r',
+            '\\\\r',
+            '\\\\\\r',
+            '\\n',
+            '\\\\n',
+            '\\\\\\n',
+        ]
+
+        const params = types.createParams()
+        params.useRegExp = true
+
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
+            types.createMatchResult([ 'b' ],  0, input, 'b' ),
+            types.createMatchResult([ 'b' ],  1, input, 'b' ),
+            types.createMatchResult([ 'b' ],  2, input, 'b' ),
+            types.createMatchResult([ 't' ],  3, input, 't' ),
+            types.createMatchResult([ 't' ],  4, input, 't' ),
+            types.createMatchResult([ 't' ],  5, input, 't' ),
+            types.createMatchResult([ 'r' ],  6, input, 'r' ),
+            types.createMatchResult([ 'r' ],  7, input, 'r' ),
+            types.createMatchResult([ 'r' ],  8, input, 'r' ),
+            types.createMatchResult([ 'n' ],  9, input, 'n' ),
+            types.createMatchResult([ 'n' ], 10, input, 'n' ),
+            types.createMatchResult([ 'n' ], 11, input, 'n' ),
+        ]
+
+        const output = replace.replace(input, replaceFuncs, matches, params)
+
+        assert.strictEqual(output, '\\b\\\\b\\\\\\b\\t\\\\t\\\\\\t\\r\\\\r\\\\\\r\\n\\\\n\\\\\\n')
+    })
+
     test('regexp replace with empty replaceStrings', () => {
         const input          = '-abc-defgh-ijk-'
         const replaceStrings = <string[]>[]
@@ -187,5 +228,46 @@ suite('replace', () => {
         const output = replace.replace(input, replaceFuncs, matches, params)
 
         assert.strictEqual(output, '-12b-3defgh-456ik-')
+    })
+
+    test('regexp replace with backslashes', () => {
+        const input          = 'bbbtttrrrnnn'
+        const replaceStrings = [
+            '\\b',
+            '\\\\b',
+            '\\\\\\b',
+            '\\t',
+            '\\\\t',
+            '\\\\\\t',
+            '\\r',
+            '\\\\r',
+            '\\\\\\r',
+            '\\n',
+            '\\\\n',
+            '\\\\\\n',
+        ]
+
+        const params = types.createParams()
+        params.useRegExp = true
+
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
+            types.createMatchResult([ 'b' ],  0, input, /b/g ),
+            types.createMatchResult([ 'b' ],  1, input, /b/g ),
+            types.createMatchResult([ 'b' ],  2, input, /b/g ),
+            types.createMatchResult([ 't' ],  3, input, /t/g ),
+            types.createMatchResult([ 't' ],  4, input, /t/g ),
+            types.createMatchResult([ 't' ],  5, input, /t/g ),
+            types.createMatchResult([ 'r' ],  6, input, /r/g ),
+            types.createMatchResult([ 'r' ],  7, input, /r/g ),
+            types.createMatchResult([ 'r' ],  8, input, /r/g ),
+            types.createMatchResult([ 'n' ],  9, input, /n/g ),
+            types.createMatchResult([ 'n' ], 10, input, /n/g ),
+            types.createMatchResult([ 'n' ], 11, input, /n/g ),
+        ]
+
+        const output = replace.replace(input, replaceFuncs, matches, params)
+
+        assert.strictEqual(output, '\\b\\b\\\\b\t\\t\\\t\r\\r\\\r\n\\n\\\n')
     })
 })
