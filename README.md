@@ -74,7 +74,13 @@ If checking this, the search will not be match when only matches until a part of
 
 ## Release Notes
 
+### 1.1.1
+
+Fix bugs:
+- Backslash escape sequence is not working #11
+
 ### 1.1.0
+
 Features:
 - Capture whole each search strings when regular expression is enabled #7
 - Selection search #9

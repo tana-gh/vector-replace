@@ -1,6 +1,12 @@
 # Change Log
 
+## 1.1.1
+
+Fix bugs:
+- Backslash escape sequence is not working #11
+
 ## 1.1.0
+
 Features:
 - Capture whole each search strings when regular expression is enabled #7
 - Selection search #9
