@@ -29,17 +29,23 @@ export const setReplaceFuncs = (vr: types.VectorReplace) => {
     vr.replaceFuncs = replace.createReplaceFuncs(vr.replaceStrings, vr.params)
 }
 
-export const runSearch = (vr: types.VectorReplace) => {
+export function* runSearch(vr: types.VectorReplace, po: types.ProcessObject) {
+    let matches: types.MatchResult[]
+
     if (vr.params.matrixSearch) {
-        vr.matches = search.matrixSearch(vr.text, vr.textLower, vr.selections, vr.searchFuncs, vr.params)
+        matches = yield* search.matrixSearch(vr.text, vr.textLower, vr.selections, vr.searchFuncs, vr.params, po)
     }
     else {
-        vr.matches = search.search(vr.text, vr.textLower, vr.selections, vr.searchFuncs, vr.params)
+        matches = yield* search.search(vr.text, vr.textLower, vr.selections, vr.searchFuncs, vr.params, po)
     }
+
+    if (!po.isCancelled) vr.matches = matches
 }
 
-export const runReplace = (vr: types.VectorReplace) => {
-    vr.text = replace.replace(vr.text, vr.replaceFuncs, vr.matches, vr.params)
+export function* runReplace(vr: types.VectorReplace, po: types.ProcessObject) {
+    const text = yield* replace.replace(vr.text, vr.replaceFuncs, vr.matches, vr.params, po)
+
+    if (!po.isCancelled) vr.text = text
 }
 
 export const setSelectionSearch = (vr: types.VectorReplace, value: boolean) => {

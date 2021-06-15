@@ -2,18 +2,22 @@ import * as types           from './types'
 import * as ignoreBang      from './ignoreBang'
 import * as escapeBackslash from './escapeBackslash'
 
-export const replace = (
+export function* replace(
     input       : string,
     replaceFuncs: types.ReplaceFunc[],
     matches     : types.MatchResult[],
-    params      : types.Params
-) => {
+    params      : types.Params,
+    po          : types.ProcessObject
+): Generator<number, string> {
     if (replaceFuncs.length === 0) return input
 
     const output = <string[]>[]
     let prev = 0
     
     for (let match of matches) {
+        if (po.isCancelled) return input
+        yield prev
+        
         const func = getReplaceFunc(replaceFuncs, match.order, params)
         if (!func) continue
 

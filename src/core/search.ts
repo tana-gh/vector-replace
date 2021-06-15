@@ -1,29 +1,45 @@
 import * as types      from './types'
 import * as ignoreBang from './ignoreBang'
 
-export const search = (
+export function* search(
     input      : string,
     inputLower : string,
     selections : number[],
     searchFuncs: types.SearchFunc[],
-    params     : types.Params
-) => {
-    return searchCore(input, inputLower, selections, searchFuncs, params, params.loopSearch)
+    params     : types.Params,
+    po         : types.ProcessObject
+): Generator<number, types.MatchResult[]> {
+    return yield* searchCore(input, inputLower, selections, searchFuncs, params, params.loopSearch, po)
 }
 
-export const matrixSearch = (
+export function* matrixSearch(
     input      : string,
     inputLower : string,
     selections : number[],
     searchFuncs: types.SearchFunc[],
-    params     : types.Params
-) => {
+    params     : types.Params,
+    po         : types.ProcessObject
+): Generator<number, types.MatchResult[]> {
     if (searchFuncs.length === 0) return []
 
     const matchMatrix = <types.MatchResult[][]>[]
+    let progress = 0
 
     for (let func of searchFuncs) {
-        matchMatrix.push(searchCore(input, inputLower, selections, [ func ], params, true))
+        const gen = searchCore(input, inputLower, selections, [ func ], params, true, po)
+
+        while (true) {
+            const next = gen.next()
+
+            if (next.done) {
+                matchMatrix.push(next.value)
+                break
+            }
+
+            yield progress + next.value
+        }
+        
+        progress += input.length
     }
 
     let matches = <types.MatchResult[]>[]
@@ -70,14 +86,15 @@ export const matrixSearch = (
     return matches
 }
 
-const searchCore = (
+function* searchCore(
     input      : string,
     inputLower : string,
     selections : number[],
     searchFuncs: types.SearchFunc[],
     params     : types.Params,
-    loop       : boolean
-) => {
+    loop       : boolean,
+    po         : types.ProcessObject
+): Generator<number, types.MatchResult[]> {
     if (searchFuncs.length === 0) return []
 
     let matches = <types.MatchResult[]>[]
@@ -90,6 +107,9 @@ const searchCore = (
         let sel = 0
 
         for (let func of searchFuncs) {
+            if (po.isCancelled) return []
+            yield types.endOfMatchResult(prev)
+
             while (true) {
                 const current = types.endOfMatchResult(prev)
 

@@ -289,7 +289,10 @@
         let searchTimeout = undefined
         const delayToRunSearch = () => {
             if (searchTimeout) clearTimeout(searchTimeout)
-            searchTimeout = setTimeout(runSearch, 500)
+            searchTimeout = setTimeout(() => {
+                runSearch()
+                searchTimeout = undefined
+            }, 500)
         }
         searchTextArea.addEventListener('input', delayToRunSearch)
     </script>

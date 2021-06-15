@@ -11,6 +11,13 @@ const assertRange = (range: vscode.Range, l0: number, c0: number, l1: number, c1
     assert.strictEqual(range.end  .character, c1)
 }
 
+const runGenerator = (gen: Generator<number, types.MatchResult[]>) => {
+    while (true) {
+        const next = gen.next()
+        if (next.done) return next.value
+    }
+}
+
 suite('range util', () => {
     test('createRanges empty', () => {
         const ranges = rangeUtil.createRanges([])
@@ -26,7 +33,7 @@ suite('range util', () => {
         params.useRegExp = false
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         const ranges = rangeUtil.createRanges(matches)
 

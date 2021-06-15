@@ -2,6 +2,13 @@ import * as assert  from 'assert'
 import * as types   from '../../../core/types'
 import * as replace from '../../../core/replace'
 
+const runGenerator = (gen: Generator<number, string>) => {
+    while (true) {
+        const next = gen.next()
+        if (next.done) return next.value
+    }
+}
+
 suite('replace', () => {
     test('normal replace with empty replaceStrings', () => {
         const input          = '-abc-defgh-ijk-'
@@ -16,7 +23,7 @@ suite('replace', () => {
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  , 2),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '-abc-defgh-ijk-')
     })
@@ -34,7 +41,7 @@ suite('replace', () => {
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  , 2),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '-12-3-456-')
     })
@@ -53,7 +60,7 @@ suite('replace', () => {
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  , 2),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '-12-!4-56-')
     })
@@ -72,7 +79,7 @@ suite('replace', () => {
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  , 2),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '-12-3!-456-')
     })
@@ -90,7 +97,7 @@ suite('replace', () => {
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  , 2),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '-12--456-')
     })
@@ -109,7 +116,7 @@ suite('replace', () => {
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  , 2),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '-12-3-456-')
     })
@@ -127,7 +134,7 @@ suite('replace', () => {
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  , 2),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '-12-3-ijk-')
     })
@@ -146,7 +153,7 @@ suite('replace', () => {
             types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  , 2),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '-12-3-12-')
     })
@@ -171,7 +178,7 @@ suite('replace', () => {
             types.createMatchResult([ '-'     ], 20, input, '-'    , 2)
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '=123=45678=123=45678=')
     })
@@ -211,7 +218,7 @@ suite('replace', () => {
             types.createMatchResult([ 'n' ], 11, input, 'n', 11)
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '\\b\\\\b\\\\\\b\\t\\\\t\\\\\\t\\r\\\\r\\\\\\r\\n\\\\n\\\\\\n')
     })
@@ -230,7 +237,7 @@ suite('replace', () => {
             types.createMatchResult([ 'ijk'   ], 11, input, /\w{3}/u, 2),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '-abc-defgh-ijk-')
     })
@@ -249,7 +256,7 @@ suite('replace', () => {
             types.createMatchResult([ 'ijk'   ], 11, input, /(i)j(k)/u, 2),
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '-12b-3defgh-456ik-')
     })
@@ -290,8 +297,51 @@ suite('replace', () => {
             types.createMatchResult([ 'n' ], 11, input, /n/u, 11)
         ]
 
-        const output = replace.replace(input, replaceFuncs, matches, params)
+        const output = runGenerator(replace.replace(input, replaceFuncs, matches, params, { isCancelled: false }))
 
         assert.strictEqual(output, '\\b\\b\\\\b\t\\t\\\t\r\\r\\\r\n\\n\\\n')
+    })
+
+    test('progress on normal replace', () => {
+        const input          = '-abc-defgh-ijk-'
+        const replaceStrings = [ '12', '3', '456' ]
+
+        const params = types.createParams()
+
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
+            types.createMatchResult([ 'abc'   ],  1, input, 'abc'  , 0),
+            types.createMatchResult([ 'defgh' ],  5, input, 'defgh', 1),
+            types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  , 2),
+        ]
+
+        const gen = replace.replace(input, replaceFuncs, matches, params, { isCancelled: false })
+
+        assert.strictEqual(gen.next().value,  4)
+        assert.strictEqual(gen.next().value, 10)
+        assert.strictEqual(gen.next().value, 14)
+        assert.strictEqual(gen.next().done , true)
+    })
+
+    test('cancel on normal replace', () => {
+        const input          = '-abc-defgh-ijk-'
+        const replaceStrings = [ '12', '3', '456' ]
+
+        const params = types.createParams()
+
+        const replaceFuncs = replace.createReplaceFuncs(replaceStrings, params)
+        const matches      = [
+            types.createMatchResult([ 'abc'   ],  1, input, 'abc'  , 0),
+            types.createMatchResult([ 'defgh' ],  5, input, 'defgh', 1),
+            types.createMatchResult([ 'ijk'   ], 11, input, 'ijk'  , 2),
+        ]
+
+        const po  = { isCancelled: false }
+        const gen = replace.replace(input, replaceFuncs, matches, params, po)
+
+        gen.next()
+        po.isCancelled = true
+
+        assert.strictEqual(gen.next().done, true)
     })
 })

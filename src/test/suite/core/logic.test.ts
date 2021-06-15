@@ -2,6 +2,13 @@ import * as assert    from 'assert'
 import * as coreTypes from '../../../core/types'
 import * as logic     from '../../../core/logic'
 
+const runGenerator = (gen: Generator<number, void>) => {
+    while (true) {
+        const next = gen.next()
+        if (next.done) return
+    }
+}
+
 suite('logic', () => {
     test('setInput', () => {
         const vr = coreTypes.createVectorReplace()
@@ -56,7 +63,7 @@ suite('logic', () => {
         logic.setUseRegExp(vr, false)
         logic.setInput(vr, '-abc-def-ghi-')
         logic.setSearchStrings(vr, 'abc\ndef\nghi')
-        logic.runSearch(vr)
+        runGenerator(logic.runSearch(vr, { isCancelled: false }))
         
         assert.strictEqual(vr.matches.length, 3)
         assert.strictEqual(vr.matches[0][0], 'abc')
@@ -69,12 +76,22 @@ suite('logic', () => {
         logic.setUseRegExp(vr, true)
         logic.setInput(vr, '-abc-def-ghi-')
         logic.setSearchStrings(vr, '\\w{3}\n\\w{3}\n\\w{3}')
-        logic.runSearch(vr)
+        runGenerator(logic.runSearch(vr, { isCancelled: false }))
         
         assert.strictEqual(vr.matches.length, 3)
         assert.strictEqual(vr.matches[0][0], 'abc')
         assert.strictEqual(vr.matches[1][0], 'def')
         assert.strictEqual(vr.matches[2][0], 'ghi')
+    })
+
+    test('runSearch cancel', () => {
+        const vr = coreTypes.createVectorReplace()
+        logic.setUseRegExp(vr, false)
+        logic.setInput(vr, '-abc-def-ghi-')
+        logic.setSearchStrings(vr, 'abc\ndef\nghi')
+        runGenerator(logic.runSearch(vr, { isCancelled: true }))
+        
+        assert.strictEqual(vr.matches.length, 0)
     })
 
     test('runReplace normal', () => {
@@ -83,8 +100,8 @@ suite('logic', () => {
         logic.setInput(vr, '-abc-def-ghi-')
         logic.setSearchStrings (vr, 'abc\ndef\nghi')
         logic.setReplaceStrings(vr, '123\n456\n789')
-        logic.runSearch (vr)
-        logic.runReplace(vr)
+        runGenerator(logic.runSearch (vr, { isCancelled: false }))
+        runGenerator(logic.runReplace(vr, { isCancelled: false }))
 
         assert.strictEqual(vr.text, '-123-456-789-')
     })
@@ -95,9 +112,21 @@ suite('logic', () => {
         logic.setInput(vr, '-abc-def-ghi-')
         logic.setSearchStrings (vr, '\\w{3}\n\\w{3}\n\\w{3}')
         logic.setReplaceStrings(vr, '123\n456\n789')
-        logic.runSearch (vr)
-        logic.runReplace(vr)
+        runGenerator(logic.runSearch (vr, { isCancelled: false }))
+        runGenerator(logic.runReplace(vr, { isCancelled: false }))
 
         assert.strictEqual(vr.text, '-123-456-789-')
+    })
+
+    test('runReplace cancel', () => {
+        const vr = coreTypes.createVectorReplace()
+        logic.setUseRegExp(vr, false)
+        logic.setInput(vr, '-abc-def-ghi-')
+        logic.setSearchStrings (vr, 'abc\ndef\nghi')
+        logic.setReplaceStrings(vr, '123\n456\n789')
+        runGenerator(logic.runSearch (vr, { isCancelled: false }))
+        runGenerator(logic.runReplace(vr, { isCancelled: true }))
+
+        assert.strictEqual(vr.text, '-abc-def-ghi-')
     })
 })

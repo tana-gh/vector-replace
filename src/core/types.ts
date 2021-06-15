@@ -17,6 +17,10 @@ export const endOfMatchResult = (match: MatchResult) =>
 export type SearchFunc  = (input: string, inputLower: string, prev: MatchResult) => MatchResult | null
 export type ReplaceFunc = (match: MatchResult) => string
 
+export interface ProcessObject {
+    isCancelled: boolean
+}
+
 export interface VectorReplace {
     params        : Params
     text          : string
@@ -27,6 +31,7 @@ export interface VectorReplace {
     searchFuncs   : SearchFunc[]
     replaceFuncs  : ReplaceFunc[]
     matches       : MatchResult[]
+    processObject : ProcessObject | undefined
 }
 
 export const createVectorReplace = () => <VectorReplace>({
@@ -38,7 +43,8 @@ export const createVectorReplace = () => <VectorReplace>({
     replaceStrings: [],
     searchFuncs   : [],
     replaceFuncs  : [],
-    matches       : []
+    matches       : [],
+    processObject : undefined
 })
 
 export interface Params {
@@ -68,3 +74,12 @@ export const createParams = () => <Params>({
     justSearch        : false,
     matrixSearch      : false
 })
+
+export const resetProcessObject = (vr: VectorReplace) => {
+    if (vr.processObject) vr.processObject.isCancelled = true
+    vr.processObject = { isCancelled: false }
+}
+
+export const clearProcessObject = (vr: VectorReplace, po: ProcessObject) => {
+    if (vr.processObject === po) vr.processObject = undefined
+}

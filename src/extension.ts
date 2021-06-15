@@ -1,8 +1,8 @@
-import * as vscode     from 'vscode'
-import * as fs         from 'fs'
-import * as path       from 'path'
-import * as state      from './states/state'
-import * as behaviour  from './messages/behaviour'
+import * as vscode    from 'vscode'
+import * as fs        from 'fs'
+import * as path      from 'path'
+import * as state     from './states/state'
+import * as behaviour from './messages/behaviour'
 
 let panelIsVisible = false
 
@@ -18,14 +18,6 @@ const showViewCommand = (context: vscode.ExtensionContext) => () => {
     const editor = vscode.window.activeTextEditor
     const panel  = createPanel(context)
     const st     = state.create(editor)
-    st.refreshInterval = setInterval(() => {
-        if (!st.refreshTimeout) {
-            st.refreshTimeout = setTimeout(() => {
-                behaviour.refresh(st)
-                st.refreshTimeout = undefined
-            }, 0)
-        }
-    }, 500)
     listenEvents(panel, st)
 }
 
@@ -48,7 +40,9 @@ const readAndSetHtmlToWebview = (webview: vscode.Webview, htmlPath: string) => {
 const listenEvents = (panel: vscode.WebviewPanel, st: state.State) => {
     const events = [
         panel.webview.onDidReceiveMessage(async mes => await behaviour.execute(mes, st)),
-        vscode.window.onDidChangeActiveTextEditor(editor => state.setEditor(st, editor))
+        vscode.window.onDidChangeActiveTextEditor(editor => state.setEditor(st, editor)),
+        vscode.workspace.onDidChangeTextDocument    (() => registerRefresh(st)),
+        vscode.window.onDidChangeTextEditorSelection(() => registerRefresh(st))
     ]
 
     panel.onDidDispose(() => {
@@ -56,6 +50,15 @@ const listenEvents = (panel: vscode.WebviewPanel, st: state.State) => {
         events.forEach(d => d.dispose())
         panelIsVisible = false
     })
+}
+
+const registerRefresh = (st: state.State) => {
+    if (st.refreshTimeout) clearTimeout(st.refreshTimeout)
+
+    st.refreshTimeout = setTimeout(() => {
+        behaviour.refresh(st)
+        st.refreshTimeout = undefined
+    }, 500)
 }
 
 export const deactivate = () => {}

@@ -14,6 +14,13 @@ const assertMatches = (
     assert.strictEqual(matches[i].input, input)
 }
 
+const runGenerator = (gen: Generator<number, types.MatchResult[]>) => {
+    while (true) {
+        const next = gen.next()
+        if (next.done) return next.value
+    }
+}
+
 suite('search', () => {
     test('normal search with empty searchStrings', () => {
         const input         = '-abc-defgh-ijk-'
@@ -22,7 +29,7 @@ suite('search', () => {
         const params = types.createParams()
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 0)
     })
@@ -34,7 +41,7 @@ suite('search', () => {
         const params = types.createParams()
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc'  ,  1, input)
@@ -49,7 +56,7 @@ suite('search', () => {
         const params = types.createParams()
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual (matches.length, 2)
         assertMatches(matches, 0, 'abc'  ,  1, input)
@@ -63,7 +70,7 @@ suite('search', () => {
         const params = types.createParams()
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, 'abc'  ,  1, input)
@@ -77,7 +84,7 @@ suite('search', () => {
         const params = types.createParams()
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc'  ,  1, input)
@@ -92,7 +99,7 @@ suite('search', () => {
         const params = types.createParams()
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, 'Abc', 5, input)
@@ -107,7 +114,7 @@ suite('search', () => {
         params.ignoreCaseSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, inputLower, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, inputLower, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc', 1, input)
@@ -123,7 +130,7 @@ suite('search', () => {
         params.ignoreBangSearch = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, '!defgh',  6, input)
@@ -138,7 +145,7 @@ suite('search', () => {
         params.ignoreBangSearch = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc!'   ,  1, input)
@@ -153,7 +160,7 @@ suite('search', () => {
         const params = types.createParams()
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, 'abc'  , 1, input)
@@ -168,7 +175,7 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc'  ,  1, input)
@@ -184,7 +191,7 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc'  ,  1, input)
@@ -201,7 +208,7 @@ suite('search', () => {
         params.justSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, 'abc'  , 1, input)
@@ -217,7 +224,7 @@ suite('search', () => {
         params.selectionSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, selections, searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, selections, searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, 'abc'  , 1, input)
@@ -233,7 +240,7 @@ suite('search', () => {
         params.selectionSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, selections, searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, selections, searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, 'abc'  , 1, input)
@@ -249,7 +256,7 @@ suite('search', () => {
         params.selectionSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, selections, searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, selections, searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, 'defgh', 5, input)
@@ -264,7 +271,7 @@ suite('search', () => {
         params.selectionSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, selections, searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, selections, searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, 'defgh', 5, input)
@@ -279,7 +286,7 @@ suite('search', () => {
         params.selectionSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, selections, searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, selections, searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 0)
     })
@@ -293,7 +300,7 @@ suite('search', () => {
         params.selectionSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, selections, searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, selections, searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 0)
     })
@@ -307,7 +314,7 @@ suite('search', () => {
         params.selectionSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, selections, searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, selections, searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, 'abc'  , 1, input)
@@ -322,7 +329,7 @@ suite('search', () => {
         params.matrixSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.matrixSearch(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.matrixSearch(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 9)
         assertMatches(matches, 0, '-'    ,  0, input)
@@ -344,7 +351,7 @@ suite('search', () => {
         params.useRegExp = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, 'abc', 1, input)
@@ -358,7 +365,7 @@ suite('search', () => {
         params.useRegExp = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 0)
     })
@@ -371,7 +378,7 @@ suite('search', () => {
         params.useRegExp = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc'  ,  1, input)
@@ -387,7 +394,7 @@ suite('search', () => {
         params.useRegExp = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual (matches.length, 2)
         assertMatches(matches, 0, 'abc'  ,  1, input)
@@ -402,7 +409,7 @@ suite('search', () => {
         params.useRegExp = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, 'abc'  ,  1, input)
@@ -418,7 +425,7 @@ suite('search', () => {
         params.captureWhole = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc'  ,  1, input)
@@ -439,7 +446,7 @@ suite('search', () => {
         params.ignoreCaseSearch = false
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, 'Abc', 5, input)
@@ -454,7 +461,7 @@ suite('search', () => {
         params.ignoreCaseSearch = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc', 1, input)
@@ -471,7 +478,7 @@ suite('search', () => {
         params.ignoreBangSearch = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 2)
         assertMatches(matches, 0, '!defgh',  6, input)
@@ -487,7 +494,7 @@ suite('search', () => {
         params.ignoreBangSearch = true
 
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, 'abc!'   ,  1, input)
@@ -503,7 +510,7 @@ suite('search', () => {
         params.useRegExp = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, '-abc-defgh-ijk-', 0, input)
@@ -518,7 +525,7 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, '-abc-defgh-ijk-', 0, input)
@@ -533,7 +540,7 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 1)
         assertMatches(matches, 0, '-abc-defgh-ijk-', 0, input)
@@ -547,7 +554,7 @@ suite('search', () => {
         params.useRegExp  = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, '-abc-'  ,  0, input)
@@ -563,7 +570,7 @@ suite('search', () => {
         params.useRegExp  = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, '-abc-'  ,  0, input)
@@ -580,7 +587,7 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, '-abc-'  ,  0, input)
@@ -597,7 +604,7 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 3)
         assertMatches(matches, 0, '-abc-'  ,  0, input)
@@ -614,7 +621,7 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 4)
         assertMatches(matches, 0, '-abc-'  ,  0, input)
@@ -632,12 +639,43 @@ suite('search', () => {
         params.loopSearch = true
         
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
-        const matches     = search.search(input, input, [], searchFuncs, params)
+        const matches     = runGenerator(search.search(input, input, [], searchFuncs, params, { isCancelled: false }))
 
         assert.strictEqual(matches.length, 4)
         assertMatches(matches, 0, '-abc-'  ,  0, input)
         assertMatches(matches, 1, '-defgh-',  7, input)
         assertMatches(matches, 2, '-ijk-'  , 16, input)
         assertMatches(matches, 3, '-lmn-'  , 23, input)
+    })
+
+    test('progress on normal search', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ 'abc', 'defgh', 'ijk' ]
+
+        const params = types.createParams()
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const gen         = search.search(input, input, [], searchFuncs, params, { isCancelled: false })
+
+        assert.strictEqual(gen.next().value,  4)
+        assert.strictEqual(gen.next().value, 10)
+        assert.strictEqual(gen.next().value, 14)
+        assert.strictEqual(gen.next().done , true)
+    })
+
+    test('cancel on normal search', () => {
+        const input         = '-abc-defgh-ijk-'
+        const searchStrings = [ 'abc', 'defgh', 'ijk' ]
+
+        const params = types.createParams()
+        
+        const searchFuncs = search.createSearchFuncs(searchStrings, params)
+        const po          = { isCancelled: false }
+        const gen         = search.search(input, input, [], searchFuncs, params, po)
+
+        gen.next()
+        po.isCancelled = true
+
+        assert.strictEqual(gen.next().done, true)
     })
 })
