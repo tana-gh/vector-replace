@@ -657,9 +657,9 @@ suite('search', () => {
         const searchFuncs = search.createSearchFuncs(searchStrings, params)
         const gen         = search.search(input, input, [], searchFuncs, params, { isCancelled: false })
 
+        assert.strictEqual(gen.next().value,  0)
         assert.strictEqual(gen.next().value,  4)
         assert.strictEqual(gen.next().value, 10)
-        assert.strictEqual(gen.next().value, 14)
         assert.strictEqual(gen.next().done , true)
     })
 
