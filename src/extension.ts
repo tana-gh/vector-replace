@@ -17,7 +17,7 @@ const showViewCommand = (context: vscode.ExtensionContext) => () => {
 
     const editor = vscode.window.activeTextEditor
     const panel  = createPanel(context)
-    const st     = state.create(editor)
+    const st     = state.create(panel.webview, editor)
     listenEvents(panel, st)
 }
 
@@ -48,6 +48,7 @@ const listenEvents = (panel: vscode.WebviewPanel, st: state.State) => {
     panel.onDidDispose(() => {
         state.dispose(st)
         events.forEach(d => d.dispose())
+        panel.dispose()
         panelIsVisible = false
     })
 }

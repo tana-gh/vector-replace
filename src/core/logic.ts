@@ -1,3 +1,4 @@
+import * as state   from '../states/state'
 import * as types   from './types'
 import * as search  from './search'
 import * as replace from './replace'
@@ -29,7 +30,7 @@ export const setReplaceFuncs = (vr: types.VectorReplace) => {
     vr.replaceFuncs = replace.createReplaceFuncs(vr.replaceStrings, vr.params)
 }
 
-export function* runSearch(vr: types.VectorReplace, po: types.ProcessObject) {
+export function* runSearch(vr: types.VectorReplace, po: state.ProcessObject) {
     let matches: types.MatchResult[]
 
     if (vr.params.matrixSearch) {
@@ -42,7 +43,7 @@ export function* runSearch(vr: types.VectorReplace, po: types.ProcessObject) {
     if (!po.isCancelled) vr.matches = matches
 }
 
-export function* runReplace(vr: types.VectorReplace, po: types.ProcessObject) {
+export function* runReplace(vr: types.VectorReplace, po: state.ProcessObject) {
     const text = yield* replace.replace(vr.text, vr.replaceFuncs, vr.matches, vr.params, po)
 
     if (!po.isCancelled) vr.text = text

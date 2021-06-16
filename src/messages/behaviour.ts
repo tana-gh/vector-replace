@@ -58,14 +58,14 @@ export const refresh = async (st: state.State) => {
     logic.setInput     (st.vr, getInput(st.editor))
     logic.setSelections(st.vr, getSelections(st.editor))
 
-    coreTypes.resetProcessObject(st.vr)
-    const po = st.vr.processObject!
-    await runSearchWithProgress (st.vr, po)
+    state.resetProcessObject(st)
+    const po = st.processObject!
+    await runSearchWithProgress (st, po)
     if (po.isCancelled) {
-        coreTypes.clearProcessObject(st.vr, po)
+        state.clearProcessObject(st, po)
         return
     }
-    coreTypes.clearProcessObject(st.vr, po)
+    state.clearProcessObject(st, po)
     
     decorate(st.editor, st.decoration, st.vr.matches)
 }
@@ -78,14 +78,14 @@ const runSearch = async (message: messageTypes.RunSearchCommand, st: state.State
     logic.setInput     (st.vr, getInput    (st.editor))
     logic.setSelections(st.vr, getSelections(st.editor))
 
-    coreTypes.resetProcessObject(st.vr)
-    const po = st.vr.processObject!
-    await runSearchWithProgress (st.vr, po)
+    state.resetProcessObject(st)
+    const po = st.processObject!
+    await runSearchWithProgress (st, po)
     if (po.isCancelled) {
-        coreTypes.clearProcessObject(st.vr, po)
+        state.clearProcessObject(st, po)
         return
     }
-    coreTypes.clearProcessObject(st.vr, po)
+    state.clearProcessObject(st, po)
 
     decorate(st.editor, st.decoration, st.vr.matches)
 }
@@ -100,19 +100,19 @@ const runReplace = async (message: messageTypes.RunReplaceCommand, st: state.Sta
     logic.setInput     (st.vr, getInput(st.editor))
     logic.setSelections(st.vr, getSelections(st.editor))
 
-    coreTypes.resetProcessObject(st.vr)
-    const po = st.vr.processObject!
-    await runSearchWithProgress (st.vr, po)
+    state.resetProcessObject(st)
+    const po = st.processObject!
+    await runSearchWithProgress (st, po)
     if (po.isCancelled) {
-        coreTypes.clearProcessObject(st.vr, po)
+        state.clearProcessObject(st, po)
         return
     }
-    await runReplaceWithProgress(st.vr, po)
+    await runReplaceWithProgress(st, po)
     if (po.isCancelled) {
-        coreTypes.clearProcessObject(st.vr, po)
+        state.clearProcessObject(st, po)
         return
     }
-    coreTypes.clearProcessObject(st.vr, po)
+    state.clearProcessObject(st, po)
 
     await setOutput(st.editor, st.vr.text)
 }
@@ -175,14 +175,14 @@ const setMatrixSearch = async (message: messageTypes.SetMatrixSearch, st: state.
 const updateSearchParam = async (st: state.State) => {
     logic.setSearchFuncs(st.vr)
 
-    coreTypes.resetProcessObject(st.vr)
-    const po = st.vr.processObject!
-    await runSearchWithProgress (st.vr, po)
+    state.resetProcessObject(st)
+    const po = st.processObject!
+    await runSearchWithProgress (st, po)
     if (po.isCancelled) {
-        coreTypes.clearProcessObject(st.vr, po)
+        state.clearProcessObject(st, po)
         return
     }
-    coreTypes.clearProcessObject(st.vr, po)
+    state.clearProcessObject(st, po)
 
     if (!st.editor) return
 
@@ -221,21 +221,22 @@ const setOutput = async (editor: vscode.TextEditor, text: string) => {
     })
 }
 
-const runSearchWithProgress = async (vr: coreTypes.VectorReplace, po: coreTypes.ProcessObject) => {
-    await runWithProgressCore(vr, logic.runSearch, po, vr.params.matrixSearch ? vr.text.length * vr.searchFuncs.length : vr.text.length)
+const runSearchWithProgress = async (st: state.State, po: state.ProcessObject) => {
+    await runWithProgressCore(st, logic.runSearch, po, 'Searching', st.vr.params.matrixSearch ? st.vr.text.length * st.vr.searchFuncs.length : st.vr.text.length)
 }
 
-const runReplaceWithProgress = async (vr: coreTypes.VectorReplace, po: coreTypes.ProcessObject) => {
-    await runWithProgressCore(vr, logic.runReplace, po, vr.text.length)
+const runReplaceWithProgress = async (st: state.State, po: state.ProcessObject) => {
+    await runWithProgressCore(st, logic.runReplace, po, 'Replacing', st.vr.text.length)
 }
 
 const runWithProgressCore = async (
-    vr: coreTypes.VectorReplace,
-    runLogic: (vr: coreTypes.VectorReplace, po: coreTypes.ProcessObject) => Generator<number, void>,
-    po: coreTypes.ProcessObject,
+    st         : state.State,
+    runLogic   : (vr: coreTypes.VectorReplace, po: state.ProcessObject) => Generator<number, void>,
+    po         : state.ProcessObject,
+    method     : string,
     maxProgress: number
 ) => {
-    const gen = runLogic(vr, po)
+    const gen = runLogic(st.vr, po)
     while (true) {
         let next = gen.next()
 
@@ -245,7 +246,7 @@ const runWithProgressCore = async (
         }
 
         if (next.done) return
-        //reportProgress(next.value / maxProgress)
+        state.reportProgress(st, po, method, next.value / maxProgress)
 
         await delay(1)
     }

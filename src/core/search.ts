@@ -1,3 +1,4 @@
+import * as state      from '../states/state'
 import * as types      from './types'
 import * as ignoreBang from './ignoreBang'
 
@@ -7,7 +8,7 @@ export function* search(
     selections : number[],
     searchFuncs: types.SearchFunc[],
     params     : types.Params,
-    po         : types.ProcessObject
+    po         : state.ProcessObject
 ): Generator<number, types.MatchResult[]> {
     return yield* searchCore(input, inputLower, selections, searchFuncs, params, params.loopSearch, po)
 }
@@ -18,7 +19,7 @@ export function* matrixSearch(
     selections : number[],
     searchFuncs: types.SearchFunc[],
     params     : types.Params,
-    po         : types.ProcessObject
+    po         : state.ProcessObject
 ): Generator<number, types.MatchResult[]> {
     if (searchFuncs.length === 0) return []
 
@@ -93,7 +94,7 @@ function* searchCore(
     searchFuncs: types.SearchFunc[],
     params     : types.Params,
     loop       : boolean,
-    po         : types.ProcessObject
+    po         : state.ProcessObject
 ): Generator<number, types.MatchResult[]> {
     if (searchFuncs.length === 0) return []
 

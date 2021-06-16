@@ -100,6 +100,8 @@
     <div class="container">
         <div class="button-area">
             <a id="replaceButton" class="button" href="javascript:void(0)">Replace</a>
+            <progress id="progress" max="1.0" value="0.0" style="visibility: hidden;">0%</progress>
+            <label id="progressLabel" for="progress" style="visibility: hidden;">0%</label>
         </div>
         <div class="pref-area">
             <span class="setting">
@@ -169,6 +171,8 @@
         const vscode = acquireVsCodeApi()
 
         const replaceButton              = document.getElementById('replaceButton')
+        const progress                   = document.getElementById('progress')
+        const progressLabel              = document.getElementById('progressLabel')
         const selectionSearchCheckbox    = document.getElementById('selectionSearch')
         const useRegExpCheckbox          = document.getElementById('useRegExp')
         const captureWholeCheckbox       = document.getElementById('captureWhole')
@@ -182,6 +186,21 @@
         const matrixSearchCheckbox       = document.getElementById('matrixSearch')
         const searchTextArea             = document.getElementById('search')
         const replaceTextArea            = document.getElementById('replace')
+
+        window.addEventListener('message', ev => {
+            const message = ev.data
+            switch (message.type) {
+                case 'progressVisible':
+                    progress     .style = `visibility: ${message.value ? 'visible' : 'hidden'};`
+                    progressLabel.style = `visibility: ${message.value ? 'visible' : 'hidden'};`
+                    return
+                case 'progress':
+                    progress     .value       = message.value
+                    progress     .textContent = `${message.method} ${Math.floor(message.value * 100)}%`
+                    progressLabel.textContent = `${message.method} ${Math.floor(message.value * 100)}%`
+                    return
+            }
+        })
 
         const runReplace = () =>
             vscode.postMessage({

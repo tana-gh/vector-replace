@@ -1,3 +1,4 @@
+import * as state           from '../states/state'
 import * as types           from './types'
 import * as ignoreBang      from './ignoreBang'
 import * as escapeBackslash from './escapeBackslash'
@@ -7,7 +8,7 @@ export function* replace(
     replaceFuncs: types.ReplaceFunc[],
     matches     : types.MatchResult[],
     params      : types.Params,
-    po          : types.ProcessObject
+    po          : state.ProcessObject
 ): Generator<number, string> {
     if (replaceFuncs.length === 0) return input
 

@@ -12,7 +12,7 @@ const init = async () => {
 	document = await vscode.workspace.openTextDocument()
 	editor   = await vscode.window.showTextDocument(document)
 
-	st = state.create(editor)
+	st = state.create(undefined, editor)
 
     disposables = <vscode.Disposable[]>[
         vscode.window.onDidChangeActiveTextEditor(editor => state.setEditor(st!, editor))
