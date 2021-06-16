@@ -48,7 +48,6 @@ const listenEvents = (panel: vscode.WebviewPanel, st: state.State) => {
     panel.onDidDispose(() => {
         state.dispose(st)
         events.forEach(d => d.dispose())
-        panel.dispose()
         panelIsVisible = false
     })
 }
