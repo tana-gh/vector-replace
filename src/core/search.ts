@@ -100,6 +100,7 @@ function* searchCore(
 
     let matches = <types.MatchResult[]>[]
     let prev    = types.createMatchResult([''], 0, '', '', -1)
+    let order   = 0
 
     outer:
     while (true) {
@@ -145,11 +146,17 @@ function* searchCore(
                     selections.length === 0 ||
                     selections.length === 2 && selections[0] === selections[1]
                 ) {
+                    if (!params.matrixSearch) match.order = order
+                    order++
                     subMatches.push(match)
                 }
                 else {
                     for (; selections[sel] <= match.index; sel++);
-                    if (sel % 2 === 1 && match.index + match[0].length <= selections[sel]) subMatches.push(match)
+                    if (sel % 2 === 1 && match.index + match[0].length <= selections[sel]) {
+                        if (!params.matrixSearch) match.order = order
+                        order++
+                        subMatches.push(match)
+                    }
                 }
                 
                 prev = match
