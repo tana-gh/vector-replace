@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.0.0
+
+Features:
+- Matrix search (#6)
+- Improve performance (#12)
+- Progress bar (#13)
+
 ## 1.1.1
 
 Fix bugs:

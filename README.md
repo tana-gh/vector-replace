@@ -4,9 +4,7 @@
 
 Vector Replace is extension of Visual Studio Code for replacing multiple words.
 
-![window-searched](https://tana-gh.github.io/vector-replace-media/window-searched.png)
-
-![window-replaced](https://tana-gh.github.io/vector-replace-media/window-replaced.png)
+![window-replacing](https://tana-gh.github.io/vector-replace-media/window-replacing.gif)
 
 ## Features
 
@@ -70,9 +68,20 @@ If checking this, replace strings are looped. When a replace string reaches to t
 
 If checking this, the search will not be match when only matches until a part of all search strings. For example, loop search is enabled and search strings are 'a', 'b', 'c', then 'abcab' is matched by only 'abc'.
 
+### Matrix search
+
+If checking this, each search strings will be searched from all of text on the editor. Each replace strings will be corresponded to each search strings.
+
 ---
 
 ## Release Notes
+
+### 2.0.0
+
+Features:
+- Matrix search (#6)
+- Improve performance (#12)
+- Progress bar (#13)
 
 ### 1.1.1
 
