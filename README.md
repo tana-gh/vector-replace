@@ -22,7 +22,7 @@ In this extension, search text and replace text are specified multiple per line.
 
 ![window-abc](https://tana-gh.github.io/vector-replace-media/window-abc.png)
 
-If you specify like this in the search pane, 'a' is searched at first, 'b' is searched next, and 'c' is searched at last. Further, if you specify as above in the replace pane, 'a' will be replaced by 'd', 'b' will be replaced by 'e', and 'c' will be replaced by 'f'.
+If you specify like this in the search pane, 'a' is searched at first, 'b' is searched next, and 'c' is searched at last. Further, if you specify as above in the replace pane, 'a' will be replaced by '1', 'b' will be replaced by '2', and 'c' will be replaced by '3'.
 
 ## Settings
 
