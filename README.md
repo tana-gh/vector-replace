@@ -78,6 +78,10 @@ If checking this, each search strings will be searched from all of text on the e
 
 ## Release Notes
 
+### 2.0.1
+
+Fix README.md
+
 ### 2.0.0
 
 Features:
