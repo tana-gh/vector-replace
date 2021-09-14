@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.0.2
+
+Fix background color in the setting view #14
+
 ## 2.0.1
 
 Fix README.md
